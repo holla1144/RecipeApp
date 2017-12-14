@@ -1,0 +1,8 @@
+$gridCount: 12;
+
+@for $i from 1 through $gridCount {
+  .col-#{$i} {
+    width: calc(100% / #{$gridCount} * #{$i});
+  }
+}
+

@@ -1,0 +1,11 @@
+db.recipes.find().forEach(
+  function(doc) {
+    if (doc.category) {
+      let newCategory = [];
+      doc.category.forEach(
+        function(i){
+          newCategory.push(i.toLowerCase())
+        });
+      doc.category = newCategory;
+      db.recipes.save(doc);
+      }});
