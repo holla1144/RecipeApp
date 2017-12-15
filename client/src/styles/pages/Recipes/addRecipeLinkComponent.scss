@@ -1,0 +1,14 @@
+.add-recipe-link {
+  background-color: black;
+  border-radius: 100%;
+  height: 100px;
+  text-align: center;
+  width: 100px;
+
+  &_span {
+    &_text {
+      @include textStyle($default, normal, normal, normal, white, .5px);
+      text-transform: uppercase;
+    }
+  }
+}

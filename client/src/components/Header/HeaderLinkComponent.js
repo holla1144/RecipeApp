@@ -9,7 +9,7 @@ import {
 const HeaderLink = ({ text, url }) => {
   return (
       <li className="header_nav_list_item">
-        <NavLink to={ url } activeClassName="header_nav_list_item_link--active" className="header_nav_list_item_link"> { text } </NavLink>
+        <NavLink to={ url } exact={true} activeClassName="header_nav_list_item_link--active" className="header_nav_list_item_link"> { text } </NavLink>
       </li>
     )
   };

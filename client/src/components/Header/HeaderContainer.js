@@ -6,7 +6,7 @@ class Header extends React.Component{
   constructor(props) {
     super(props);
     console.log('header rebuilt')
-    this.links = [{ text: 'Home', url: '/home'}, { text: 'About', url: '/about'},
+    this.links = [{ text: 'Home', url: '/'}, { text: 'About', url: '/about'},
                 {text: 'Recipes', url: '/recipes'}, { text: 'Categories', url: '/categories'}];
   }
 
