@@ -35,16 +35,23 @@ class AddIngredientsComponent extends React.Component{
 
   addOneInput(){
     const newIngredients = this.state.ingredients;
+    newIngredients.forEach((element, index) => {
+      if (element.name === 'Name' || element.amount === 'Amount' || element.name.length < 1 || element.amount.length < 1) {
+        return false;
+      }
+    });
+
     const blankIngredient = {
       name: 'Name',
       amount: 'Amount'
     };
 
     newIngredients.push(blankIngredient);
+
     this.setState({
       ingredients: newIngredients
     })
-  }
+   }
 
   removeOneInput(index){
     const newIngredients = this.state.ingredients;

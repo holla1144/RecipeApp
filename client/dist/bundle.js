@@ -18958,12 +18958,19 @@ var AddIngredientsComponent = function (_React$Component) {
     key: 'addOneInput',
     value: function addOneInput() {
       var newIngredients = this.state.ingredients;
+      newIngredients.forEach(function (element, index) {
+        if (element.name === 'Name' || element.amount === 'Amount' || element.name.length < 1 || element.amount.length < 1) {
+          return false;
+        }
+      });
+
       var blankIngredient = {
         name: 'Name',
         amount: 'Amount'
       };
 
       newIngredients.push(blankIngredient);
+
       this.setState({
         ingredients: newIngredients
       });
