@@ -1,0 +1,71 @@
+.add-recipe-form {
+  padding-bottom: 5rem;
+
+  &_section {
+    padding: 1.5rem 0 2rem 1rem;
+    transition: all .5s linear;
+
+    input[type='text'] {
+      border: 1px solid gray;
+      border-radius: 5px;
+      line-height: 2rem;
+      padding: 0 10px;
+    }
+
+    textarea {
+      border: 1px solid gray;
+      border-radius: 5px;
+      min-height: 8rem;
+      padding: .75rem;
+    }
+
+    label {
+      display: block;
+      font-size: 1.1rem;
+      padding: .5rem 0;
+    }
+
+    .add-item-button {
+      background-color: $cool-green;
+      border-radius: 5px;
+      box-shadow: 1px 4px 4px gray;
+      color: white;
+      cursor: pointer;
+      display: block;
+      line-height: 2rem;
+      margin: .5rem 0;
+      text-align: center;
+      transition: all .5s linear;
+      width: 6rem;
+
+      &:hover {
+        background-color: $cool-green-dark;
+      }
+    }
+
+    &:hover,
+    &:active {
+      box-shadow: 2px 2px 8px gray;
+      padding-left: 1.5rem;
+
+      .add-item-button {
+        box-shadow: -1px 4px 4px grey
+      }
+    }
+  }
+
+  &_submit-button {
+    background-color: $cool-blue;
+    border: 0;
+    border-radius: 50%;
+    bottom: 6rem;
+    cursor: pointer;
+    height: 7rem;
+    position: fixed;
+    right: 8rem;
+    text-transform: uppercase;
+    width: 7rem;
+    z-index: 2;
+  }
+}
+

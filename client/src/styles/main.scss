@@ -7,5 +7,10 @@
 @import 'text-styles';
 @import 'header';
 @import 'mainContent';
+@import 'pageHeader.scss';
 @import 'pages/Recipes/addRecipeLinkComponent';
 @import '~react-select/dist/react-select.css';
+@import 'pages/recipes/AddOneRecipeForm/general';
+@import 'pages/recipes/AddOneRecipeForm/addStepsComponent';
+@import 'pages/recipes/AddOneRecipeForm/addIngredientsComponent';
+@import 'pages/recipes/AddOneRecipeForm/categorySelector';

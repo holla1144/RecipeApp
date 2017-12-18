@@ -6,3 +6,11 @@
   font-weight: $fontWeight;
   letter-spacing: $letterSpacing;
 }
+
+@mixin clearfix() {
+  &:after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+}

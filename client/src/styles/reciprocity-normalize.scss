@@ -18,6 +18,22 @@ a {
   text-decoration: none;
 }
 
+textarea {
+  resize: none;
+}
+
+.clearfix {
+  &:after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+}
+
 .centered {
   margin: 0 auto;
+}
+
+.hidden {
+  display: none;
 }

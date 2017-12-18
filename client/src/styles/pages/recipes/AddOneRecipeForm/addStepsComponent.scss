@@ -1,0 +1,24 @@
+.step {
+  &_input-container {
+    @include clearfix;
+    padding-bottom: 1rem;
+
+    &_label {
+      display: block;
+    }
+
+    &_input {
+      display: block;
+      float: left;
+      margin-right: .5rem;
+    }
+
+    &_remove {
+      color: black;
+      cursor: pointer;
+      float: left;
+      font-size: 1.25rem;
+    }
+  }
+}
+

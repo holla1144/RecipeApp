@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header/HeaderContainer';
 import CategoriesPage from './pages/Categories/CategoriesContainer';
-import AddOneRecipePage from './pages/AddOneRecipePage/AddOneRecipeContainer';
+import AddOneRecipe from './Pages/Recipes/AddOneRecipe/AddOneRecipeContainer';
 import RecipesPage from './pages/Recipes/RecipesContainer';
 import AboutPage from './pages/About/AboutContainer';
 import HomePage from './pages/Home/HomeContainer';
@@ -31,7 +31,7 @@ class App extends React.Component{
               <Route path="/about" component={ AboutPage }/>
               <Route path="/recipes" component={ RecipesPage }/>
               <Route path="/categories" component={ CategoriesPage }/>
-              <Route path="/new" component={ AddOneRecipePage }/>
+              <Route path="/new" component={ AddOneRecipe }/>
             </div>
           </Router>
         )

@@ -1,8 +1,8 @@
 import React from 'react';
-import MainContainer from '../../MainContent/MainContainer';
+import MainContainer from '../../../MainContent/MainContainer';
 import AddOneRecipeForm from './AddOneRecipeForm';
 
-class AddOneRecipePage extends React.Component{
+class AddOneRecipe extends React.Component{
   constructor(props) {
     super(props);
   }
@@ -16,4 +16,4 @@ class AddOneRecipePage extends React.Component{
   }
 }
 
-export default AddOneRecipePage;
+export default AddOneRecipe;
