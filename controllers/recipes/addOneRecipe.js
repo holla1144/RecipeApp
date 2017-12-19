@@ -1,11 +1,13 @@
 let sendResponse = require('../sendResponse');
-let Recipe = require('../../models/recipe');
+let Recipe = require('../../models/recipe_models/recipe');
 
 let addOneRecipe = function(req, res) {
     let userRecipe = req.body;
+    console.log(userRecipe);
 
     if (!userRecipe.title ||  !userRecipe.description || !userRecipe.ingredients || !userRecipe.category) {
         sendResponse(res, 400, {'message': 'Title, Description, Ingredients, and Category are required'});
+
     } else {
 
         userRecipe = new Recipe({
@@ -18,7 +20,7 @@ let addOneRecipe = function(req, res) {
 
         userRecipe.save(function(err) {
             if (err) {
-                sendResponse(res, 400, {'message' : 'ERROR: ' + err.message});
+                sendResponse(res, 400, {'message' : err.message});
             } else {
                 sendResponse(res, 200, {'message' : 'Recipe saved successfully'})
             }

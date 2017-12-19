@@ -1,5 +1,5 @@
 import React from 'react';
-import MainContainer from '../../../MainContent/MainContainer';
+import MainContainer from '../../../SharedComponents/MainContent/MainContainer';
 import AddOneRecipeForm from './AddOneRecipeForm';
 
 class AddOneRecipe extends React.Component{

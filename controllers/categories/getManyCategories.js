@@ -1,9 +1,9 @@
 const sendResponse = require('../sendResponse');
-const Recipe = require('../../models/recipe');
+const Recipe = require('../../models/recipe_models/recipe');
 
 const getManyCategories = function(req, res) {
   const query = Recipe.distinct("category");
-  
+
   query.exec((err, doc) => {
     if (err) {
       sendResponse(res, 500, {

@@ -4,23 +4,29 @@ import TitleComponent from './TitleComponent/TitleComponent';
 import DescriptionComponent from './DescriptionComponent/DescriptionComponent';
 import AddIngredientsComponent from './AddIngredientsComponent/AddIngredientsComponent';
 import AddStepsComponent from './AddStepsComponent/AddStepsComponent';
+import { addOneRecipe } from '../../../../services/httpRequests';
+import { isNotBlank } from '../../../../services/formValidation';
 
 class AddOneRecipeForm extends React.Component{
   constructor(props) {
     super(props);
 
     this.state = {
-      title: 'Give your recipe a name',
-      description: 'Add a description',
-      category: ["Mexican", "Italian"],
+      title: '',
+      description: '',
+      category: [],
       ingredients: [{
-        name: 'Name',
-        amount: 'Amount'
+        name: '',
+        amount: ''
       }],
       steps: [{
         stepText: ''
       }],
-      formIsValid: true
+      titleValid: false,
+      descriptionValid: false,
+      categoryValid: false,
+      stepsValid: false,
+      formIsValid: false
     };
 
     this.handleTextInputChange = this.handleTextInputChange.bind(this);
@@ -31,6 +37,8 @@ class AddOneRecipeForm extends React.Component{
     this.updateOneStep = this.updateOneStep.bind(this);
     this.addOneStep = this.addOneStep.bind(this);
     this.removeOneStep = this.removeOneStep.bind(this);
+    this.validateNewRecipe = this.validateNewRecipe.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
@@ -52,14 +60,14 @@ class AddOneRecipeForm extends React.Component{
   addOneIngredient(){
     const lastIngredient = this.state.ingredients[this.state.ingredients.length -1];
 
-    if (lastIngredient.name === 'Name' || lastIngredient.amount === 'Amount' || !lastIngredient.name || !lastIngredient.amount) {
+    if (!lastIngredient.name.length || !lastIngredient.amount.length) {
       //Do not add new ingredient if last ingredient had not been changed
       return
     }
 
     const newItem = {
-      name: 'Name',
-      amount: 'Amount'
+      name: '',
+      amount: ''
     };
 
     const ingredientsCopy = this.state.ingredients;
@@ -141,13 +149,45 @@ class AddOneRecipeForm extends React.Component{
     })
   }
 
+  validateNewRecipe() {
+  }
+
+  handleFormChange() {
+  }
+
   handleFormSubmit(e){
     e.preventDefault();
+    const newRecipe = {};
+    newRecipe.title = this.state.title;
+    newRecipe.description = this.state.description;
+    newRecipe.category = this.state.category;
+    newRecipe.ingredients = this.state.ingredients;
+    newRecipe.steps = this.state.steps;
+
+    addOneRecipe(newRecipe).then((response) => {
+      if (response.status !== 200) {
+        throw new Error('Something has gone horribly wrong . . . ');
+      }
+
+      return response.json();
+
+    }).then((jsonResponse) => {
+
+      if (jsonResponse.status !== 200) {
+        throw new Error(jsonResponse.data.message);
+      }
+
+      alert(jsonResponse.data.message);
+
+    }).catch((err) => {
+
+      alert(err.message);
+    })
   }
 
   render() {
     return (
-      <form className="add-recipe-form" id="addRecipes">
+      <form onChange={ this.handleFormChange } className="add-recipe-form" id="addRecipes">
 
         <TitleComponent handleChange={ this.handleTextInputChange } title={ this.state.title } />
 

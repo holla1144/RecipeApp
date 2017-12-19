@@ -1,5 +1,5 @@
 const sendResponse = require('../sendResponse');
-const Recipe = require('../../models/recipe');
+const Recipe = require('../../models/recipe_models/recipe');
 
 const getRecipesByCategory = function(req, res) {
   const category = req.params.category.toLowerCase();

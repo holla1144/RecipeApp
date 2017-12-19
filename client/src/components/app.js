@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header/HeaderContainer';
+import Header from './SharedComponents/Header/HeaderContainer';
 import CategoriesPage from './pages/Categories/CategoriesContainer';
 import AddOneRecipe from './Pages/Recipes/AddOneRecipe/AddOneRecipeContainer';
 import RecipesPage from './pages/Recipes/RecipesContainer';

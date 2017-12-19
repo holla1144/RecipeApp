@@ -1,5 +1,5 @@
 let sendResponse = require('../sendResponse');
-let Recipe = require('../../models/recipe');
+let Recipe = require('../../models/recipe_models/recipe');
 let Q = require('Q');
 
 let getOneRecipe = function(req, res) {

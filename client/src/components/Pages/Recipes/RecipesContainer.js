@@ -1,5 +1,5 @@
 import React from 'react';
-import MainContainer from '../../MainContent/MainContainer';
+import MainContainer from '../../SharedComponents/MainContent/MainContainer';
 import AddRecipeLinkContainer from './AddRecipeLinkComponent/AddRecipeLinkContainer';
 
 class RecipesPage extends React.Component{
