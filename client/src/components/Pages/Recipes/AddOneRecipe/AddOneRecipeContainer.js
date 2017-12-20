@@ -10,7 +10,7 @@ class AddOneRecipe extends React.Component{
   render() {
     return (
       <MainContainer pageName="Add a new dish">
-        <AddOneRecipeForm/>
+        <AddOneRecipeForm modalOpen={ this.props.modalOpen } modalClose={ this.props.modalClose }/>
       </MainContainer>
     )
   }

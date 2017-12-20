@@ -1,0 +1,25 @@
+.Directions {
+  &-inputContainer {
+    @include clearfix;
+    padding-bottom: 1rem;
+  }
+
+  &-stepLabel {
+    display: block;
+    padding: .5rem 0;
+  }
+
+  &-stepInput {
+    display: block;
+    float: left;
+    margin-right: .5rem;
+  }
+
+  &-stepRemove {
+    color: black;
+    cursor: pointer;
+    float: left;
+    font-size: 1.25rem;
+  }
+}
+

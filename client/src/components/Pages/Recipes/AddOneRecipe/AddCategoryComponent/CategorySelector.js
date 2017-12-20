@@ -45,8 +45,8 @@ class CategorySelector extends React.Component{
 
     render() {
       return (
-        <div className="add-recipe-form_section">
-          <label htmlFor="new-recipe-category">Category: </label>
+        <div className="Form-section">
+          <label className="Form-label" htmlFor="new-recipe-category">Category: </label>
           <Select
             className="col-8"
             name="category"

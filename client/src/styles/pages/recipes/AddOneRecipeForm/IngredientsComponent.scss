@@ -1,0 +1,22 @@
+.Ingredients {
+
+  &-inputContainer {
+    border-bottom: 1px solid gray;
+    padding: 1.5rem 0 .5rem 0;
+    position: relative;
+  }
+
+  &-input {
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-right: .5rem;
+  }
+
+  &-removeIngredient {
+    cursor: pointer;
+    font-size: 1.25rem;
+    position: absolute;
+    right: 1.5rem;
+    top: .75rem;
+  }
+}

@@ -2,8 +2,8 @@ import React from 'react';
 import CategorySelector from './AddCategoryComponent/CategorySelector';
 import TitleComponent from './TitleComponent/TitleComponent';
 import DescriptionComponent from './DescriptionComponent/DescriptionComponent';
-import AddIngredientsComponent from './AddIngredientsComponent/AddIngredientsComponent';
-import AddStepsComponent from './AddStepsComponent/AddStepsComponent';
+import IngredientsComponent from './AddIngredientsComponent/AddIngredientsComponent';
+import DirectionsComponent from './DirectionsComponent/DirectionsComponent';
 import { addOneRecipe } from '../../../../services/httpRequests';
 import { isNotBlank } from '../../../../services/formValidation';
 
@@ -40,6 +40,8 @@ class AddOneRecipeForm extends React.Component{
     this.validateNewRecipe = this.validateNewRecipe.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+
+    console.log(this.props);
   }
 
   handleTextInputChange(event) {
@@ -177,17 +179,17 @@ class AddOneRecipeForm extends React.Component{
         throw new Error(jsonResponse.data.message);
       }
 
-      alert(jsonResponse.data.message);
+      this.props.modalOpen('negative', jsonResponse.data.message);
 
     }).catch((err) => {
 
-      alert(err.message);
+      this.props.modalOpen('negative', err.message);
     })
   }
 
   render() {
     return (
-      <form onChange={ this.handleFormChange } className="add-recipe-form" id="addRecipes">
+      <form onChange={ this.handleFormChange } className="Form" id="addRecipes">
 
         <TitleComponent handleChange={ this.handleTextInputChange } title={ this.state.title } />
 
@@ -195,13 +197,13 @@ class AddOneRecipeForm extends React.Component{
 
         <CategorySelector initialCategories={ this.state.category } handleChange={ this.handleCategorySelectorChange } />
 
-        <AddIngredientsComponent intialIngredients={ this.state.ingredients } handleChange={ this.updateOneIngredient }
+        <IngredientsComponent intialIngredients={ this.state.ingredients } handleChange={ this.updateOneIngredient }
                                  handleAdd={ this.addOneIngredient } handleRemove={ this.removeOneIngredient } />
 
-        <AddStepsComponent initialSteps={ this.state.steps } handleChange={ this.updateOneStep }
-                           handleAdd={ this.addOneStep } handleRemove={ this.removeOneStep }  />
+        <DirectionsComponent initialSteps={ this.state.steps } handleChange={ this.updateOneStep }
+                             handleAdd={ this.addOneStep } handleRemove={ this.removeOneStep }  />
 
-        <button className="add-recipe-form_submit-button" type="submit" onClick={ this.handleFormSubmit }>Submit</button>
+        <button className="Form-submitButton" type="submit" onClick={ this.handleFormSubmit }>Submit</button>
 
       </form>
     )

@@ -1,11 +1,19 @@
 import React from 'react';
+import CustomInput from '../../../../SharedComponents/CustomInputs/CustomInputField';
 
 const DescriptionComponent = (props) => {
 
   return (
-    <div className="add-recipe-form_section">
-      <label htmlFor="new-recipe-descriptions">Description: </label>
-      <textarea className="col-6" name="description" placeholder="Give your recipe a description" id="new-recipe-description" value={ props.description } onChange={ props.handleChange }/>
+    <div className="Form-section">
+      <label className="Form-label" htmlFor="new-recipe-descriptions">Description: </label>
+      <CustomInput elementType="textarea"
+                   validationType="isNotBlank"
+                   classList={["Form-textArea", "col-6"]}
+                   name="description"
+                   placeholder="Give your recipe a description"
+                   value={ props.description }
+                   handleChange={ props.handleChange }
+      />
     </div>
   )
 };

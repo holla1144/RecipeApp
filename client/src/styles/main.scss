@@ -11,6 +11,9 @@
 @import 'pages/Recipes/addRecipeLinkComponent';
 @import '~react-select/dist/react-select.css';
 @import 'pages/recipes/AddOneRecipeForm/general';
-@import 'pages/recipes/AddOneRecipeForm/addStepsComponent';
-@import 'pages/recipes/AddOneRecipeForm/addIngredientsComponent';
+@import 'pages/recipes/AddOneRecipeForm/DirectionsComponent';
+@import 'pages/recipes/AddOneRecipeForm/IngredientsComponent';
 @import 'pages/recipes/AddOneRecipeForm/categorySelector';
+@import 'shared_components/custom_inputs/custom_input';
+@import 'shared_components/custom_inputs/error_container';
+@import 'shared_components/modal_component/modal_component';

@@ -1,7 +1,7 @@
 import React from 'react';
 import IngredientsInput from './IngredientsInput';
 
-const AddIngredientsComponent = (props) => {
+const IngredientsComponent = (props) => {
 
   const IngredientsInputs = props.intialIngredients.map((ingredient, ingredientIndex) => {
     return <IngredientsInput key={"ingredientInput-" + ingredientIndex} index ={ ingredientIndex } valueName={ ingredient.name }
@@ -9,12 +9,14 @@ const AddIngredientsComponent = (props) => {
   });
 
   return (
-    <div className="add-recipe-form_section add-ingredients">
-      <label>Add Ingredients</label>
-      { IngredientsInputs }
-      <span className="add-ingredients_add-one add-item-button" onClick={ props.handleAdd } >Add</span>
+    <div className="Form-section">
+      <label className="Form-label">Add Ingredients</label>
+        <div className="Ingredients col-6">
+        { IngredientsInputs }
+        </div>
+      <span className="Form-greenBtn" onClick={ props.handleAdd } >Add</span>
     </div>
   )
 };
 
-export default AddIngredientsComponent
+export default IngredientsComponent
