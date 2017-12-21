@@ -9,7 +9,7 @@ const DirectionsComponent = (props) => {
 
   return (
      <div className="Form-section">
-       <label className="Form-label">Directions</label>
+       <label className="Form-label">Directions:</label>
        <div className="Directions">
          { directionSteps }
        </div>

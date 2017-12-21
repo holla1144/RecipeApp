@@ -5,6 +5,8 @@ import AddOneRecipeForm from './AddOneRecipeForm';
 class AddOneRecipe extends React.Component{
   constructor(props) {
     super(props);
+
+    console.log('inside add one recipe ' + props)
   }
 
   render() {

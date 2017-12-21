@@ -10,7 +10,7 @@ const IngredientsComponent = (props) => {
 
   return (
     <div className="Form-section">
-      <label className="Form-label">Add Ingredients</label>
+      <label className="Form-label">Ingredients: </label>
         <div className="Ingredients col-6">
         { IngredientsInputs }
         </div>

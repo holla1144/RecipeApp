@@ -9,3 +9,7 @@ module.exports.addOneRecipe = (data) => {
     }
   })
 };
+
+module.exports.getManyRecipes = (recipeCount) => {
+  return fetch('http://localhost:3000/api/recipes/getMany/' + recipeCount);
+};

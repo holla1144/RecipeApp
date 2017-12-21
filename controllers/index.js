@@ -1,4 +1,5 @@
 exports.getManyCategories = require('./categories/getManyCategories');
+exports.getManyRecipes = require('./recipes/getManyRecipes');
 exports.getRecipesByCategory = require('./categories/getRecipesByCategory');
 exports.getOneRecipe = require('./recipes/getOneRecipe');
 exports.addOneRecipe = require('./recipes/addOneRecipe');

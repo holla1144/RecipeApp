@@ -1,0 +1,18 @@
+.RecipeCardsContainer {
+  &--grid {
+    @include clearfix();
+
+    .RecipeCard {
+      box-shadow: 2px 2px black;
+      cursor: pointer;
+      float: left;
+      height: 15rem;
+      margin: .5%;
+      width: 24%;
+
+      &:hover {
+
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@ class Header extends React.Component{
     super(props);
     console.log('header rebuilt')
     this.links = [{ text: 'Home', url: '/'}, { text: 'About', url: '/about'},
-                {text: 'Recipes', url: '/recipes'}, { text: 'Categories', url: '/categories'}];
+                {text: 'Recipes', url: '/recipes/all'}, { text: 'Categories', url: '/categories'}];
   }
 
   render() {

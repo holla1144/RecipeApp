@@ -4,7 +4,7 @@ import ModalBody from './ModalBody';
 const Modal = ( props ) => {
   return (
     <div onClick={ props.handleModalClose } className={props.modalVisible ? 'Modal' : 'Modal hidden'}>
-      <ModalBody message={ props.modalMessage } />
+      <ModalBody modalStyle={ props.modalStyle } message={ props.modalMessage } />
     </div>
   )
 };

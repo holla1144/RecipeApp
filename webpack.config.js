@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './client/src/index.js',
+    entry: path.resolve(__dirname, 'client/src/index.js'),
     output: {
         publicPath: '/',
         path: path.resolve(__dirname, 'client/dist'),
@@ -23,5 +23,4 @@ module.exports = {
        },
       ],
     },
-
 };

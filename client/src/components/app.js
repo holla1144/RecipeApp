@@ -1,10 +1,9 @@
 import React from 'react';
 import Header from './SharedComponents/Header/HeaderContainer';
-import CategoriesPage from './pages/Categories/CategoriesContainer';
-import AddOneRecipe from './Pages/Recipes/AddOneRecipe/AddOneRecipeContainer';
-import RecipesPage from './pages/Recipes/RecipesContainer';
-import AboutPage from './pages/About/AboutContainer';
-import HomePage from './pages/Home/HomeContainer';
+import CategoriesPage from './Pages/Categories/CategoriesContainer';
+import RecipesPage from './Pages/Recipes/RecipesContainer';
+import AboutPage from './Pages/About/AboutContainer';
+import HomePage from './Pages/Home/HomeContainer';
 import Modal from './SharedComponents/ModalComponent/ModalContainer';
 import {
   BrowserRouter as Router,
@@ -22,10 +21,6 @@ class App extends React.Component{
       modalStyle: ''
     };
 
-    this.getDeviceWidth = () => {
-      return window.outerWidth;
-    };
-
     this.handleModalOpen = this.handleModalOpen.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
   }
@@ -38,7 +33,9 @@ class App extends React.Component{
     })
   };
 
-  handleModalClose(){
+  handleModalClose(e){
+    e.stopPropagation();
+
     this.setState({
       modalVisible: false,
       modalMessage: '',
@@ -53,9 +50,8 @@ class App extends React.Component{
               <Header />
               <Route test="test" exact path="/" component={ HomePage }/>
               <Route path="/about" component={ AboutPage }/>
-              <Route path="/recipes" component={ RecipesPage } />
+              <Route path="/recipes" render={( routeProps ) => { return <RecipesPage { ...routeProps } { ...routeProps } modalOpen={ this.handleModalOpen } modalClose={ this.handleModalClose }/>}} />
               <Route path="/categories" component={ CategoriesPage }/>
-              <Route path="/new" render={( routeProps )=> { return <AddOneRecipe { ...routeProps } modalOpen={ this.handleModalOpen } modalClose={ this.handleModalClose }/>}} />
               <Modal modalMessage={ this.state.modalMessage } handleModalClose={ this.handleModalClose } modalStyle={ this.state.modalStyle } modalVisible={ this.state.modalVisible } />
             </div>
           </Router>

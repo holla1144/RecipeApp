@@ -9,4 +9,26 @@
   top: 0;
   width: 100%;
   z-index: 2;
+
+  &-body {
+    background-color: whitesmoke;
+    border: 2px solid gray;
+    border-radius: 22px;
+    height: 15rem;
+    margin: 4rem auto 0 auto;
+    padding: 2rem;
+    width: 30rem;
+  }
+
+  &-head {
+    font-style: italic;
+
+    &--negative {
+      color: $warning-red;
+    }
+
+    &--positive {
+      color: $cool-green;
+    }
+  }
 }

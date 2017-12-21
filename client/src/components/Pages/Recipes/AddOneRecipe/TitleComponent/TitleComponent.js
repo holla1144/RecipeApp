@@ -5,7 +5,7 @@ const TitleComponent = (props) => {
 
   return (
     <div className="Form-section">
-      <label className="Form-label" htmlFor="new-recipe-title">Title</label>
+      <label className="Form-label" htmlFor="new-recipe-title">Title:</label>
       <div className="RecipeTitle">
         <CustomInput elementType="textInput"
                    classList={ ["col-6"] }

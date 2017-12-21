@@ -1,24 +1,60 @@
 const formValidation = (() => {
-  const testResult = {
-    isValid: '',
-    message: ''
+  const testResult = (isValid, message) => {
+    return {
+      isValid: isValid,
+      message: message
+    }
   };
-  const isNotBlank = (value) => {
-    const isValid = value.length > 0;
 
-    if (!isValid) {
-      testResult.message = 'Value cannot be blank'
+  const oneIngredient = (value) => {
+    //Expect value to be an array of Ingredients object
+    let isValid = true;
+    let errorMessage = '';
+
+    for (let property in value[0]) {
+      if (value[0][property] === '') {
+        isValid = false;
+        errorMessage = 'You must add at least one ingredient';
+      }
     }
 
-    testResult.isValid = isValid;
+    return testResult(isValid, errorMessage);
+  };
 
-    return testResult
+  const hasLength = (value) => {
+    let isValid = true;
+    let errorMessage = '';
+
+    if (!value.length > 0) {
+      isValid = false;
+      errorMessage = 'You left at least one field blank';
+    }
+
+    return testResult(isValid, errorMessage);
+  };
+
+  const isNotBlank = (value) => {
+    const isValid = value.length > 0;
+    let errorMessage = '';
+
+    if (!isValid) {
+      errorMessage = 'Value cannot be blank'
+    }
+
+    return testResult(isValid, errorMessage);
   };
 
   const validate = (validationType, value) => {
     switch (validationType) {
       case 'isNotBlank':
         return isNotBlank(value);
+        break;
+      case 'hasLength':
+        return hasLength(value);
+        break;
+      case 'oneIngredient':
+        return oneIngredient(value);
+        break;
       default:
         return true;
     }

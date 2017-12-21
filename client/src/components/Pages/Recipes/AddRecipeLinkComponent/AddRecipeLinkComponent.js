@@ -8,7 +8,7 @@ import {
 
 const AddRecipeLinkComponent = () => {
   return (
-    <span className="add-recipe-link_span"><Link to={'./new'} className="add-recipe-link_span_text"> Add </Link></span>
+    <span className="add-recipe-link_span"><Link to={'/recipe/new'} className="add-recipe-link_span_text"> Add </Link></span>
   )
 };
 
