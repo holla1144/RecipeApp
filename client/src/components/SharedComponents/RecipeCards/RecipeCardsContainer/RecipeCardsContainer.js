@@ -1,9 +1,12 @@
 import React from 'react';
 import RecipeCard from '../RecipeCard/RecipeCard';
+import {
+  Link
+} from 'react-router-dom'
 
 const RecipeCardsContainer = ( props ) => {
   const recipeCards = props.data.map((recipeObject, i) => {
-    return <RecipeCard key={ 'recipeCard-' + i } recipeData={ recipeObject } />
+    return <Link to={'/recipe/' + recipeObject._id}><RecipeCard key={ 'recipeCard-' + i } recipeData={ recipeObject } /></Link>
   });
 
   return (

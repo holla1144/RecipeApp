@@ -1,20 +1,19 @@
 import React from 'react';
 import MainContainer from '../../SharedComponents/MainContent/MainContainer';
-import AddRecipeLinkContainer from './AddRecipeLinkComponent/AddRecipeLinkContainer';
 import RecipeCardsContainer from '../../SharedComponents/RecipeCards/RecipeCardsContainer/RecipeCardsContainer';
 import { getManyRecipes } from '../../../services/httpRequests';
-import AddOneRecipe from './AddOneRecipe/AddOneRecipeContainer';
+import ShowOneRecipe from './ShowOneRecipe/ShowOneRecipe';
 
 import {
-  BrowserRouter as Router,
   Route,
-  Link
+  Switch,
 } from 'react-router-dom'
 
 
 class RecipesPage extends React.Component{
   constructor(props) {
     super(props);
+    console.log(this.props);
 
     this.state = {
       recipeData: []
@@ -44,12 +43,12 @@ class RecipesPage extends React.Component{
   render() {
     return (
       <MainContainer pageName="Recipes">
-        <Link to={this.props.match.url + '/all' } className="add-recipe-link_span_text"> All </Link>
-        <Route path={ this.props.match.url + '/all' } render={( routeProps ) => { console.log('route rendered');
-          return <RecipeCardsContainer { ...routeProps } data={ this.state.recipeData } />}} />
-        <Link to={this.props.match.url + '/new'} className="add-recipe-link_span_text"> Add </Link>
-        <Route path={ this.props.match.url + '/new' } render={( routeProps ) => { console.log('route rendered');
-          return <AddOneRecipe { ...routeProps } modalOpen={ this.props.modalOpen } />}} />
+        <Switch>
+          <Route exact={ true } path="/recipes/:recipe" render={(RouteProps) => {return <ShowOneRecipe { ...RouteProps }/> }} />
+          <Route exact={ true } path="/recipes" render={(routeProps) => {
+            return <RecipeCardsContainer { ...routeProps } data={ this.state.recipeData } modalOpen={ this.props.handleModalOpen } />
+          }} />
+        </Switch>
       </MainContainer>
     )
   }

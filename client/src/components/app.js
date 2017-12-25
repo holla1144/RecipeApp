@@ -8,7 +8,8 @@ import Modal from './SharedComponents/ModalComponent/ModalContainer';
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Link,
+  Switch
 } from 'react-router-dom'
 
 
@@ -48,11 +49,13 @@ class App extends React.Component{
           <Router>
             <div>
               <Header />
-              <Route test="test" exact path="/" component={ HomePage }/>
-              <Route path="/about" component={ AboutPage }/>
-              <Route path="/recipes" render={( routeProps ) => { return <RecipesPage { ...routeProps } { ...routeProps } modalOpen={ this.handleModalOpen } modalClose={ this.handleModalClose }/>}} />
-              <Route path="/categories" component={ CategoriesPage }/>
-              <Modal modalMessage={ this.state.modalMessage } handleModalClose={ this.handleModalClose } modalStyle={ this.state.modalStyle } modalVisible={ this.state.modalVisible } />
+              <Switch>
+                <Route test="test" exact path="/" component={ HomePage }/>
+                <Route path="/about" component={ AboutPage }/>
+                <Route path="/recipes" render={( routeProps ) => { return <RecipesPage { ...routeProps } modalOpen={ this.handleModalOpen } modalClose={ this.handleModalClose }/>}} />
+                <Route path="/categories" component={ CategoriesPage }/>
+              </Switch>
+              <Modal modalMessage={ this.state.modalMessage } handleModalClose={ this.handleModalClose } modalStyle={ this.state.modalStyle } visible={ this.state.modalVisible } />
             </div>
           </Router>
         )
