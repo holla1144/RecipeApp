@@ -27,3 +27,13 @@ module.exports.likeRecipe = (recipeId) => {
     }
   })
 };
+
+module.exports.loginUser = (candidateDate) => {
+  return fetch('http://localhost:3000/api/users/login', {
+    method: 'POST',
+    body: JSON.stringify(candidateDate),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+};

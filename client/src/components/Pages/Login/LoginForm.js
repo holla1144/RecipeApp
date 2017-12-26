@@ -1,6 +1,7 @@
 import React from 'react';
 import CustomInput from '../../SharedComponents/CustomInputs/CustomInputField';
 import { validate } from '../../../services/formValidation';
+import { loginUser } from '../../../services/httpRequests';
 
 class LoginForm extends React.Component{
   constructor(props) {
@@ -18,11 +19,6 @@ class LoginForm extends React.Component{
   }
 
   componentDidMount(){
-    const newCandidateUsername = document.getElementById('candidateUsername').value;
-    const newCandidatePassword = document.getElementById('candidatePassword').value;
-    console.log(newCandidateUsername);
-    console.log(newCandidatePassword);
-
     this.setState({
       candidateUsername: '',
       candidatePassword: ''
@@ -41,8 +37,6 @@ class LoginForm extends React.Component{
   handleFormValidation() {
     const userNameValid = validate('isNotBlank', this.state.candidateUsername).isValid;
     const passwordValid = validate('isNotBlank', this.state.candidatePassword).isValid;
-    console.log(userNameValid)
-    console.log(passwordValid)
 
     if (userNameValid && passwordValid) {
       this.setState({
@@ -65,11 +59,29 @@ class LoginForm extends React.Component{
       this.props.modalOpen('negative', 'Looks like you have one or more errors in the login form');
       return;
     }
-    let candidateLoginData = {};
-    candidateLoginData.candidateUsername = this.state.candidateUsername;
-    candidateLoginData.candidatePassword = this.state.candidatePassword;
 
-    this.props.modalOpen('positive', 'Form valid');
+    let candidateLoginData = {};
+    candidateLoginData.username = this.state.candidateUsername;
+    candidateLoginData.password = this.state.candidatePassword;
+
+    loginUser(candidateLoginData).then((response) => {
+      if (response.status !== 200) {
+        throw new Error('Something went wrong');
+      }
+
+      return response.json();
+    }).then((jsonResponse) => {
+      const data = jsonResponse.data;
+
+      if (data.status !== 200) {
+        throw new Error(data.message);
+      }
+
+      this.props.modalOpen('positive', data.message);
+
+    }).catch(( err ) => {
+      this.props.modalOpen('negative', err.message);
+    });
   }
 
   render() {

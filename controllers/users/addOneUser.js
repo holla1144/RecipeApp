@@ -1,5 +1,4 @@
 const sendResponse = require('../sendResponse');
-const winston = require('winston');
 const User = require('../../models/user');
 const Q = require('Q');
 

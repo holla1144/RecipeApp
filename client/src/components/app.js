@@ -8,6 +8,7 @@ import Modal from './SharedComponents/ModalComponent/ModalContainer';
 import ShowOneRecipe from './Pages/Recipes/ShowOneRecipe/ShowOneRecipe';
 import AddOneRecipeContainer from './Pages/Recipes/AddOneRecipe/AddOneRecipeContainer';
 import LoginContainer from './Pages/Login/LoginContainer';
+import SignUpContainer from './Pages/Signup/SignupContainer';
 
 import {
   HashRouter as Router,
@@ -16,8 +17,6 @@ import {
   Redirect,
   Switch
 } from 'react-router-dom'
-import AddRecipeLinkContainer from "./Pages/Recipes/AddRecipeLinkComponent/AddRecipeLinkContainer";
-
 
 class App extends React.Component{
   constructor(props) {
@@ -58,6 +57,7 @@ class App extends React.Component{
               <Switch>
                 <Route exact path="/" component={ HomePage }/>
                 <Route path="/login" render={(routeProps) => {return <LoginContainer {...routeProps} modalOpen={this.handleModalOpen }/>}} />
+                <Route path="/signup" render={(routeProps) => {return <SignUpContainer {...routeProps} modalOpen={this.handleModalOpen }/>}} />
                 <Route path="/about" component={ AboutPage }/>
                 <Route exact path="/recipes" component={ RecipesPage } />
                 <Route path="/recipes/new" render={( routeProps ) => { return <AddOneRecipeContainer { ...routeProps } modalOpen={ this.handleModalOpen } />}}/>
