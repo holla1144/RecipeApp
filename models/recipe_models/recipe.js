@@ -22,8 +22,15 @@ let recipeSchema = new Schema({
     //TODO Convert author to type objectId
     author: String,
     ingredients: [IngredientSchema],
-    upvotes: Number,
-    reviews: Array
+    upvotes: {
+      type: Number,
+      default: 0
+    },
+    reviews: Array,
+    directions: [{
+      required: true,
+      type: String
+    }]
 }, {timestamps: true});
 
 recipeSchema.post('save', (err, doc, next) => {

@@ -1,5 +1,4 @@
 const User = require('../../models/user');
-const mongoose = require('mongoose');
 const sendResponse = require('../sendResponse');
 const winston = require('winston');
 const config = require('../../config');
@@ -44,14 +43,14 @@ const loginUser = (req, res) => {
     });
   };
 
-  const verifyPassword = (doc) => {
+  const verifyPassword = (err, doc) => {
     doc.comparePassword(loginData.password, (err, isMatch) => {
       if (err) {
         sendResponse(res, 204, {
           message: 'Sorry, something went wrong. Please try logging in again later'
         })
       } else if (isMatch) {
-        let token = jwt.sign({data: doc, expiresIn: "5 days"}, config.JWT_SECRET);
+        let token = jwt.sign({data: doc, expiresIn: "5 days"}, JWT_SECRET);
           sendResponse(res, 200, {
             message: 'Good work buddy, the passwords match.',
             token: token

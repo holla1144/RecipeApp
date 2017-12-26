@@ -8,10 +8,16 @@
       float: left;
       height: 15rem;
       margin: .5%;
+      transition: all 1s ease;
       width: 24%;
 
       &:hover {
+        background-color: black;
 
+        .RecipeCard-title,
+        .RecipeCard-description {
+          color: white;
+        }
       }
     }
   }

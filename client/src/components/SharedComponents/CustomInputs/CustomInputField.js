@@ -134,7 +134,24 @@ class CustomInput extends React.Component {
                         onKeyUp={this.handleChange}
                         onChange={this.handleChange}
                         index={ this.props.index }
+                        id={this.props.id}
+                        autoComplete='off'
                       />;
+          break;
+
+        case 'password':
+          return <input type="password"
+                        className={"CustomInput-field " + this.state.classList}
+                        onFocus={this.handleFocus}
+                        placeholder={this.props.placeholder}
+                        name={this.props.name}
+                        value={this.props.value}
+                        onKeyUp={this.handleChange}
+                        onChange={this.handleChange}
+                        index={ this.props.index }
+                        id={this.props.id}
+                        autoComplete='off'
+          />;
           break;
 
         case 'textarea':
@@ -145,7 +162,9 @@ class CustomInput extends React.Component {
                            value={this.props.value}
                            onKeyUp={this.handleChange}
                            onChange={this.handleChange}
-                           index={ this.props.index }>
+                           index={ this.props.index }
+                           id={this.props.id} >
+
                   </textarea>;
           break;
       }

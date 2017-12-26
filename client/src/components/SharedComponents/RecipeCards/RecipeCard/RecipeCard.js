@@ -1,4 +1,5 @@
 import React from 'react';
+import { toTitleCase } from '../../../../services/helpers'
 
 class RecipeCard extends React.Component{
   constructor(props) {
@@ -6,9 +7,10 @@ class RecipeCard extends React.Component{
   }
 
   render(){
+    const recipeTitle = toTitleCase(this.props.recipeData.title);
     return (
       <div className="RecipeCard" id={ this.props.recipeData._id}>
-        <h2 className="RecipeCard-title"> { this.props.recipeData.title }</h2>
+        <h2 className="RecipeCard-title"> { recipeTitle }</h2>
         <p className="RecipeCard-description"> { this.props.recipeData.description }</p>
       </div>
     )

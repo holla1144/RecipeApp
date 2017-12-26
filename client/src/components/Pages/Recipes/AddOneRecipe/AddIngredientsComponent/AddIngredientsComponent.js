@@ -4,7 +4,7 @@ import IngredientsInput from './IngredientsInput';
 const IngredientsComponent = (props) => {
 
   const IngredientsInputs = props.intialIngredients.map((ingredient, ingredientIndex) => {
-    return <IngredientsInput key={"ingredientInput-" + ingredientIndex} index ={ ingredientIndex } valueName={ ingredient.name }
+    return <IngredientsInput key={"ingredientInput-" + ingredientIndex} index={ ingredientIndex } valueName={ ingredient.name }
                              valueAmount={ ingredient.amount } handleRemove={ props.handleRemove } handleChange={ props.handleChange }/>
   });
 

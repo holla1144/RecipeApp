@@ -236,7 +236,7 @@ class AddOneRecipeForm extends React.Component{
     newRecipe.description = this.state.description.trim();
     newRecipe.category = this.state.category;
     newRecipe.ingredients = this.formatIngredients();
-    newRecipe.steps = this.formatDirections();
+    newRecipe.directions = this.formatDirections();
 
     addOneRecipe(newRecipe).then((response) => {
       if (response.status !== 200) {

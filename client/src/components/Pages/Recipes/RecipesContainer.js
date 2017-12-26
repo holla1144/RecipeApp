@@ -2,18 +2,10 @@ import React from 'react';
 import MainContainer from '../../SharedComponents/MainContent/MainContainer';
 import RecipeCardsContainer from '../../SharedComponents/RecipeCards/RecipeCardsContainer/RecipeCardsContainer';
 import { getManyRecipes } from '../../../services/httpRequests';
-import ShowOneRecipe from './ShowOneRecipe/ShowOneRecipe';
-
-import {
-  Route,
-  Switch,
-} from 'react-router-dom'
-
 
 class RecipesPage extends React.Component{
   constructor(props) {
     super(props);
-    console.log(this.props);
 
     this.state = {
       recipeData: []
@@ -43,12 +35,7 @@ class RecipesPage extends React.Component{
   render() {
     return (
       <MainContainer pageName="Recipes">
-        <Switch>
-          <Route exact={ true } path="/recipes/:recipe" render={(RouteProps) => {return <ShowOneRecipe { ...RouteProps }/> }} />
-          <Route exact={ true } path="/recipes" render={(routeProps) => {
-            return <RecipeCardsContainer { ...routeProps } data={ this.state.recipeData } modalOpen={ this.props.handleModalOpen } />
-          }} />
-        </Switch>
+        <RecipeCardsContainer data={ this.state.recipeData } classList={"RecipeCardsContainer--grid"} modalOpen={ this.props.handleModalOpen } />
       </MainContainer>
     )
   }
