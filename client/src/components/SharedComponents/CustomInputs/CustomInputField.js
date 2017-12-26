@@ -116,13 +116,13 @@ class CustomInput extends React.Component {
       this.setState({
         isValid: false,
         errorValue: errorValue
-
       })
     }
   }
 
   render() {
     const getElementType = () => {
+
       switch (this.props.elementType) {
         case 'textInput':
           return <input type="text"
@@ -137,6 +137,21 @@ class CustomInput extends React.Component {
                         id={this.props.id}
                         autoComplete='off'
                       />;
+          break;
+
+        case 'emailInput':
+          return <input type="email"
+                        className={"CustomInput-field " + this.state.classList}
+                        onFocus={this.handleFocus}
+                        placeholder={this.props.placeholder}
+                        name={this.props.name}
+                        value={this.props.value}
+                        onKeyUp={this.handleChange}
+                        onChange={this.handleChange}
+                        index={ this.props.index }
+                        id={this.props.id}
+                        autoComplete='off'
+          />;
           break;
 
         case 'password':
@@ -164,7 +179,6 @@ class CustomInput extends React.Component {
                            onChange={this.handleChange}
                            index={ this.props.index }
                            id={this.props.id} >
-
                   </textarea>;
           break;
       }

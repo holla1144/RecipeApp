@@ -962,7 +962,6 @@ var CustomInput = function (_React$Component) {
         this.setState({
           isValid: false,
           errorValue: errorValue
-
         });
       }
     }
@@ -972,9 +971,25 @@ var CustomInput = function (_React$Component) {
       var _this2 = this;
 
       var getElementType = function getElementType() {
+
         switch (_this2.props.elementType) {
           case 'textInput':
             return _react2.default.createElement('input', { type: 'text',
+              className: "CustomInput-field " + _this2.state.classList,
+              onFocus: _this2.handleFocus,
+              placeholder: _this2.props.placeholder,
+              name: _this2.props.name,
+              value: _this2.props.value,
+              onKeyUp: _this2.handleChange,
+              onChange: _this2.handleChange,
+              index: _this2.props.index,
+              id: _this2.props.id,
+              autoComplete: 'off'
+            });
+            break;
+
+          case 'emailInput':
+            return _react2.default.createElement('input', { type: 'email',
               className: "CustomInput-field " + _this2.state.classList,
               onFocus: _this2.handleFocus,
               placeholder: _this2.props.placeholder,
@@ -1996,6 +2011,16 @@ module.exports.likeRecipe = function (recipeId) {
   });
 };
 
+module.exports.loginUser = function (candidateDate) {
+  return fetch('http://localhost:3000/api/users/login', {
+    method: 'POST',
+    body: JSON.stringify(candidateDate),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+};
+
 /***/ }),
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2026,6 +2051,37 @@ var formValidation = function () {
     return testResult(isValid, errorMessage);
   };
 
+  var isValidEmail = function isValidEmail(value) {
+    var isValid = true;
+
+    return testResult(isValid);
+  };
+
+  var isMatch = function isMatch(value1, value2) {
+    var isValid = true;
+    var errorMessage = '';
+
+    if (value1 !== value2) {
+      isValid = false;
+      errorMessage = 'Passwords must match';
+    }
+
+    return testResult(isValid, errorMessage);
+  };
+
+  var isValidPassword = function isValidPassword(value) {
+    //For our purposes, a valid password is a word with 6 or more letters
+    var isValid = true;
+    var errorMessage = '';
+
+    if (value.length < 6) {
+      isValid = false;
+      errorMessage = 'Password must be six characters or longer';
+    };
+
+    return testResult(isValid, errorMessage);
+  };
+
   var hasLength = function hasLength(value) {
     var isValid = true;
     var errorMessage = '';
@@ -2049,13 +2105,22 @@ var formValidation = function () {
     return testResult(isValid, errorMessage);
   };
 
-  var validate = function validate(validationType, value) {
+  var validate = function validate(validationType, value, value2) {
     switch (validationType) {
       case 'isNotBlank':
         return isNotBlank(value);
         break;
       case 'hasLength':
         return hasLength(value);
+        break;
+      case 'isValidEmail':
+        return isValidEmail(value);
+        break;
+      case 'isValidPassword':
+        return isValidPassword(value);
+        break;
+      case 'isMatch':
+        return isMatch(value, value2);
         break;
       case 'oneIngredient':
         return oneIngredient(value);
@@ -11677,11 +11742,11 @@ var _LoginContainer = __webpack_require__(120);
 
 var _LoginContainer2 = _interopRequireDefault(_LoginContainer);
 
+var _SignupContainer = __webpack_require__(129);
+
+var _SignupContainer2 = _interopRequireDefault(_SignupContainer);
+
 var _reactRouterDom = __webpack_require__(14);
-
-var _AddRecipeLinkContainer = __webpack_require__(122);
-
-var _AddRecipeLinkContainer2 = _interopRequireDefault(_AddRecipeLinkContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11748,6 +11813,9 @@ var App = function (_React$Component) {
             _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _HomeContainer2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/login', render: function render(routeProps) {
                 return _react2.default.createElement(_LoginContainer2.default, _extends({}, routeProps, { modalOpen: _this2.handleModalOpen }));
+              } }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/signup', render: function render(routeProps) {
+                return _react2.default.createElement(_SignupContainer2.default, _extends({}, routeProps, { modalOpen: _this2.handleModalOpen }));
               } }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/about', component: _AboutContainer2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/recipes', component: _RecipesContainer2.default }),
@@ -19971,6 +20039,8 @@ var _CustomInputField2 = _interopRequireDefault(_CustomInputField);
 
 var _formValidation = __webpack_require__(26);
 
+var _httpRequests = __webpack_require__(25);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -20004,11 +20074,6 @@ var LoginForm = function (_React$Component) {
   _createClass(LoginForm, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var newCandidateUsername = document.getElementById('candidateUsername').value;
-      var newCandidatePassword = document.getElementById('candidatePassword').value;
-      console.log(newCandidateUsername);
-      console.log(newCandidatePassword);
-
       this.setState({
         candidateUsername: '',
         candidatePassword: ''
@@ -20027,8 +20092,6 @@ var LoginForm = function (_React$Component) {
     value: function handleFormValidation() {
       var userNameValid = (0, _formValidation.validate)('isNotBlank', this.state.candidateUsername).isValid;
       var passwordValid = (0, _formValidation.validate)('isNotBlank', this.state.candidatePassword).isValid;
-      console.log(userNameValid);
-      console.log(passwordValid);
 
       if (userNameValid && passwordValid) {
         this.setState({
@@ -20044,17 +20107,36 @@ var LoginForm = function (_React$Component) {
   }, {
     key: 'handleLoginFormSubmit',
     value: function handleLoginFormSubmit(e) {
+      var _this2 = this;
+
       e.preventDefault();
 
       if (!this.state.formIsValid) {
         this.props.modalOpen('negative', 'Looks like you have one or more errors in the login form');
         return;
       }
-      var candidateLoginData = {};
-      candidateLoginData.candidateUsername = this.state.candidateUsername;
-      candidateLoginData.candidatePassword = this.state.candidatePassword;
 
-      this.props.modalOpen('positive', 'Form valid');
+      var candidateLoginData = {};
+      candidateLoginData.username = this.state.candidateUsername;
+      candidateLoginData.password = this.state.candidatePassword;
+
+      (0, _httpRequests.loginUser)(candidateLoginData).then(function (response) {
+        if (response.status !== 200) {
+          throw new Error('Something went wrong');
+        }
+
+        return response.json();
+      }).then(function (jsonResponse) {
+        var data = jsonResponse.data;
+
+        if (data.status !== 200) {
+          throw new Error(data.message);
+        }
+
+        _this2.props.modalOpen('positive', data.message);
+      }).catch(function (err) {
+        _this2.props.modalOpen('negative', err.message);
+      });
     }
   }, {
     key: 'render',
@@ -20095,93 +20177,8 @@ var LoginForm = function (_React$Component) {
 exports.default = LoginForm;
 
 /***/ }),
-/* 122 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _AddRecipeLinkComponent = __webpack_require__(123);
-
-var _AddRecipeLinkComponent2 = _interopRequireDefault(_AddRecipeLinkComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var AddRecipeLinkContainer = function (_React$Component) {
-  _inherits(AddRecipeLinkContainer, _React$Component);
-
-  function AddRecipeLinkContainer(props) {
-    _classCallCheck(this, AddRecipeLinkContainer);
-
-    return _possibleConstructorReturn(this, (AddRecipeLinkContainer.__proto__ || Object.getPrototypeOf(AddRecipeLinkContainer)).call(this, props));
-  }
-
-  _createClass(AddRecipeLinkContainer, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: 'add-recipe-link' },
-        _react2.default.createElement(_AddRecipeLinkComponent2.default, null)
-      );
-    }
-  }]);
-
-  return AddRecipeLinkContainer;
-}(_react2.default.Component);
-
-exports.default = AddRecipeLinkContainer;
-
-/***/ }),
-/* 123 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouterDom = __webpack_require__(14);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var AddRecipeLinkComponent = function AddRecipeLinkComponent() {
-  return _react2.default.createElement(
-    'span',
-    { className: 'add-recipe-link_span' },
-    _react2.default.createElement(
-      _reactRouterDom.Link,
-      { to: '/recipe/new', className: 'add-recipe-link_span_text' },
-      ' Add '
-    )
-  );
-};
-
-exports.default = AddRecipeLinkComponent;
-
-/***/ }),
+/* 122 */,
+/* 123 */,
 /* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20708,6 +20705,156 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _MainContainer = __webpack_require__(7);
+
+var _MainContainer2 = _interopRequireDefault(_MainContainer);
+
+var _SignUpForm = __webpack_require__(130);
+
+var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SignUpContainer = function SignUpContainer(props) {
+  return _react2.default.createElement(
+    _MainContainer2.default,
+    { pageName: 'Sign Up' },
+    _react2.default.createElement(_SignUpForm2.default, { modalOpen: props.modalOpen })
+  );
+};
+
+exports.default = SignUpContainer;
+
+/***/ }),
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _CustomInputField = __webpack_require__(11);
+
+var _CustomInputField2 = _interopRequireDefault(_CustomInputField);
+
+var _formValidation = __webpack_require__(26);
+
+var _httpRequests = __webpack_require__(25);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SignupForm = function (_React$Component) {
+  _inherits(SignupForm, _React$Component);
+
+  function SignupForm(props) {
+    _classCallCheck(this, SignupForm);
+
+    var _this = _possibleConstructorReturn(this, (SignupForm.__proto__ || Object.getPrototypeOf(SignupForm)).call(this, props));
+
+    _this.state = {
+      username: '',
+      email: '',
+      password: '',
+      passwordConfirmaion: '',
+      formIsValid: false
+    };
+
+    _this.handleFormChange = _this.handleFormChange.bind(_this);
+    _this.handleFormSubmit = _this.handleFormSubmit.bind(_this);
+    _this.handleInputChange = _this.handleInputChange.bind(_this);
+    return _this;
+  }
+
+  _createClass(SignupForm, [{
+    key: 'handleFormChange',
+    value: function handleFormChange() {}
+  }, {
+    key: 'handleFormSubmit',
+    value: function handleFormSubmit(e) {
+      e.preventDefault();
+    }
+  }, {
+    key: 'handleInputChange',
+    value: function handleInputChange(e) {
+      var value = e.target.value;
+      var name = e.target.name;
+
+      this.setState(_defineProperty({}, name, value));
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'form',
+          { onChange: this.handleFormChange },
+          _react2.default.createElement(
+            'label',
+            { htmlFor: 'signup-username' },
+            'Enter a username: '
+          ),
+          _react2.default.createElement(_CustomInputField2.default, { id: 'signup-username', name: 'username', elementType: 'textInput', validationType: 'isNotBlank' }),
+          _react2.default.createElement(
+            'label',
+            { htmlFor: 'signup-email' },
+            'Enter an email: '
+          ),
+          _react2.default.createElement(_CustomInputField2.default, { id: 'signup-email', validationType: 'isValidEmail', name: 'email', elementType: 'emailInput' }),
+          _react2.default.createElement(
+            'label',
+            { htmlFor: 'signup-password' },
+            'Enter a password: '
+          ),
+          _react2.default.createElement(_CustomInputField2.default, { id: 'signup-password', validationType: 'isValidPassword', name: 'password', elementType: 'password' }),
+          _react2.default.createElement(
+            'button',
+            { onClick: this.handleFormSubmit },
+            'Sign up'
+          )
+        )
+      );
+    }
+  }]);
+
+  return SignupForm;
+}(_react2.default.Component);
+
+exports.default = SignupForm;
 
 /***/ })
 /******/ ]);

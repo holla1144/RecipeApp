@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
-const winston = require('winston');
 
 let userSchema = new Schema({
     username: {
@@ -14,22 +13,30 @@ let userSchema = new Schema({
         type: String,
         required: true
     },
-    firstName: String,
-    lastName: String,
     email: {
       index: {unique: true},
         type: String,
         required: true,
 
     },
-    reviews: Array,
-    recipes: Array
+    userType: {
+      type: Number,
+      required: true,
+      default: 1
+    },
+    confirmed: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    reviews: [Schema.Types.ObjectId],
+    recipes: [Schema.Types.ObjectId]
 });
 
 //TODO use 'save' to update passwords, otherwise mongoose middleware will not be invoked
 
 userSchema.pre('save', function(next) {
-  
+
     let user = this;
     if (!user.isModified('password')) return next();
 

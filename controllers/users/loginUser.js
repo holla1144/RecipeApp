@@ -10,8 +10,10 @@ const loginUser = (req, res) => {
   /*Checks if a username and password were submitted
   * Checks that a user with the given username exists
   * Verifies the submitted password matches the record in db
-  * TODO return a JWT                                      */
+  * TODO return a JWT */
   const loginData = req.body;
+
+  winston.log('login user called');
 
   winston.info(loginData);
 
