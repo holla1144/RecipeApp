@@ -6,7 +6,7 @@ import {
 
 const RecipeCardsContainer = ( props ) => {
   const recipeCards = props.data.map((recipeObject, i) => {
-    return <Link to={'/recipe/' + recipeObject._id}><RecipeCard key={ 'recipeCard-' + i } recipeData={ recipeObject } /></Link>
+    return <Link key={ 'recipeCardLink-' + i } to={'/recipes/' + recipeObject._id}><RecipeCard key={ 'recipeCard-' + i } recipeData={ recipeObject } /></Link>
   });
 
   return (

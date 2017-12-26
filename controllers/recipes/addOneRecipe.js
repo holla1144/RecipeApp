@@ -3,7 +3,6 @@ let Recipe = require('../../models/recipe_models/recipe');
 
 let addOneRecipe = function(req, res) {
     let userRecipe = req.body;
-    console.log(userRecipe);
 
     if (!userRecipe.title ||  !userRecipe.description || !userRecipe.ingredients || !userRecipe.category) {
         sendResponse(res, 400, {'message': 'Title, Description, Ingredients, and Category are required'});
@@ -15,7 +14,8 @@ let addOneRecipe = function(req, res) {
             description: userRecipe.description,
             author: userRecipe.author,
             ingredients:  userRecipe.ingredients,
-            category:  userRecipe.category
+            category:  userRecipe.category,
+            directions: userRecipe.directions
         });
 
         userRecipe.save(function(err) {
