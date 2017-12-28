@@ -3,7 +3,7 @@ import CustomInput from '../../SharedComponents/CustomInputs/Input';
 import { validateOneInput } from '../../../services/formValidation';
 import { validateAllInputs } from '../../../services/formValidation';
 import { validateForm } from '../../../services/formValidation';
-import { signupUser } from '../../../services/httpRequests';
+import { signupUser } from '../../../services/services';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class SignupForm extends React.Component {
 
   handleFormChange(e){
     validateOneInput(e.target);
-    const formIsValid = validateForm('form-signup')
+    const formIsValid = validateForm('form-signup');
 
     this.setState({
       formIsValid: formIsValid
@@ -58,6 +58,7 @@ class SignupForm extends React.Component {
         throw new Error(jsonResponse.data.message);
       }
 
+      this.props.setToken(jsonResponse.data.token);
       this.props.modalOpen('positive', jsonResponse.data.message);
     }).catch((err) => {
 

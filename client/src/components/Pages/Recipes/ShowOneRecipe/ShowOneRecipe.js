@@ -1,5 +1,5 @@
 import React from 'react';
-import { getOneRecipe } from '../../../../services/httpRequests';
+import { getOneRecipe } from '../../../../services/services';
 import MainContainer from '../../../SharedComponents/MainContent/MainContainer';
 import RecipeTitleComponent from './RecipeTitleComponent/RecipeTitleComponent';
 import RecipeDescriptionComponent from './RecipeDescriptionComponent/RecipeDescriptionComponent';

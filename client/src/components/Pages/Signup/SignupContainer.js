@@ -5,7 +5,7 @@ import SignUpForm from './SignUpForm';
 const SignUpContainer = ( props ) => {
   return (
     <MainContainer pageName="Sign Up">
-      <SignUpForm modalOpen={props.modalOpen}/>
+      <SignUpForm setToken={props.setToken} modalOpen={props.modalOpen}/>
     </MainContainer>
   )
 };

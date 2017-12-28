@@ -1,10 +1,8 @@
 const User = require('../../models/user');
 const sendResponse = require('../sendResponse');
 const winston = require('winston');
-const config = require('../../config');
-const JWT_SECRET = config.JWT_SECRET;
 const Q = require('Q');
-const jwt = require('jsonwebtoken');
+const generateJWT = require('../generateJWT');
 
 const loginUser = (req, res) => {
   /*Checks if a username and password were submitted
@@ -52,9 +50,9 @@ const loginUser = (req, res) => {
           message: 'Sorry, something went wrong. Please try logging in again later'
         })
       } else if (isMatch) {
-        let token = jwt.sign({data: doc, expiresIn: "5 days"}, JWT_SECRET);
+        let token = generateJWT(doc);
           sendResponse(res, 200, {
-            message: 'Good work buddy, the passwords match.',
+            message: 'Welcome back ' + doc.username,
             token: token
           })
         } else {
