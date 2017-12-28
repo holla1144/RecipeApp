@@ -1,6 +1,21 @@
 .Select {
+
+  &.invalid {
+    .Select-multi-value-wrapper {
+     @extend .field--invalid;
+    }
+  }
+
+  &.is-focused:not(.is-open) {
+    box-shadow: 0;
+    outline: -webkit-focus-ring-color auto 5px;
+  }
+
   .Select-control {
+    border: 1px solid gray;
+    border-radius: 0;
     height: auto;
+
 
     .Select-multi-value-wrapper {
       display: flex;
@@ -19,6 +34,12 @@
           order: 1;
         }
       }
+    }
+  }
+
+  &.has-value {
+   & ~ .CustomInput-error {
+      @extend .hidden;
     }
   }
 }

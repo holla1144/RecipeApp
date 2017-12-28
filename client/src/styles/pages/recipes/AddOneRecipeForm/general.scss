@@ -2,33 +2,26 @@
   padding-bottom: 5rem;
 
   &-section {
-    padding: 1.5rem 0 2rem 1rem;
-    transition: all .5s linear;
+    @extend .col-8;
+    padding: 1.5rem 0 2rem;
 
-    input[type='text'] {
-      border-radius: 5px;
-      line-height: 2rem;
-      padding: 0 10px;
-    }
+   .CustomInput--textarea {
+     .CustomInput-field {
+       min-height: 8rem;
+     }
 
-    &:hover {
-      box-shadow: 2px 2px 8px gray;
-      padding-left: 1.5rem;
-    }
+     .CustomInput-error {
+       display: block;
+     }
+   }
   }
 
-  &-label {
+  &-sectionLabel {
     display: block;
     font-size: 1.1rem;
-    padding: .5rem 0;
+    font-weight: 400;
+    margin: .5rem 0;
     text-transform: uppercase;
-  }
-
-  &-textArea {
-    border: 1px solid gray;
-    border-radius: 5px;
-    min-height: 8rem;
-    padding: .75rem;
   }
 
   &-greenBtn {
@@ -62,15 +55,6 @@
     text-transform: uppercase;
     width: 7rem;
     z-index: 2;
-  }
-
-  .CustomInput {
-    display: flex;
-
-    .ErrorContainer {
-      align-self: center;
-      padding: 0 1rem;
-    }
   }
 }
 

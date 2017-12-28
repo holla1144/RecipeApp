@@ -1,11 +1,13 @@
 import React from 'react';
-import CategorySelector from './AddCategoryComponent/CategorySelector';
-import TitleComponent from './TitleComponent/TitleComponent';
-import DescriptionComponent from './DescriptionComponent/DescriptionComponent';
-import IngredientsComponent from './AddIngredientsComponent/AddIngredientsComponent';
-import DirectionsComponent from './DirectionsComponent/DirectionsComponent';
 import { addOneRecipe } from '../../../../services/httpRequests';
-import { validate } from '../../../../services/formValidation';
+import { validateOneInput } from '../../../../services/formValidation';
+import { validateAllInputs } from '../../../../services/formValidation';
+import { validateForm } from '../../../../services/formValidation';
+import CustomInput from './Input';
+import CustomTextarea from "./Textarea";
+import CategorySelector from "./CategorySelector/CategorySelector";
+import IngredientsComponent from "./IngredientsComponent/IngredientsComponent";
+import DirectionsComponent from "./DirectionsComponent/DirectionsComponent";
 
 class AddOneRecipeForm extends React.Component{
   constructor(props) {
@@ -19,35 +21,23 @@ class AddOneRecipeForm extends React.Component{
         name: '',
         amount: ''
       }],
-      steps: [''],
+      directions: [''],
       titleValid: false,
-      descriptionValid: false,
-      categoryValid: false,
-      ingredientsValid: false,
-      directionsValid: false,
+      titleError: '',
       formIsValid: false,
       formErrors: []
     };
 
     this.handleTextInputChange = this.handleTextInputChange.bind(this);
     this.handleCategorySelectorChange = this.handleCategorySelectorChange.bind(this);
-    this.addOneIngredient = this.addOneIngredient.bind(this);
-    this.removeOneIngredient = this.removeOneIngredient.bind(this);
-    this.updateOneIngredient = this.updateOneIngredient.bind(this);
-    this.updateOneStep = this.updateOneStep.bind(this);
-    this.addOneStep = this.addOneStep.bind(this);
-    this.removeOneStep = this.removeOneStep.bind(this);
+    this.updateIngredients = this.updateIngredients.bind(this);
+    this.updateDirections = this.updateDirections.bind(this);
     this.validateForm = this.validateForm.bind(this);
+    this.triggerCategoryErrors = this.triggerCategoryErrors.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.validateTitle = this.validateTitle.bind(this);
-    this.validateDescription = this.validateDescription.bind(this);
-    this.validateCategory = this.validateCategory.bind(this);
-    this.validateIngredients = this.validateIngredients.bind(this);
-    this.validateDirections = this.validateDirections.bind(this);
     this.formatIngredients = this.formatIngredients.bind(this);
     this.formatDirections = this.formatDirections.bind(this);
-
   }
 
   handleTextInputChange(event) {
@@ -65,95 +55,15 @@ class AddOneRecipeForm extends React.Component{
     })
   }
 
-  addOneIngredient(){
-    const lastIngredient = this.state.ingredients[this.state.ingredients.length -1];
-
-    if (!lastIngredient.name.length || !lastIngredient.amount.length) {
-      //Do not add new ingredient if last ingredient had not been changed
-      return
-    }
-
-    const newItem = {
-      name: '',
-      amount: ''
-    };
-
-    const ingredientsCopy = this.state.ingredients;
-    ingredientsCopy.push(newItem);
-
+  updateIngredients(ingredientsArray){
     this.setState({
-      ingredients: ingredientsCopy
+      ingredients: ingredientsArray
     })
   }
 
-  removeOneIngredient(index){
-    if (this.state.ingredients.length === 1) {
-      //Do not remove only ingredient field set
-      return;
-    }
-
-    const ingredientsCopy = this.state.ingredients;
-
-    ingredientsCopy.splice(index, 1);
-
+  updateDirections(directionsArray){
     this.setState({
-      ingredients: ingredientsCopy
-    });
-  }
-
-  updateOneIngredient(e){
-    const target = e.target;
-    const targetIndex = e.target.getAttribute('index');
-    const ingredientsCopy = this.state.ingredients;
-    ingredientsCopy[targetIndex][target.name] = target.value;
-
-    this.setState({
-      ingredients: ingredientsCopy
-    })
-  }
-
-  updateOneStep(e){
-    const target = e.target;
-    const targetIndex = target.getAttribute('index');
-    const targetValue = target.value;
-    const stepsCopy = this.state.steps;
-
-    stepsCopy[targetIndex] = targetValue;
-
-    this.setState({
-      steps: stepsCopy
-    });
-  }
-
-  addOneStep(){
-    const lastStep = this.state.steps[this.state.steps.length -1];
-
-    if (!lastStep.length || lastStep === '') {
-      //Do not add additional step if previous step is blank/untouched
-      return
-    }
-
-    const stepsCopy = this.state.steps;
-    const newStep = '';
-
-    stepsCopy.push(newStep);
-
-    this.setState({
-      steps: stepsCopy
-    });
-  };
-
-  removeOneStep(index){
-    if (this.state.steps.length === 1) {
-      // Do not remove only step
-      return
-    }
-
-    const stepsCopy = this.state.steps;
-    stepsCopy.splice(index, 1);
-
-    this.setState({
-      steps: stepsCopy
+      directions: directionsArray
     })
   }
 
@@ -181,50 +91,33 @@ class AddOneRecipeForm extends React.Component{
     return directionsArr;
   };
 
-  validateTitle(){
-    return validate('isNotBlank', this.state.title)
-  };
+  triggerCategoryErrors(){
+    const categorySelector = document.querySelector('.Select');
+    const categoryError = categorySelector.parentElement.querySelector('.CustomInput-error');
 
-  validateDescription(){
-    return validate('isNotBlank', this.state.description)
-  };
-
-  validateCategory(){
-    return validate('hasLength', this.state.category);
-  };
-
-  validateIngredients(){
-    return validate('oneIngredient', this.state.ingredients);
-  }
-
-  validateDirections(){
-    return validate('isNotBlank', this.state.steps[0]);
+    if (!categorySelector.classList.contains('has-value')) {
+      categoryError.classList.remove('hidden');
+      categorySelector.classList.add('invalid');
+    }
   }
 
   validateForm() {
-    const titleValid = this.validateTitle().isValid;
-    const descriptionValid = this.validateDescription().isValid;
-    const categoryValid = this.validateCategory().isValid;
-    const ingredientsValid = this.validateIngredients().isValid;
-    const directionsValid = this.validateDirections().isValid;
-    const formIsValid = titleValid && descriptionValid && categoryValid && ingredientsValid && directionsValid;
+    const formValid = validateForm("addRecipeForm");
 
     this.setState({
-      titleValid: titleValid,
-      descriptionValid: descriptionValid,
-      categoryValid: categoryValid,
-      ingredientsValid: ingredientsValid,
-      directionsValid: directionsValid,
-      formIsValid: formIsValid
-    });
+      formIsValid: formValid
+    })
   }
 
-  handleFormChange() {
+  handleFormChange(e) {
+    validateOneInput(e.target);
     this.validateForm();
-  }
+    }
 
   handleFormSubmit(e){
     e.preventDefault();
+    this.triggerCategoryErrors();
+    validateAllInputs();
 
     if (!this.state.formIsValid) {
       this.props.modalOpen('negative', 'You have errors in your form');
@@ -261,22 +154,19 @@ class AddOneRecipeForm extends React.Component{
 
   render() {
     return (
-      <form onKeyDown={ this.handleFormChange } onChange={ this.handleFormChange } onClick={ this.handleFormChange } className="Form" id="addRecipes">
-
-        <TitleComponent handleChange={ this.handleTextInputChange } title={ this.state.title } />
-
-        <DescriptionComponent handleChange={ this.handleTextInputChange } description={ this.state.description }/>
-
-        <CategorySelector initialCategories={ this.state.category } handleChange={ this.handleCategorySelectorChange } />
-
-        <IngredientsComponent intialIngredients={ this.state.ingredients } handleChange={ this.updateOneIngredient }
-                                 handleAdd={ this.addOneIngredient } handleRemove={ this.removeOneIngredient } />
-
-        <DirectionsComponent initialSteps={ this.state.steps } handleChange={ this.updateOneStep }
-                             handleAdd={ this.addOneStep } handleRemove={ this.removeOneStep }  />
-
-        <button className="Form-submitButton" type="submit" onClick={ this.handleFormSubmit }>Submit</button>
-
+      <form onKeyDown={ this.handleFormChange } onChange={ this.handleFormChange } className="Form" id="addRecipeForm">
+        <div className="Form-section">
+          <label className="Form-sectionLabel">Title</label>
+          <CustomInput placeholder="Add a title" type='text' value={this.state.title} onChange={this.handleTextInputChange} name="title" validation='isNotBlank' required />
+        </div>
+        <div className="Form-section">
+          <label className="Form-sectionLabel">Description</label>
+          <CustomTextarea placeholder="Add a description" onChange={this.handleTextInputChange} name="description" validation='isNotBlank' required />
+        </div>
+        <CategorySelector initialCategories={ this.state.category } handleChange={ this.handleCategorySelectorChange } name="category" />
+        <IngredientsComponent ingredients={ this.state.ingredients } handleChange={ this.updateIngredients } validation='isNotBlank' />
+        <DirectionsComponent directions={ this.state.directions } onChange={ this.updateDirections }/>
+        <button className="Form-submitButton" type="button" onClick={ this.handleFormSubmit }>Submit</button>
       </form>
     )
   }

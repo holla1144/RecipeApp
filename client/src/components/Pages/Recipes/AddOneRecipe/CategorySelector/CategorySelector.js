@@ -46,15 +46,14 @@ class CategorySelector extends React.Component{
     render() {
       return (
         <div className="Form-section">
-          <label className="Form-label" htmlFor="new-recipe-category">Category: </label>
+          <label className="Form-sectionLabel" htmlFor="new-recipe-category">Category </label>
           <Select
-            className="col-8"
-            name="category"
             multi
             onChange={ this.handleSelectorChange }
             value={this.state.selected}
             options={[{ value: 'mexican', label: 'Mexican' },   { value: 'italian', label: 'Italian' },  { value: 'french', label: 'French' },  { value: 'american', label: 'American' }]}
           />
+          <span className="CustomInput-error hidden">You must choose at least one category</span>
         </div>
       )
     }
