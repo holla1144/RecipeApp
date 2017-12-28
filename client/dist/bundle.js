@@ -975,63 +975,7 @@ var createPath = exports.createPath = function createPath(location) {
 };
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports.getAllCategies = fetch('http://localhost:3000/recipes/categories');
-
-module.exports.addOneRecipe = function (data) {
-  return fetch('http://localhost:3000/api/recipes/new', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-};
-
-module.exports.getManyRecipes = function (recipeCount) {
-  return fetch('http://localhost:3000/api/recipes/getMany/' + recipeCount);
-};
-
-module.exports.getOneRecipe = function (recipeId) {
-  return fetch('http://localhost:3000/api/recipes/' + recipeId);
-};
-
-module.exports.likeRecipe = function (recipeId) {
-  return fetch('http://localhost:3000/api/recipes/new', {
-    method: 'POST',
-    body: JSON.stringify({ recipeId: recipeId }),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-};
-
-module.exports.loginUser = function (candidateDate) {
-  return fetch('http://localhost:3000/api/users/login', {
-    method: 'POST',
-    body: JSON.stringify(candidateDate),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-};
-
-module.exports.signupUser = function (data) {
-  return fetch('http://localhost:3000/api/users/new', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-};
-
-/***/ }),
+/* 12 */,
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11659,11 +11603,20 @@ var App = function (_React$Component) {
     _this.state = {
       modalVisible: false,
       modalMessage: '',
-      modalStyle: ''
+      modalStyle: '',
+      userLoggedIn: false,
+      username: '',
+      userFavorites: [],
+      userRecipes: [],
+      userId: ''
     };
 
     _this.handleModalOpen = _this.handleModalOpen.bind(_this);
     _this.handleModalClose = _this.handleModalClose.bind(_this);
+    _this.getToken = _this.getToken.bind(_this);
+    _this.removeToken = _this.removeToken.bind(_this);
+    _this.setToken = _this.setToken.bind(_this);
+    _this.extractTokenData = _this.extractTokenData.bind(_this);
     return _this;
   }
 
@@ -11688,9 +11641,55 @@ var App = function (_React$Component) {
       });
     }
   }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var token = this.getToken();
+
+      if (token === null) {
+        return;
+      }
+
+      this.extractTokenData(token);
+    }
+  }, {
+    key: 'extractTokenData',
+    value: function extractTokenData(JWT) {
+      var _this2 = this;
+
+      var payload = JWT.split('.')[1];
+      var decodedPayload = atob(payload);
+      var payloadData = JSON.parse(decodedPayload).data;
+
+      this.setState({
+        username: payloadData.username,
+        userFavorites: payloadData.favorites,
+        userRecipes: payloadData.recipes,
+        userId: payloadData._id,
+        userLoggedIn: true
+      }, function () {
+        console.log(_this2.state);
+      });
+    }
+  }, {
+    key: 'removeToken',
+    value: function removeToken() {
+      localStorage.removeItem('reciprocityData');
+    }
+  }, {
+    key: 'setToken',
+    value: function setToken(JWT) {
+      localStorage.setItem('reciprocityData', JWT);
+      this.extractTokenData(JWT);
+    }
+  }, {
+    key: 'getToken',
+    value: function getToken() {
+      return localStorage.getItem('reciprocityData');
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _react2.default.createElement(
         _reactRouterDom.HashRouter,
@@ -11704,18 +11703,18 @@ var App = function (_React$Component) {
             null,
             _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _HomeContainer2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/login', render: function render(routeProps) {
-                return _react2.default.createElement(_LoginContainer2.default, _extends({}, routeProps, { modalOpen: _this2.handleModalOpen }));
+                return _react2.default.createElement(_LoginContainer2.default, _extends({}, routeProps, { setToken: _this3.setToken, modalOpen: _this3.handleModalOpen }));
               } }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/signup', render: function render(routeProps) {
-                return _react2.default.createElement(_SignupContainer2.default, _extends({}, routeProps, { modalOpen: _this2.handleModalOpen }));
+                return _react2.default.createElement(_SignupContainer2.default, _extends({}, routeProps, { setToken: _this3.setToken, modalOpen: _this3.handleModalOpen }));
               } }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/about', component: _AboutContainer2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/recipes', component: _RecipesContainer2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/recipes/new', render: function render(routeProps) {
-                return _react2.default.createElement(_AddOneRecipeContainer2.default, _extends({}, routeProps, { modalOpen: _this2.handleModalOpen }));
+                return _react2.default.createElement(_AddOneRecipeContainer2.default, _extends({}, routeProps, { modalOpen: _this3.handleModalOpen }));
               } }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/recipes/:recipeId', render: function render(routeProps) {
-                return _react2.default.createElement(_ShowOneRecipe2.default, _extends({}, routeProps, { modalOpen: _this2.props.handleModalOpen }));
+                return _react2.default.createElement(_ShowOneRecipe2.default, _extends({}, routeProps, { modalOpen: _this3.props.handleModalOpen }));
               } }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/categories', component: _CategoriesContainer2.default }),
             _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' })
@@ -15444,7 +15443,7 @@ var _RecipeCardsContainer = __webpack_require__(92);
 
 var _RecipeCardsContainer2 = _interopRequireDefault(_RecipeCardsContainer);
 
-var _httpRequests = __webpack_require__(12);
+var _services = __webpack_require__(131);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -15473,7 +15472,7 @@ var RecipesPage = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      (0, _httpRequests.getManyRecipes)('all').then(function (response) {
+      (0, _services.getManyRecipes)('all').then(function (response) {
         if (response.status !== 200) {
           throw new Error('Sorry, something went wrong.');
         }
@@ -15838,7 +15837,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _httpRequests = __webpack_require__(12);
+var _services = __webpack_require__(131);
 
 var _MainContainer = __webpack_require__(6);
 
@@ -15900,7 +15899,7 @@ var ShowOneRecipe = function (_React$Component) {
 
       var newRecipeId = this.props.match.params.recipeId;
 
-      (0, _httpRequests.getOneRecipe)(newRecipeId).then(function (response) {
+      (0, _services.getOneRecipe)(newRecipeId).then(function (response) {
         if (response.status !== 200) {
           throw new Error('Something has gone terribly wrong');
         }
@@ -16289,7 +16288,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _httpRequests = __webpack_require__(12);
+var _services = __webpack_require__(131);
 
 var _formValidation = __webpack_require__(8);
 
@@ -16461,7 +16460,7 @@ var AddOneRecipeForm = function (_React$Component) {
       newRecipe.ingredients = this.formatIngredients();
       newRecipe.directions = this.formatDirections();
 
-      (0, _httpRequests.addOneRecipe)(newRecipe).then(function (response) {
+      (0, _services.addOneRecipe)(newRecipe).then(function (response) {
         if (response.status !== 200) {
           throw new Error('Something has gone horribly wrong . . . ');
         }
@@ -19883,7 +19882,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _formValidation = __webpack_require__(8);
 
-var _httpRequests = __webpack_require__(12);
+var _services = __webpack_require__(131);
 
 var _Input = __webpack_require__(26);
 
@@ -19961,7 +19960,7 @@ var LoginForm = function (_React$Component) {
       candidateLoginData.username = this.state.candidateUsername;
       candidateLoginData.password = this.state.candidatePassword;
 
-      (0, _httpRequests.loginUser)(candidateLoginData).then(function (response) {
+      (0, _services.loginUser)(candidateLoginData).then(function (response) {
         if (response.status !== 200) {
           throw new Error('Something went wrong');
         }
@@ -20054,7 +20053,7 @@ var SignUpContainer = function SignUpContainer(props) {
   return _react2.default.createElement(
     _MainContainer2.default,
     { pageName: 'Sign Up' },
-    _react2.default.createElement(_SignUpForm2.default, { modalOpen: props.modalOpen })
+    _react2.default.createElement(_SignUpForm2.default, { setToken: props.setToken, modalOpen: props.modalOpen })
   );
 };
 
@@ -20083,7 +20082,7 @@ var _Input2 = _interopRequireDefault(_Input);
 
 var _formValidation = __webpack_require__(8);
 
-var _httpRequests = __webpack_require__(12);
+var _services = __webpack_require__(131);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20144,7 +20143,7 @@ var SignupForm = function (_React$Component) {
       newUserData.email = this.state.email;
       newUserData.password = this.state.password;
 
-      (0, _httpRequests.signupUser)(newUserData).then(function (response) {
+      (0, _services.signupUser)(newUserData).then(function (response) {
         if (response.status !== 200) {
           throw new Error('Sorry, something went wrong');
         }
@@ -20157,6 +20156,7 @@ var SignupForm = function (_React$Component) {
           throw new Error(jsonResponse.data.message);
         }
 
+        _this2.props.setToken(jsonResponse.data.token);
         _this2.props.modalOpen('positive', jsonResponse.data.message);
       }).catch(function (err) {
 
@@ -20749,6 +20749,65 @@ module.exports = function (css) {
 
 	// send back the fixed css
 	return fixedCss;
+};
+
+/***/ }),
+/* 129 */,
+/* 130 */,
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports.getAllCategies = fetch('http://localhost:3000/recipes/categories');
+
+module.exports.addOneRecipe = function (data) {
+  return fetch('http://localhost:3000/api/recipes/new', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+};
+
+module.exports.getManyRecipes = function (recipeCount) {
+  return fetch('http://localhost:3000/api/recipes/getMany/' + recipeCount);
+};
+
+module.exports.getOneRecipe = function (recipeId) {
+  return fetch('http://localhost:3000/api/recipes/' + recipeId);
+};
+
+module.exports.likeRecipe = function (recipeId) {
+  return fetch('http://localhost:3000/api/recipes/new', {
+    method: 'POST',
+    body: JSON.stringify({ recipeId: recipeId }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+};
+
+module.exports.loginUser = function (candidateDate) {
+  return fetch('http://localhost:3000/api/users/login', {
+    method: 'POST',
+    body: JSON.stringify(candidateDate),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+};
+
+module.exports.signupUser = function (data) {
+  return fetch('http://localhost:3000/api/users/new', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
 };
 
 /***/ })

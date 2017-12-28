@@ -1,11 +1,10 @@
 const sendResponse = require('../sendResponse');
 const User = require('../../models/user');
 const Q = require('Q');
+const generateJWT = require('../generateJWT');
 
 const addOneUser = (req, res) => {
     const newUserBody = req.body;
-
-    console.log(newUserBody);
 
     const hasRequiredFields = ()=> {
         if (!newUserBody.username) {
@@ -31,13 +30,15 @@ const addOneUser = (req, res) => {
         email: newUserBody.email,
       });
 
-      newUser.save((err) => {
+      newUser.save((err, doc) => {
         if (err) {
           sendResponse(res, 400, {
             message: 'Error when saving new user ' + err
           })} else {
+          const token = generateJWT(doc);
           sendResponse(res, 200, {
-            message: 'New User Saved Successfully'
+            message: 'New User Saved Successfully',
+            token: token
           })
         }
       })

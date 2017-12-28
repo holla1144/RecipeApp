@@ -1,5 +1,5 @@
 import React from 'react';
-import { addOneRecipe } from '../../../../services/httpRequests';
+import { addOneRecipe } from '../../../../services/services';
 import { validateOneInput } from '../../../../services/formValidation';
 import { validateAllInputs } from '../../../../services/formValidation';
 import { validateForm } from '../../../../services/formValidation';

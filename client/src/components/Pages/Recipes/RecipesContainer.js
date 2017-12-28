@@ -1,7 +1,7 @@
 import React from 'react';
 import MainContainer from '../../SharedComponents/MainContent/MainContainer';
 import RecipeCardsContainer from '../../SharedComponents/RecipeCards/RecipeCardsContainer/RecipeCardsContainer';
-import { getManyRecipes } from '../../../services/httpRequests';
+import { getManyRecipes } from '../../../services/services';
 
 class RecipesPage extends React.Component{
   constructor(props) {

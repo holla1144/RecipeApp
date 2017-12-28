@@ -29,6 +29,7 @@ let userSchema = new Schema({
       required: true,
       default: false
     },
+    favorites: [Schema.Types.ObjectId],
     reviews: [Schema.Types.ObjectId],
     recipes: [Schema.Types.ObjectId]
 });

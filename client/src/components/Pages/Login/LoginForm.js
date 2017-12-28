@@ -1,7 +1,7 @@
 import React from 'react';
 import { validateOneInput } from '../../../services/formValidation';
 import { validateForm } from '../../../services/formValidation';
-import { loginUser } from '../../../services/httpRequests';
+import { loginUser } from '../../../services/services';
 import CustomInput from '../../SharedComponents/CustomInputs/Input';
 
 class LoginForm extends React.Component{

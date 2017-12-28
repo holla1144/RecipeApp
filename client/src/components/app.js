@@ -24,18 +24,27 @@ class App extends React.Component{
     this.state = {
       modalVisible: false,
       modalMessage: '',
-      modalStyle: ''
+      modalStyle: '',
+      userLoggedIn: false,
+      username: '',
+      userFavorites: [],
+      userRecipes: [],
+      userId: ''
     };
 
     this.handleModalOpen = this.handleModalOpen.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
+    this.getToken = this.getToken.bind(this);
+    this.removeToken = this.removeToken.bind(this);
+    this.setToken = this.setToken.bind(this);
+    this.extractTokenData = this.extractTokenData.bind(this);
   }
 
   handleModalOpen(modalStyle, modalMessage){
     this.setState({
       modalVisible: true,
       modalMessage: modalMessage,
-      modalStyle: modalStyle
+      modalStyle: modalStyle,
     })
   };
 
@@ -49,6 +58,45 @@ class App extends React.Component{
     })
   }
 
+  componentDidMount() {
+    const token = this.getToken();
+
+    if (token === null) {
+      return
+    }
+
+    this.extractTokenData(token);
+  }
+
+  extractTokenData(JWT) {
+    const payload = JWT.split('.')[1];
+    const decodedPayload = atob(payload);
+    const payloadData = JSON.parse(decodedPayload).data;
+
+    this.setState({
+      username: payloadData.username,
+      userFavorites: payloadData.favorites,
+      userRecipes: payloadData.recipes,
+      userId: payloadData._id,
+      userLoggedIn: true
+    }, () => {
+      console.log(this.state);
+    });
+  }
+
+  removeToken() {
+    localStorage.removeItem('reciprocityData');
+  };
+
+  setToken(JWT) {
+    localStorage.setItem('reciprocityData', JWT);
+    this.extractTokenData(JWT);
+  };
+
+  getToken(){
+    return localStorage.getItem('reciprocityData');
+  };
+
   render(){
         return(
           <Router basename="/">
@@ -56,8 +104,8 @@ class App extends React.Component{
               <Header />
               <Switch>
                 <Route exact path="/" component={ HomePage }/>
-                <Route path="/login" render={(routeProps) => {return <LoginContainer {...routeProps} modalOpen={this.handleModalOpen }/>}} />
-                <Route path="/signup" render={(routeProps) => {return <SignUpContainer {...routeProps} modalOpen={this.handleModalOpen }/>}} />
+                <Route path="/login"  render={(routeProps) => {return <LoginContainer {...routeProps} setToken={ this.setToken } modalOpen={this.handleModalOpen }/>}} />
+                <Route path="/signup" render={(routeProps) => {return <SignUpContainer {...routeProps} setToken={ this.setToken } modalOpen={this.handleModalOpen }/>}} />
                 <Route path="/about" component={ AboutPage }/>
                 <Route exact path="/recipes" component={ RecipesPage } />
                 <Route path="/recipes/new" render={( routeProps ) => { return <AddOneRecipeContainer { ...routeProps } modalOpen={ this.handleModalOpen } />}}/>
