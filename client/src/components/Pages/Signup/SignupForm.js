@@ -1,6 +1,8 @@
 import React from 'react';
-import CustomInput from '../../SharedComponents/CustomInputs/CustomInputField';
-import { validate } from '../../../services/formValidation';
+import CustomInput from '../../SharedComponents/CustomInputs/Input';
+import { validateOneInput } from '../../../services/formValidation';
+import { validateAllInputs } from '../../../services/formValidation';
+import { validateForm } from '../../../services/formValidation';
 import { signupUser } from '../../../services/httpRequests';
 
 class SignupForm extends React.Component {
@@ -11,7 +13,6 @@ class SignupForm extends React.Component {
       username: '',
       email: '',
       password: '',
-      passwordConfirmaion: '',
       formIsValid: false
     };
 
@@ -20,13 +21,48 @@ class SignupForm extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  handleFormChange(){
+  handleFormChange(e){
+    validateOneInput(e.target);
+    const formIsValid = validateForm('form-signup')
 
+    this.setState({
+      formIsValid: formIsValid
+    })
   };
 
   handleFormSubmit(e){
     e.preventDefault();
 
+    if (!this.state.formIsValid) {
+      validateAllInputs();
+      this.props.modalOpen('negative', 'It looks like there are some mistakes in your form');
+      return;
+    }
+
+    const newUserData = {};
+    newUserData.username = this.state.username;
+    newUserData.email = this.state.email;
+    newUserData.password = this.state.password;
+
+    signupUser(newUserData).then((response) => {
+      if (response.status !== 200) {
+        throw new Error('Sorry, something went wrong');
+      }
+
+      return response.json();
+
+    }).then((jsonResponse) => {
+
+      if (jsonResponse.status !== 200) {
+
+        throw new Error(jsonResponse.data.message);
+      }
+
+      this.props.modalOpen('positive', jsonResponse.data.message);
+    }).catch((err) => {
+
+      this.props.modalOpen('negative', err.message);
+    })
   };
 
   handleInputChange(e){
@@ -38,19 +74,27 @@ class SignupForm extends React.Component {
     })
   }
 
+
   render() {
     return (
-      <div>
-        <form onChange={ this.handleFormChange }>
-          <label htmlFor="signup-username">Enter a username: </label>
-          <CustomInput id="signup-username" name="username" elementType="textInput" validationType='isNotBlank'/>
-          <label htmlFor="signup-email" >Enter an email: </label>
-          <CustomInput id="signup-email" validationType='isValidEmail' name="email" elementType="emailInput" />
-          <label htmlFor="signup-password">Enter a password: </label>
-          <CustomInput id="signup-password" validationType='isValidPassword' name="password" elementType="password" />
-          <button onClick={ this.handleFormSubmit }>Sign up</button>
-        </form>
-      </div>
+      <form className="Form SignUpForm" onChange={ this.handleFormChange } id='form-signup'>
+        <div className="Form-section">
+          <label className="Form-sectionLabel" htmlFor="signup-username">Enter a username: </label>
+          <CustomInput id="signup-username" onChange={ this.handleInputChange } name="username" type="text" validation='isNotBlank' required/>
+        </div>
+
+        <div className="Form-section">
+          <label className="Form-sectionLabel" htmlFor="signup-email" >Enter an email: </label>
+          <CustomInput id="signup-email" onChange={ this.handleInputChange } validation='isNotBlank' name="email" type="email" required/>
+        </div>
+
+        <div className="Form-section">
+          <label className="Form-sectionLabel" htmlFor="signup-password">Enter a password: </label>
+          <CustomInput id="signup-password" onChange={ this.handleInputChange } validation='isValidPassword' name="password" type="password" required/>
+        </div>
+
+        <button className="Form-greenBtn" onClick={ this.handleFormSubmit }>Sign up</button>
+      </form>
     )
   }
 }

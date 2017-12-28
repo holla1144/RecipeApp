@@ -1,3 +1,33 @@
+.Form {
+  padding-bottom: 5rem;
+
+  &-sectionLabel {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin: .5rem 0;
+    text-transform: uppercase;
+  }
+
+  &-greenBtn {
+    background-color: $cool-green;
+    border-radius: 5px;
+    box-shadow: 1px 4px 4px gray;
+    color: white;
+    cursor: pointer;
+    display: block;
+    line-height: 2rem;
+    margin: .5rem 0;
+    text-align: center;
+    transition: all .5s linear;
+    width: 6rem;
+
+    &:hover {
+      background-color: $cool-green-dark;
+    }
+  }
+}
+
 .field--invalid {
   background-color: $warning-red-light;
   border-color: $warning-red;
