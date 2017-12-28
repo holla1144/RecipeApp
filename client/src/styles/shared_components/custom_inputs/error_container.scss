@@ -1,6 +1,0 @@
-.ErrorContainer {
-  &-text {
-    @include textStyle($default, .8rem, bold, initial, black, normal);
-    text-transform: uppercase;
-  }
-}

@@ -6,6 +6,54 @@ const formValidation = (() => {
     }
   };
 
+  const validateOneInput = (input) => {
+    const target = input;
+
+    if (target.hasAttribute('required')) {
+      const value = target.value;
+      const validation = target.getAttribute('validation');
+      const validationResults = validate(validation, value);
+
+      if (validationResults.isValid) {
+        target.parentElement.classList.remove('invalid');
+        target.parentElement.classList.add('valid');
+        target.parentElement.querySelector('span').innerHTML = '';
+
+      } else {
+
+        target.parentElement.classList.remove('valid');
+        target.parentElement.classList.add('invalid');
+        target.parentElement.querySelector('span').innerHTML = validationResults.message;
+      }
+
+      return;
+    }
+    target.classList.add('valid');
+  };
+
+  const validateAllInputs = () => {
+    const inputs = [...document.querySelectorAll('input, textarea, select')];
+    inputs.forEach((input) => {
+      validateOneInput(input);
+    })
+  };
+
+  const validateForm = (formId) => {
+    const form = document.getElementById(formId);
+    const formInputs = [...form.querySelectorAll('input, select, textarea')];
+    const validationResults = formInputs.map((input) => {
+      let inputValidation = input.getAttribute('validation');
+      let inputValue = input.value;
+      return validate(inputValidation, inputValue).isValid;
+    });
+
+    if (validationResults.indexOf(false) !== -1) {
+      return false
+    };
+
+    return true
+  };
+
   const oneIngredient = (value) => {
     //Expect value to be an array of Ingredients object
     let isValid = true;
@@ -101,7 +149,10 @@ const formValidation = (() => {
   };
 
   return {
-    validate: validate
+    validate: validate,
+    validateOneInput: validateOneInput,
+    validateAllInputs: validateAllInputs,
+    validateForm: validateForm
   }
 })();
 

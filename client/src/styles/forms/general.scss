@@ -1,0 +1,12 @@
+.field--invalid {
+  background-color: $warning-red-light;
+  border-color: $warning-red;
+  outline-color: $warning-red;
+}
+
+.field--default {
+  background-color: white;
+  border: 1px solid gray;
+  padding: .4rem;
+  width: 100%;
+}
