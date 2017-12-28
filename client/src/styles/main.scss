@@ -8,12 +8,13 @@
 @import 'header';
 @import 'mainContent';
 @import 'pageHeader.scss';
-@import 'pages/Recipes/addRecipeLinkComponent';
 @import '~react-select/dist/react-select.css';
 @import 'pages/recipes/AddOneRecipeForm/general';
 @import 'pages/recipes/AddOneRecipeForm/DirectionsComponent';
 @import 'pages/recipes/AddOneRecipeForm/IngredientsComponent';
 @import 'pages/recipes/AddOneRecipeForm/categorySelector';
+@import 'pages/login/login';
+@import 'pages/signup/signup';
 @import 'shared_components/modal_component/modal_component';
 @import 'shared_components/recipe_card/recipe_card';
 @import 'shared_components/recipe_card_container/recipe_card_container';

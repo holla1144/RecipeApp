@@ -37,3 +37,13 @@ module.exports.loginUser = (candidateDate) => {
     }
   })
 };
+
+module.exports.signupUser = (data) => {
+  return fetch('http://localhost:3000/api/users/new', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+};

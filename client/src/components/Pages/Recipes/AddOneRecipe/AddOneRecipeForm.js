@@ -3,8 +3,8 @@ import { addOneRecipe } from '../../../../services/httpRequests';
 import { validateOneInput } from '../../../../services/formValidation';
 import { validateAllInputs } from '../../../../services/formValidation';
 import { validateForm } from '../../../../services/formValidation';
-import CustomInput from './Input';
-import CustomTextarea from "./Textarea";
+import CustomInput from '../../../SharedComponents/CustomInputs/Input';
+import CustomTextarea from "../../../SharedComponents/CustomInputs/Textarea";
 import CategorySelector from "./CategorySelector/CategorySelector";
 import IngredientsComponent from "./IngredientsComponent/IngredientsComponent";
 import DirectionsComponent from "./DirectionsComponent/DirectionsComponent";
@@ -154,7 +154,7 @@ class AddOneRecipeForm extends React.Component{
 
   render() {
     return (
-      <form onKeyDown={ this.handleFormChange } onChange={ this.handleFormChange } className="Form" id="addRecipeForm">
+      <form onKeyDown={ this.handleFormChange } onChange={ this.handleFormChange } className="Form AddRecipeForm" id="addRecipeForm">
         <div className="Form-section">
           <label className="Form-sectionLabel">Title</label>
           <CustomInput placeholder="Add a title" type='text' value={this.state.title} onChange={this.handleTextInputChange} name="title" validation='isNotBlank' required />
@@ -166,7 +166,7 @@ class AddOneRecipeForm extends React.Component{
         <CategorySelector initialCategories={ this.state.category } handleChange={ this.handleCategorySelectorChange } name="category" />
         <IngredientsComponent ingredients={ this.state.ingredients } handleChange={ this.updateIngredients } validation='isNotBlank' />
         <DirectionsComponent directions={ this.state.directions } onChange={ this.updateDirections }/>
-        <button className="Form-submitButton" type="button" onClick={ this.handleFormSubmit }>Submit</button>
+        <button className="AddRecipeForm-submitButton" type="button" onClick={ this.handleFormSubmit }>Submit</button>
       </form>
     )
   }

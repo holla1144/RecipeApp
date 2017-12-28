@@ -5,6 +5,8 @@ const Q = require('Q');
 const addOneUser = (req, res) => {
     const newUserBody = req.body;
 
+    console.log(newUserBody);
+
     const hasRequiredFields = ()=> {
         if (!newUserBody.username) {
             return sendResponse(res, 400, {
@@ -27,8 +29,6 @@ const addOneUser = (req, res) => {
         username: newUserBody.username,
         password: newUserBody.password,
         email: newUserBody.email,
-        firstName: newUserBody.firstName,
-        lastName: newUserBody.lastName
       });
 
       newUser.save((err) => {

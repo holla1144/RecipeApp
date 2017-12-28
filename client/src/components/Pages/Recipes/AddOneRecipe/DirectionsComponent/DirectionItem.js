@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomTextarea from '../Textarea';
+import CustomTextarea from '../../../../SharedComponents/CustomInputs/Textarea';
 
 const DirectionItem = (props) => {
   return (

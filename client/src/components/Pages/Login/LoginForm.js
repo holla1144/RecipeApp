@@ -1,7 +1,8 @@
 import React from 'react';
-import CustomInput from '../../SharedComponents/CustomInputs/CustomInputField';
-import { validate } from '../../../services/formValidation';
+import { validateOneInput } from '../../../services/formValidation';
+import { validateForm } from '../../../services/formValidation';
 import { loginUser } from '../../../services/httpRequests';
+import CustomInput from '../../SharedComponents/CustomInputs/Input';
 
 class LoginForm extends React.Component{
   constructor(props) {
@@ -34,21 +35,13 @@ class LoginForm extends React.Component{
     });
   }
 
-  handleFormValidation() {
-    const userNameValid = validate('isNotBlank', this.state.candidateUsername).isValid;
-    const passwordValid = validate('isNotBlank', this.state.candidatePassword).isValid;
+  handleFormValidation(e) {
+    validateOneInput(e.target);
+    const formIsValid = validateForm('login-form');
 
-    if (userNameValid && passwordValid) {
-      this.setState({
-        formIsValid: true
-      });
-
-    } else {
-
-      this.setState({
-        formIsValid: false
-      });
-    }
+    this.setState({
+      formIsValid: formIsValid
+    });
   }
 
   handleLoginFormSubmit(e){
@@ -87,12 +80,16 @@ class LoginForm extends React.Component{
   render() {
     return (
       <div>
-        <form onKeyDown={ this.handleFormValidation } onKeyUp={ this.handleFormValidation } >
-          <label htmlFor="candidateUsername">Username: </label>
-          <CustomInput id="candidateUsername" name="candidateUsername" value={ this.state.candidateUsername } handleChange={ this.handleInputChange } elementType="textInput" validationType="isNotBlank" />
-          <label htmlFor="candidatePassword">Password: </label>
-          <CustomInput id="candidatePassword" name="candidatePassword" value={ this.state.candidatePassword } handleChange={ this.handleInputChange } elementType="password" validationType="isNotBlank" />
-          <button onClick={ this.handleLoginFormSubmit }>Log In</button>
+        <form className="Form LoginForm" onKeyDown={ this.handleFormValidation } onChange={ this.handleFormValidation } id="login-form">
+          <div className="Form-section">
+            <label className="Form-sectionLabel" htmlFor="candidateUsername">Username: </label>
+            <CustomInput id="candidateUsername" name="candidateUsername" value={ this.state.candidateUsername } onChange={ this.handleInputChange } type="text" validation="isNotBlank" required/>
+          </div>
+          <div className="Form-section">
+            <label className="Form-sectionLabel" htmlFor="candidatePassword">Password: </label>
+            <CustomInput id="candidatePassword" name="candidatePassword" value={ this.state.candidatePassword } onChange={ this.handleInputChange } type="password" validation="isNotBlank" required/>
+          </div>
+          <button className="Form-greenBtn" onClick={ this.handleLoginFormSubmit }>Log In</button>
         </form>
       </div>
     )
