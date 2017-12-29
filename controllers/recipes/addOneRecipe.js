@@ -2,7 +2,8 @@ let sendResponse = require('../sendResponse');
 let Recipe = require('../../models/recipe_models/recipe');
 
 let addOneRecipe = function(req, res) {
-    let userRecipe = req.body;
+
+    let userRecipe = req.body.recipeData;
 
     if (!userRecipe.title ||  !userRecipe.description || !userRecipe.ingredients || !userRecipe.category) {
         sendResponse(res, 400, {'message': 'Title, Description, Ingredients, and Category are required'});

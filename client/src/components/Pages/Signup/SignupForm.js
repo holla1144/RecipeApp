@@ -4,6 +4,7 @@ import { validateOneInput } from '../../../services/formValidation';
 import { validateAllInputs } from '../../../services/formValidation';
 import { validateForm } from '../../../services/formValidation';
 import { signupUser } from '../../../services/services';
+import { Redirect } from 'react-router-dom';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -60,8 +61,8 @@ class SignupForm extends React.Component {
 
       this.props.setToken(jsonResponse.data.token);
       this.props.modalOpen('positive', jsonResponse.data.message);
-    }).catch((err) => {
 
+    }).catch((err) => {
       this.props.modalOpen('negative', err.message);
     })
   };
@@ -74,7 +75,6 @@ class SignupForm extends React.Component {
       [name]: value
     })
   }
-
 
   render() {
     return (

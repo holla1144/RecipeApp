@@ -12,7 +12,7 @@ const loginUser = (req, res) => {
   const loginData = req.body;
 
   winston.log('login user called');
-
+  console.log(loginData);
   winston.info(loginData);
 
   const hasRequiredFields = () => {
@@ -43,7 +43,7 @@ const loginUser = (req, res) => {
     });
   };
 
-  const verifyPassword = (err, doc) => {
+  const verifyPassword = (doc) => {
     doc.comparePassword(loginData.password, (err, isMatch) => {
       if (err) {
         sendResponse(res, 204, {
@@ -56,7 +56,7 @@ const loginUser = (req, res) => {
             token: token
           })
         } else {
-          sendResponse(res, 200, {
+          sendResponse(res, 204, {
             message: 'Incorrect password.'
 
           })

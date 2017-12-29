@@ -9,11 +9,11 @@ import ShowOneRecipe from './Pages/Recipes/ShowOneRecipe/ShowOneRecipe';
 import AddOneRecipeContainer from './Pages/Recipes/AddOneRecipe/AddOneRecipeContainer';
 import LoginContainer from './Pages/Login/LoginContainer';
 import SignUpContainer from './Pages/Signup/SignupContainer';
+import { setToken, getToken, removeToken, verifyToken }  from '../services/services';
 
 import {
   HashRouter as Router,
   Route,
-  Link,
   Redirect,
   Switch
 } from 'react-router-dom'
@@ -26,18 +26,19 @@ class App extends React.Component{
       modalMessage: '',
       modalStyle: '',
       userLoggedIn: false,
-      username: '',
-      userFavorites: [],
-      userRecipes: [],
-      userId: ''
+      userData: {
+        username: '',
+        userFavorites: [],
+        userRecipes: [],
+        userId: ''
+      }
     };
 
     this.handleModalOpen = this.handleModalOpen.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
-    this.getToken = this.getToken.bind(this);
-    this.removeToken = this.removeToken.bind(this);
-    this.setToken = this.setToken.bind(this);
     this.extractTokenData = this.extractTokenData.bind(this);
+    this.handleUserLogout = this.handleUserLogout.bind(this);
+    this.handleUserLogin = this.handleUserLogin.bind(this);
   }
 
   handleModalOpen(modalStyle, modalMessage){
@@ -59,13 +60,32 @@ class App extends React.Component{
   }
 
   componentDidMount() {
-    const token = this.getToken();
+    const token = getToken();
 
     if (token === null) {
       return
     }
 
-    this.extractTokenData(token);
+    const tokenValid = verifyToken(token);
+
+    if (tokenValid) {
+      this.extractTokenData(token);
+      return;
+    }
+
+    this.handleUserLogout();
+  }
+
+  handleUserLogout(){
+    removeToken();
+    this.setState({
+      userLoggedIn: false,
+      userData: {}
+    })
+  }
+
+  handleUserLogin(token){
+    setToken(token, this.extractTokenData(token));
   }
 
   extractTokenData(JWT) {
@@ -74,41 +94,33 @@ class App extends React.Component{
     const payloadData = JSON.parse(decodedPayload).data;
 
     this.setState({
-      username: payloadData.username,
-      userFavorites: payloadData.favorites,
-      userRecipes: payloadData.recipes,
-      userId: payloadData._id,
-      userLoggedIn: true
+      userLoggedIn: true,
+      userData: {
+        username: payloadData.username,
+        userFavorites: payloadData.favorites,
+        userRecipes: payloadData.recipes,
+        userId: payloadData._id,
+      }
     }, () => {
       console.log(this.state);
     });
   }
 
-  removeToken() {
-    localStorage.removeItem('reciprocityData');
-  };
-
-  setToken(JWT) {
-    localStorage.setItem('reciprocityData', JWT);
-    this.extractTokenData(JWT);
-  };
-
-  getToken(){
-    return localStorage.getItem('reciprocityData');
-  };
-
   render(){
         return(
           <Router basename="/">
             <div>
-              <Header />
+              <Header userLoggedIn={this.state.userLoggedIn} handleUserLogout={this.handleUserLogout} />
               <Switch>
                 <Route exact path="/" component={ HomePage }/>
-                <Route path="/login"  render={(routeProps) => {return <LoginContainer {...routeProps} setToken={ this.setToken } modalOpen={this.handleModalOpen }/>}} />
-                <Route path="/signup" render={(routeProps) => {return <SignUpContainer {...routeProps} setToken={ this.setToken } modalOpen={this.handleModalOpen }/>}} />
+                <Route path="/login"  render={(routeProps) => {
+                  return this.state.userLoggedIn ? <Redirect to='/'/> : <LoginContainer {...routeProps} setToken={ this.handleUserLogin } modalOpen={this.handleModalOpen }/>}} />
+                <Route path="/signup" render={(routeProps) => {
+                  return this.state.userLoggedIn ? <Redirect to='/' /> : <SignUpContainer {...routeProps} setToken={ this.handleUserLogin } modalOpen={this.handleModalOpen }/>}} />
                 <Route path="/about" component={ AboutPage }/>
                 <Route exact path="/recipes" component={ RecipesPage } />
-                <Route path="/recipes/new" render={( routeProps ) => { return <AddOneRecipeContainer { ...routeProps } modalOpen={ this.handleModalOpen } />}}/>
+                <Route path="/recipes/new" render={( routeProps ) => {
+                  return !this.state.userLoggedIn ? <Redirect to="/recipes" /> :  <AddOneRecipeContainer { ...routeProps } modalOpen={ this.handleModalOpen } />}}/>
                 <Route path="/recipes/:recipeId" render={( routeProps ) => { return <ShowOneRecipe { ...routeProps } modalOpen={ this.props.handleModalOpen } />}}/>
                 <Route path="/categories" component={ CategoriesPage }/>
                 <Redirect to="/"/>
