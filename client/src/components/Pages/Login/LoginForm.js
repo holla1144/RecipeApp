@@ -1,5 +1,6 @@
 import React from 'react';
 import { validateOneInput } from '../../../services/formValidation';
+import { validateAllInputs } from '../../../services/formValidation';
 import { validateForm } from '../../../services/formValidation';
 import { loginUser } from '../../../services/services';
 import CustomInput from '../../SharedComponents/CustomInputs/Input';
@@ -49,11 +50,13 @@ class LoginForm extends React.Component{
 
 
     if (!this.state.formIsValid) {
+      validateAllInputs();
       this.props.modalOpen('negative', 'Looks like you have one or more errors in the login form');
       return;
     }
 
     let candidateLoginData = {};
+
     candidateLoginData.username = this.state.candidateUsername;
     candidateLoginData.password = this.state.candidatePassword;
 
@@ -63,14 +66,16 @@ class LoginForm extends React.Component{
       }
 
       return response.json();
-    }).then((jsonResponse) => {
-      const data = jsonResponse.data;
 
-      if (data.status !== 200) {
-        throw new Error(data.message);
+    }).then((jsonResponse) => {
+
+      if (jsonResponse.status !== 200) {
+        throw new Error(jsonResponse.data.message);
       }
 
-      this.props.modalOpen('positive', data.message);
+
+      this.props.setToken(jsonResponse.data.token);
+      this.props.modalOpen('positive', jsonResponse.data.message);
 
     }).catch(( err ) => {
       this.props.modalOpen('negative', err.message);

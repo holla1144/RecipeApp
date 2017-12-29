@@ -5,7 +5,7 @@ import LoginForm from './LoginForm';
 const LoginContainer = ( props ) => {
   return (
     <MainContainer pageName="Login">
-      <LoginForm modalOpen={props.modalOpen}/>
+      <LoginForm setToken={props.setToken} modalOpen={props.modalOpen}/>
     </MainContainer>
   )
 };

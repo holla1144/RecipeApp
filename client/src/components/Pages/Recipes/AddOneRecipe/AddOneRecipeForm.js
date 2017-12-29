@@ -38,6 +38,7 @@ class AddOneRecipeForm extends React.Component{
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.formatIngredients = this.formatIngredients.bind(this);
     this.formatDirections = this.formatDirections.bind(this);
+
   }
 
   handleTextInputChange(event) {
@@ -81,7 +82,7 @@ class AddOneRecipeForm extends React.Component{
 
   formatDirections(){
     //Remove empty 'direction' step before submitting form
-    let directionsArr = this.state.steps;
+    let directionsArr = this.state.directions;
     directionsArr.forEach((direction, index) => {
       if (direction === '') {
         directionsArr.splice(index, 1);
