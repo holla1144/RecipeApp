@@ -18,7 +18,7 @@ class Header extends React.Component{
     });
 
     return (
-      <header className="col-12 centered">
+      <header className="header col-12 col-lg-10 col-xl-8 centered">
         <HeaderLoginComponent handleUserLogout={this.props.handleUserLogout} userLoggedIn={ this.props.userLoggedIn }/>
         <Logo />
         <nav>

@@ -5,12 +5,10 @@ const services = (() => {
   };
 
   const addOneRecipe  = (data) => {
-    const userToken = getToken();
     return fetch('http://localhost:3000/api/recipes/new', {
       method: 'POST',
-      body: JSON.stringify({recipeData:data, token: userToken}),
+      body: data,
       headers: {
-        "Content-Type": "application/json",
       }
     })
   };

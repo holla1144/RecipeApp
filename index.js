@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use(express.static('./client/dist'));
+app.use(express.static('./public'));
 app.use('/', router);
 app.listen(port, function() {
     winston.log('info',  `App is listening at port ${port}`);

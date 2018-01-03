@@ -22,7 +22,7 @@ let userSchema = new Schema({
     userType: {
       type: Number,
       required: true,
-      default: 1
+      default: 2
     },
     confirmed: {
       type: Boolean,

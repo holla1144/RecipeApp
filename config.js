@@ -3,7 +3,8 @@ module.exports = {
   DEV_PORT: 3000,
   DB: 'mongodb://127.0.0.1:27017/recipeapp',
   USER_TYPES: {
-    admin: 0,
-    user: 1
+    admin: 1,
+    user: 2,
+    blogger: 3,
   }
 };

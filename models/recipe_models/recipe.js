@@ -20,7 +20,10 @@ let recipeSchema = new Schema({
       lowercase: true
     }],
     //TODO Convert author to type objectId
-    author: String,
+    author: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
     ingredients: [IngredientSchema],
     upvotes: {
       type: Number,
@@ -30,7 +33,8 @@ let recipeSchema = new Schema({
     directions: [{
       required: true,
       type: String
-    }]
+    }],
+    imagePath: String
 }, {timestamps: true});
 
 recipeSchema.post('save', (err, doc, next) => {

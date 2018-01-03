@@ -5,3 +5,52 @@ $gridCount: 12;
     width: calc(100% / #{$gridCount} * #{$i});
   }
 }
+
+@include media-query($xs) {
+  @for $i from 1 through $gridCount {
+    .col-xs-#{$i} {
+      width: calc(100% / #{$gridCount} * #{$i});
+    }
+  }
+}
+
+@include media-query($sm) {
+  @for $i from 1 through $gridCount {
+    .col-sm-#{$i} {
+      width: calc(100% / #{$gridCount} * #{$i});
+    }
+  }
+}
+
+@include media-query($md) {
+  @for $i from 1 through $gridCount {
+    .col-md-#{$i} {
+      width: calc(100% / #{$gridCount} * #{$i});
+    }
+  }
+}
+
+@include media-query($lg) {
+  @for $i from 1 through $gridCount {
+    .col-lg-#{$i} {
+      width: calc(100% / #{$gridCount} * #{$i});
+    }
+  }
+}
+
+@include media-query($xl) {
+  @for $i from 1 through $gridCount {
+    .col-xl-#{$i} {
+      width: calc(100% / #{$gridCount} * #{$i});
+    }
+  }
+}
+
+
+
+
+
+
+
+
+

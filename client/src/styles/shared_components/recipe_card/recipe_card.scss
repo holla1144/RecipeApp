@@ -1,13 +1,48 @@
 .RecipeCard {
-  border: 1px solid gray;
-  border-radius: 5px;
-  padding: 1rem;
+  margin-bottom: 1rem;
+  min-width: 15rem;
+
+  &-link {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  &-inner {
+    border: 1px solid gray;
+    border-radius: 5px;
+    box-shadow: 2px 2px black;
+    cursor: pointer;
+    height: 15rem;
+    padding: 1rem;
+    transition: all 1s ease;
+
+    &:hover {
+      background-color: black;
+
+      .RecipeCard-title,
+      .RecipeCard-description {
+        color: white;
+      }
+    }
+  }
 
   &-title {
-    color: blackff;
+    color: black;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &-description {
     color: black;
+  }
+}
+
+@include media-query($md) {
+  .RecipeCard {
+    float: left;
+    margin-bottom: .4rem;
+    padding-right: .4rem;
   }
 }

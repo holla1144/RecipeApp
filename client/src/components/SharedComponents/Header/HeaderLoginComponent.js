@@ -4,13 +4,13 @@ import VisibilityComponent from '../../SharedComponents/VisibilityComponent/Visi
 
 const HeaderLoginComponent = ( props ) => {
   return (
-    <div>
+    <div className="HeaderLogin">
       <VisibilityComponent visible={props.userLoggedIn} >
-        <span onClick={props.handleUserLogout}>Logout</span>
+        <span className="HeaderLogin-item" onClick={props.handleUserLogout}>Logout</span>
       </VisibilityComponent>
       <VisibilityComponent visible={!props.userLoggedIn} >
-        <Link to='/login' >Login</Link>
-        <Link to='/signup'>Sign Up</Link>
+        <Link className="HeaderLogin-item" to='/login' >Login</Link>
+        <Link className="HeaderLogin-item" to='/signup'>Sign Up</Link>
       </VisibilityComponent>
     </div>
   )

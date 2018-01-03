@@ -30,7 +30,8 @@ class App extends React.Component{
         username: '',
         userFavorites: [],
         userRecipes: [],
-        userId: ''
+        userId: '',
+        userType: ''
       }
     };
 
@@ -100,6 +101,7 @@ class App extends React.Component{
         userFavorites: payloadData.favorites,
         userRecipes: payloadData.recipes,
         userId: payloadData._id,
+        userType: payloadData.userType
       }
     }, () => {
       console.log(this.state);
@@ -120,7 +122,7 @@ class App extends React.Component{
                 <Route path="/about" component={ AboutPage }/>
                 <Route exact path="/recipes" component={ RecipesPage } />
                 <Route path="/recipes/new" render={( routeProps ) => {
-                  return !this.state.userLoggedIn ? <Redirect to="/recipes" /> :  <AddOneRecipeContainer { ...routeProps } modalOpen={ this.handleModalOpen } />}}/>
+                  return this.state.userData.userType !== 3 ? <Redirect to="/recipes" /> :  <AddOneRecipeContainer { ...routeProps } userData={ this.state.userData } modalOpen={ this.handleModalOpen } />}}/>
                 <Route path="/recipes/:recipeId" render={( routeProps ) => { return <ShowOneRecipe { ...routeProps } modalOpen={ this.props.handleModalOpen } />}}/>
                 <Route path="/categories" component={ CategoriesPage }/>
                 <Redirect to="/"/>
