@@ -1,5 +1,5 @@
 import React from 'react';
-import MainContainer from '../../SharedComponents/MainContent/MainContainer';
+import MainContainer from '../../SharedComponents/MainContent/MainContentContainer';
 import SignUpForm from './SignUpForm';
 
 const SignUpContainer = ( props ) => {
