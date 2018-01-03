@@ -1,0 +1,13 @@
+.HeaderLogin {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+
+  &-item {
+    @include textStyle($default, 1rem, black, .5px);
+    display: inline-block;
+    font-weight: 400;
+    padding: 0 .5rem;
+    text-transform: uppercase;
+  }
+}

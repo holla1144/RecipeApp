@@ -8,7 +8,7 @@ class MainContainer extends React.Component{
 
   render() {
     return (
-      <main className="main-content centered">
+      <main className="main-content col-12 col-lg-10 col-xl-8 centered">
         <PageHeader pageName={ this.props.pageName }/>
         { this.props.children }
       </main>

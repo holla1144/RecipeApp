@@ -504,7 +504,7 @@ var MainContainer = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'main',
-        { className: 'main-content centered' },
+        { className: 'main-content col-12 col-lg-10 col-xl-8 centered' },
         _react2.default.createElement(_PageHeader2.default, { pageName: this.props.pageName }),
         this.props.children
       );
@@ -590,13 +590,10 @@ var services = function () {
   };
 
   var addOneRecipe = function addOneRecipe(data) {
-    var userToken = getToken();
     return fetch('http://localhost:3000/api/recipes/new', {
       method: 'POST',
-      body: JSON.stringify({ recipeData: data, token: userToken }),
-      headers: {
-        "Content-Type": "application/json"
-      }
+      body: data,
+      headers: {}
     });
   };
 
@@ -11740,7 +11737,8 @@ var App = function (_React$Component) {
         username: '',
         userFavorites: [],
         userRecipes: [],
-        userId: ''
+        userId: '',
+        userType: ''
       }
     };
 
@@ -11819,7 +11817,8 @@ var App = function (_React$Component) {
           username: payloadData.username,
           userFavorites: payloadData.favorites,
           userRecipes: payloadData.recipes,
-          userId: payloadData._id
+          userId: payloadData._id,
+          userType: payloadData.userType
         }
       }, function () {
         console.log(_this2.state);
@@ -11850,7 +11849,7 @@ var App = function (_React$Component) {
             _react2.default.createElement(_reactRouterDom.Route, { path: '/about', component: _AboutContainer2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/recipes', component: _RecipesContainer2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/recipes/new', render: function render(routeProps) {
-                return !_this3.state.userLoggedIn ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/recipes' }) : _react2.default.createElement(_AddOneRecipeContainer2.default, _extends({}, routeProps, { modalOpen: _this3.handleModalOpen }));
+                return _this3.state.userData.userType !== 3 ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/recipes' }) : _react2.default.createElement(_AddOneRecipeContainer2.default, _extends({}, routeProps, { userData: _this3.state.userData, modalOpen: _this3.handleModalOpen }));
               } }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/recipes/:recipeId', render: function render(routeProps) {
                 return _react2.default.createElement(_ShowOneRecipe2.default, _extends({}, routeProps, { modalOpen: _this3.props.handleModalOpen }));
@@ -11928,7 +11927,7 @@ var Header = function (_React$Component) {
 
       return _react2.default.createElement(
         'header',
-        { className: 'col-12 centered' },
+        { className: 'header col-12 col-lg-10 col-xl-8 centered' },
         _react2.default.createElement(_HeaderLoginComponent2.default, { handleUserLogout: this.props.handleUserLogout, userLoggedIn: this.props.userLoggedIn }),
         _react2.default.createElement(_LogoComponent2.default, null),
         _react2.default.createElement(
@@ -15507,13 +15506,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var HeaderLoginComponent = function HeaderLoginComponent(props) {
   return _react2.default.createElement(
     'div',
-    null,
+    { className: 'HeaderLogin' },
     _react2.default.createElement(
       _VisibilityComponent2.default,
       { visible: props.userLoggedIn },
       _react2.default.createElement(
         'span',
-        { onClick: props.handleUserLogout },
+        { className: 'HeaderLogin-item', onClick: props.handleUserLogout },
         'Logout'
       )
     ),
@@ -15522,12 +15521,12 @@ var HeaderLoginComponent = function HeaderLoginComponent(props) {
       { visible: !props.userLoggedIn },
       _react2.default.createElement(
         _reactRouterDom.Link,
-        { to: '/login' },
+        { className: 'HeaderLogin-item', to: '/login' },
         'Login'
       ),
       _react2.default.createElement(
         _reactRouterDom.Link,
-        { to: '/signup' },
+        { className: 'HeaderLogin-item', to: '/signup' },
         'Sign Up'
       )
     )
@@ -15721,22 +15720,16 @@ var _RecipeCard = __webpack_require__(95);
 
 var _RecipeCard2 = _interopRequireDefault(_RecipeCard);
 
-var _reactRouterDom = __webpack_require__(10);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var RecipeCardsContainer = function RecipeCardsContainer(props) {
   var recipeCards = props.data.map(function (recipeObject, i) {
-    return _react2.default.createElement(
-      _reactRouterDom.Link,
-      { key: 'recipeCardLink-' + i, to: '/recipes/' + recipeObject._id },
-      _react2.default.createElement(_RecipeCard2.default, { key: 'recipeCard-' + i, recipeData: recipeObject })
-    );
+    return _react2.default.createElement(_RecipeCard2.default, { key: 'recipeCard-' + i, linkTo: '/recipes/' + recipeObject._id, recipeData: recipeObject });
   });
 
   return _react2.default.createElement(
     'div',
-    { className: "RecipeCardContainer" + " " + props.classList },
+    { className: "RecipeCardContainer col-12" },
     recipeCards
   );
 };
@@ -15762,6 +15755,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _helpers = __webpack_require__(41);
 
+var _reactRouterDom = __webpack_require__(10);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -15785,18 +15780,27 @@ var RecipeCard = function (_React$Component) {
       var recipeTitle = (0, _helpers.toTitleCase)(this.props.recipeData.title);
       return _react2.default.createElement(
         'div',
-        { className: 'RecipeCard', id: this.props.recipeData._id },
+        { className: 'RecipeCard col-12 col-md-6 col-lg-4 col-xl-3' },
         _react2.default.createElement(
-          'h2',
-          { className: 'RecipeCard-title' },
-          ' ',
-          recipeTitle
-        ),
-        _react2.default.createElement(
-          'p',
-          { className: 'RecipeCard-description' },
-          ' ',
-          this.props.recipeData.description
+          _reactRouterDom.Link,
+          { className: 'RecipeCard-link', to: this.props.linkTo },
+          _react2.default.createElement(
+            'div',
+            { className: 'RecipeCard-inner', id: this.props.recipeData._id },
+            _react2.default.createElement('img', { height: 'auto', width: 'auto', src: '/images/recipe_images/' + this.props.recipeData.imagePath }),
+            _react2.default.createElement(
+              'h2',
+              { className: 'RecipeCard-title' },
+              ' ',
+              recipeTitle
+            ),
+            _react2.default.createElement(
+              'p',
+              { className: 'RecipeCard-description' },
+              ' ',
+              this.props.recipeData.description
+            )
+          )
         )
       );
     }
@@ -16437,7 +16441,7 @@ var AddOneRecipe = function AddOneRecipe(props) {
   return _react2.default.createElement(
     _MainContainer2.default,
     { pageName: 'Add a new dish' },
-    _react2.default.createElement(_AddOneRecipeForm2.default, { modalOpen: props.modalOpen, modalClose: props.modalClose })
+    _react2.default.createElement(_AddOneRecipeForm2.default, { userData: props.userData, modalOpen: props.modalOpen, modalClose: props.modalClose })
   );
 };
 
@@ -16510,6 +16514,8 @@ var AddOneRecipeForm = function (_React$Component) {
         name: '',
         amount: ''
       }],
+      recipeImage: '',
+      imagePreviewUrl: '',
       directions: [''],
       titleValid: false,
       titleError: '',
@@ -16527,6 +16533,7 @@ var AddOneRecipeForm = function (_React$Component) {
     _this.handleFormSubmit = _this.handleFormSubmit.bind(_this);
     _this.formatIngredients = _this.formatIngredients.bind(_this);
     _this.formatDirections = _this.formatDirections.bind(_this);
+    _this.handlePhotoUpload = _this.handlePhotoUpload.bind(_this);
 
     return _this;
   }
@@ -16570,7 +16577,7 @@ var AddOneRecipeForm = function (_React$Component) {
           ingredientsArr.splice(index, 1);
         }
       });
-
+      console.log(ingredientsArr);
       return ingredientsArr;
     }
   }, {
@@ -16607,6 +16614,25 @@ var AddOneRecipeForm = function (_React$Component) {
       });
     }
   }, {
+    key: 'handlePhotoUpload',
+    value: function handlePhotoUpload(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      var reader = new FileReader();
+      var input = e.target;
+      var file = input.files[0];
+
+      reader.readAsDataURL(file);
+
+      reader.onload = function () {
+        _this2.setState({
+          recipeImage: file,
+          imagePreviewUrl: reader.result
+        });
+      };
+    }
+  }, {
     key: 'handleFormChange',
     value: function handleFormChange(e) {
       (0, _formValidation.validateOneInput)(e.target);
@@ -16615,7 +16641,7 @@ var AddOneRecipeForm = function (_React$Component) {
   }, {
     key: 'handleFormSubmit',
     value: function handleFormSubmit(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       e.preventDefault();
       this.triggerCategoryErrors();
@@ -16626,14 +16652,18 @@ var AddOneRecipeForm = function (_React$Component) {
         return;
       }
 
-      var newRecipe = {};
-      newRecipe.title = this.state.title.trim();
-      newRecipe.description = this.state.description.trim();
-      newRecipe.category = this.state.category;
-      newRecipe.ingredients = this.formatIngredients();
-      newRecipe.directions = this.formatDirections();
+      console.log(this.props.userData);
 
-      (0, _services.addOneRecipe)(newRecipe).then(function (response) {
+      var formData = new FormData();
+      formData.append('title', this.state.title.trim().toLowerCase());
+      formData.append('author', this.props.userData.userId);
+      formData.append('description', this.state.description.trim());
+      formData.append('category', this.state.category);
+      formData.append('ingredients', JSON.stringify(this.formatIngredients()));
+      formData.append('directions', this.formatDirections());
+      formData.append('image', this.state.recipeImage);
+
+      (0, _services.addOneRecipe)(formData).then(function (response) {
         if (response.status !== 200) {
           throw new Error('Something has gone horribly wrong . . . ');
         }
@@ -16645,10 +16675,10 @@ var AddOneRecipeForm = function (_React$Component) {
           throw new Error(jsonResponse.data.message);
         }
 
-        _this2.props.modalOpen('positive', jsonResponse.data.message);
+        _this3.props.modalOpen('positive', jsonResponse.data.message);
       }).catch(function (err) {
 
-        _this2.props.modalOpen('negative', err.message);
+        _this3.props.modalOpen('negative', err.message);
       });
     }
   }, {
@@ -16680,6 +16710,8 @@ var AddOneRecipeForm = function (_React$Component) {
         _react2.default.createElement(_CategorySelector2.default, { initialCategories: this.state.category, handleChange: this.handleCategorySelectorChange, name: 'category' }),
         _react2.default.createElement(_IngredientsComponent2.default, { ingredients: this.state.ingredients, handleChange: this.updateIngredients, validation: 'isNotBlank' }),
         _react2.default.createElement(_DirectionsComponent2.default, { directions: this.state.directions, onChange: this.updateDirections }),
+        _react2.default.createElement('input', { type: 'file', onChange: this.handlePhotoUpload, name: 'picture', accept: 'image/*', id: 'image-input' }),
+        _react2.default.createElement('img', { height: 'auto', width: 'auto', src: this.state.imagePreviewUrl }),
         _react2.default.createElement(
           'button',
           { className: 'AddRecipeForm-submitButton', type: 'button', onClick: this.handleFormSubmit },
@@ -20439,7 +20471,7 @@ exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Kro
 exports.i(__webpack_require__(125), "");
 
 // module
-exports.push([module.i, "/*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */\n/* Document\r\n   ========================================================================== */\n/**\r\n * 1. Correct the line height in all browsers.\r\n * 2. Prevent adjustments of font size after orientation changes in\r\n *    IE on Windows Phone and in iOS.\r\n */\nhtml {\n  line-height: 1.15;\n  /* 1 */\n  -ms-text-size-adjust: 100%;\n  /* 2 */\n  -webkit-text-size-adjust: 100%;\n  /* 2 */ }\n\n/* Sections\r\n   ========================================================================== */\n/**\r\n * Remove the margin in all browsers (opinionated).\r\n */\nbody {\n  margin: 0; }\n\n/**\r\n * Add the correct display in IE 9-.\r\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\r\n * Correct the font size and margin on `h1` elements within `section` and\r\n * `article` contexts in Chrome, Firefox, and Safari.\r\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 9-.\r\n * 1. Add the correct display in IE.\r\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\r\n * Add the correct margin in IE 8.\r\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\r\n * 1. Add the correct box sizing in Firefox.\r\n * 2. Show the overflow in Edge and IE.\r\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\r\n * 1. Correct the inheritance and scaling of font size in all browsers.\r\n * 2. Correct the odd `em` font sizing in all browsers.\r\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\r\n   ========================================================================== */\n/**\r\n * 1. Remove the gray background on active links in IE 10.\r\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\r\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\r\n * 1. Remove the bottom border in Chrome 57- and Firefox 39-.\r\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\r\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\r\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\r\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\r\n * Add the correct font weight in Chrome, Edge, and Safari.\r\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\r\n * 1. Correct the inheritance and scaling of font size in all browsers.\r\n * 2. Correct the odd `em` font sizing in all browsers.\r\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\r\n * Add the correct font style in Android 4.3-.\r\n */\ndfn {\n  font-style: italic; }\n\n/**\r\n * Add the correct background and color in IE 9-.\r\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\r\n * Add the correct font size in all browsers.\r\n */\nsmall {\n  font-size: 80%; }\n\n/**\r\n * Prevent `sub` and `sup` elements from affecting the line height in\r\n * all browsers.\r\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 9-.\r\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\r\n * Add the correct display in iOS 4-7.\r\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\r\n * Remove the border on images inside links in IE 10-.\r\n */\nimg {\n  border-style: none; }\n\n/**\r\n * Hide the overflow in IE.\r\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\r\n   ========================================================================== */\n/**\r\n * 1. Change the font styles in all browsers (opinionated).\r\n * 2. Remove the margin in Firefox and Safari.\r\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\r\n * Show the overflow in IE.\r\n * 1. Show the overflow in Edge.\r\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\r\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\r\n * 1. Remove the inheritance of text transform in Firefox.\r\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\r\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\r\n *    controls in Android 4.\r\n * 2. Correct the inability to style clickable types in iOS and Safari.\r\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\r\n * Remove the inner border and padding in Firefox.\r\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\r\n * Restore the focus styles unset by the previous rule.\r\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\r\n * Correct the padding in Firefox.\r\n */\nfieldset {\n  padding: 0.35em 0.75em 0.625em; }\n\n/**\r\n * 1. Correct the text wrapping in Edge and IE.\r\n * 2. Correct the color inheritance from `fieldset` elements in IE.\r\n * 3. Remove the padding so developers are not caught out when they zero out\r\n *    `fieldset` elements in all browsers.\r\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\r\n * 1. Add the correct display in IE 9-.\r\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\r\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\r\n * Remove the default vertical scrollbar in IE.\r\n */\ntextarea {\n  overflow: auto; }\n\n/**\r\n * 1. Add the correct box sizing in IE 10-.\r\n * 2. Remove the padding in IE 10-.\r\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\r\n * Correct the cursor style of increment and decrement buttons in Chrome.\r\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\r\n * 1. Correct the odd appearance in Chrome and Safari.\r\n * 2. Correct the outline style in Safari.\r\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\r\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\r\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\r\n * 1. Correct the inability to style clickable types in iOS and Safari.\r\n * 2. Change font properties to `inherit` in Safari.\r\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\r\n   ========================================================================== */\n/*\r\n * Add the correct display in IE 9-.\r\n * 1. Add the correct display in Edge, IE, and Firefox.\r\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\r\n * Add the correct display in all browsers.\r\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 9-.\r\n */\ncanvas {\n  display: inline-block; }\n\n/**\r\n * Add the correct display in IE.\r\n */\ntemplate {\n  display: none; }\n\n/* Hidden\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 10-.\r\n */\n[hidden] {\n  display: none; }\n\n* {\n  box-sizing: border-box;\n  color: black;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n  padding: 0; }\n\nhtml, body {\n  font-size: 18px;\n  height: 100%;\n  margin: 0;\n  padding: 0;\n  width: 100%; }\n\na {\n  text-decoration: none; }\n\ntextarea {\n  resize: none; }\n\n.clearfix:after {\n  clear: both;\n  content: \"\";\n  display: table; }\n\n.centered {\n  margin: 0 auto; }\n\n.hidden, .Select.has-value ~ .CustomInput-error {\n  display: none; }\n\n.col-1 {\n  width: calc(100% / 12 * 1); }\n\n.col-2 {\n  width: calc(100% / 12 * 2); }\n\n.col-3 {\n  width: calc(100% / 12 * 3); }\n\n.col-4 {\n  width: calc(100% / 12 * 4); }\n\n.col-5, .Ingredients .CustomInput {\n  width: calc(100% / 12 * 5); }\n\n.col-6 {\n  width: calc(100% / 12 * 6); }\n\n.col-7 {\n  width: calc(100% / 12 * 7); }\n\n.col-8, .main-content, .AddRecipeForm .Form-section, .LoginForm .Form-section, .SignUpForm .Form-section {\n  width: calc(100% / 12 * 8); }\n\n.col-9 {\n  width: calc(100% / 12 * 9); }\n\n.col-10 {\n  width: calc(100% / 12 * 10); }\n\n.col-11 {\n  width: calc(100% / 12 * 11); }\n\n.col-12 {\n  width: calc(100% / 12 * 12); }\n\nh1 {\n  font-size: calc(1rem + (1rem / 1));\n  margin: 0;\n  padding: .5em 0; }\n\nh2 {\n  font-size: calc(1rem + (1rem / 2));\n  margin: 0;\n  padding: .5em 0; }\n\nh3 {\n  font-size: calc(1rem + (1rem / 3));\n  margin: 0;\n  padding: .5em 0; }\n\nh4 {\n  font-size: calc(1rem + (1rem / 4));\n  margin: 0;\n  padding: .5em 0; }\n\nh5 {\n  font-size: calc(1rem + (1rem / 5));\n  margin: 0;\n  padding: .5em 0; }\n\nh6 {\n  font-size: calc(1rem + (1rem / 6));\n  margin: 0;\n  padding: .5em 0; }\n\n.logo {\n  color: black;\n  font-family: \"Krona One\", sans-serif;\n  font-size: normal;\n  font-style: normal;\n  font-weight: normal;\n  letter-spacing: 1px;\n  text-align: center;\n  text-transform: uppercase; }\n\n.header_nav_list {\n  display: flex;\n  height: 100%;\n  list-style-type: none;\n  justify-content: center; }\n  .header_nav_list_item_link {\n    color: black;\n    font-family: \"Roboto\", sans-sefif;\n    font-size: 1.25rem;\n    font-style: initial;\n    font-weight: initial;\n    letter-spacing: 0.5px;\n    display: block;\n    margin: 1rem 0;\n    padding: 0 .75rem; }\n    .header_nav_list_item_link--active {\n      text-decoration: underline; }\n\n.main-content {\n  max-width: 1064px; }\n\n.page-header {\n  text-transform: uppercase; }\n\n.AddRecipeForm .Form-section {\n  padding: 1.5rem 0 2rem; }\n  .AddRecipeForm .Form-section .CustomInput--textarea .CustomInput-field {\n    min-height: 8rem; }\n  .AddRecipeForm .Form-section .CustomInput--textarea .CustomInput-error {\n    display: block; }\n\n.AddRecipeForm-submitButton {\n  background-color: #759eB8;\n  border: 0;\n  border-radius: 50%;\n  bottom: 6rem;\n  box-shadow: 2px 2px 20px lightslategrey;\n  cursor: pointer;\n  height: 7rem;\n  position: fixed;\n  right: 8rem;\n  text-transform: uppercase;\n  width: 7rem;\n  z-index: 2; }\n\n.Directions-inputContainer {\n  padding-bottom: 1rem; }\n  .Directions-inputContainer:after {\n    clear: both;\n    content: \"\";\n    display: table; }\n\n.Directions-stepLabel {\n  display: block;\n  padding: .5rem 0; }\n\n.Directions-stepInput {\n  display: block;\n  float: left;\n  margin-right: .5rem; }\n\n.Directions-stepRemove {\n  color: black;\n  cursor: pointer;\n  float: left;\n  font-size: 1.25rem; }\n\n.Ingredients .CustomInput {\n  display: inline-block;\n  vertical-align: top; }\n  .Ingredients .CustomInput:first-child {\n    margin-right: 1.5rem; }\n\n.Ingredients-inputContainer {\n  padding-bottom: .5rem; }\n\n.Ingredients-removeIngredient {\n  cursor: pointer;\n  font-size: 1.25rem;\n  left: .5rem;\n  position: relative;\n  top: .25rem; }\n\n.Select.is-focused:not(.is-open) {\n  box-shadow: 0;\n  outline: -webkit-focus-ring-color auto 5px; }\n\n.Select .Select-control {\n  border: 1px solid gray;\n  border-radius: 0;\n  height: auto; }\n  .Select .Select-control .Select-multi-value-wrapper {\n    display: flex; }\n    .Select .Select-control .Select-multi-value-wrapper .Select-value {\n      align-items: center;\n      display: flex;\n      margin: .3rem .3rem; }\n      .Select .Select-control .Select-multi-value-wrapper .Select-value .Select-value-icon {\n        border-right: 0;\n        order: 2;\n        padding: 0 5px 0 3px; }\n      .Select .Select-control .Select-multi-value-wrapper .Select-value .Select-value-label {\n        order: 1; }\n\n.LoginForm .Form-section {\n  padding-bottom: 1rem; }\n\n.SignUpForm .Form-section {\n  padding-bottom: 1rem; }\n\n.Modal {\n  background-color: rgba(0, 0, 0, 0.5);\n  bottom: 0;\n  height: 100%;\n  left: 0;\n  overflow: hidden;\n  position: fixed;\n  right: 0;\n  top: 0;\n  width: 100%;\n  z-index: 2; }\n  .Modal-body {\n    background-color: whitesmoke;\n    border: 2px solid gray;\n    border-radius: 22px;\n    height: 15rem;\n    margin: 4rem auto 0 auto;\n    padding: 2rem;\n    width: 30rem; }\n  .Modal-head {\n    font-style: italic; }\n    .Modal-head--negative {\n      color: #C76D7E; }\n    .Modal-head--positive {\n      color: #77ba99; }\n\n.RecipeCard {\n  border: 1px solid gray;\n  border-radius: 5px;\n  padding: 1rem; }\n  .RecipeCard-title {\n    color: blackff; }\n  .RecipeCard-description {\n    color: black; }\n\n.RecipeCardsContainer--grid:after {\n  clear: both;\n  content: \"\";\n  display: table; }\n\n.RecipeCardsContainer--grid .RecipeCard {\n  box-shadow: 2px 2px black;\n  cursor: pointer;\n  float: left;\n  height: 15rem;\n  margin: .5%;\n  transition: all 1s ease;\n  width: 24%; }\n  .RecipeCardsContainer--grid .RecipeCard:hover {\n    background-color: black; }\n    .RecipeCardsContainer--grid .RecipeCard:hover .RecipeCard-title,\n    .RecipeCardsContainer--grid .RecipeCard:hover .RecipeCard-description {\n      color: white; }\n\n.Form {\n  padding-bottom: 5rem; }\n  .Form-sectionLabel {\n    display: block;\n    font-size: 1.1rem;\n    font-weight: 400;\n    margin: .5rem 0;\n    text-transform: uppercase; }\n  .Form-greenBtn {\n    background-color: #77ba99;\n    border-radius: 5px;\n    box-shadow: 1px 4px 4px gray;\n    color: white;\n    cursor: pointer;\n    display: block;\n    line-height: 2rem;\n    margin: .5rem 0;\n    text-align: center;\n    transition: all .5s linear;\n    width: 6rem; }\n    .Form-greenBtn:hover {\n      background-color: #6daa8c; }\n\n.field--invalid, .Select.invalid .Select-multi-value-wrapper, .CustomInput.invalid .CustomInput-field {\n  background-color: #f9f1f3;\n  border-color: #C76D7E;\n  outline-color: #C76D7E; }\n\n.field--default, .CustomInput-field {\n  background-color: white;\n  border: 1px solid gray;\n  padding: .4rem;\n  width: 100%; }\n\n.CustomInput-error {\n  color: #C76D7E;\n  font-size: .75rem;\n  font-weight: 500;\n  text-transform: uppercase; }\n", ""]);
+exports.push([module.i, "/*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */\n/* Document\r\n   ========================================================================== */\n/**\r\n * 1. Correct the line height in all browsers.\r\n * 2. Prevent adjustments of font size after orientation changes in\r\n *    IE on Windows Phone and in iOS.\r\n */\nhtml {\n  line-height: 1.15;\n  /* 1 */\n  -ms-text-size-adjust: 100%;\n  /* 2 */\n  -webkit-text-size-adjust: 100%;\n  /* 2 */ }\n\n/* Sections\r\n   ========================================================================== */\n/**\r\n * Remove the margin in all browsers (opinionated).\r\n */\nbody {\n  margin: 0; }\n\n/**\r\n * Add the correct display in IE 9-.\r\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\r\n * Correct the font size and margin on `h1` elements within `section` and\r\n * `article` contexts in Chrome, Firefox, and Safari.\r\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 9-.\r\n * 1. Add the correct display in IE.\r\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\r\n * Add the correct margin in IE 8.\r\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\r\n * 1. Add the correct box sizing in Firefox.\r\n * 2. Show the overflow in Edge and IE.\r\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\r\n * 1. Correct the inheritance and scaling of font size in all browsers.\r\n * 2. Correct the odd `em` font sizing in all browsers.\r\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\r\n   ========================================================================== */\n/**\r\n * 1. Remove the gray background on active links in IE 10.\r\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\r\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\r\n * 1. Remove the bottom border in Chrome 57- and Firefox 39-.\r\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\r\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\r\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\r\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\r\n * Add the correct font weight in Chrome, Edge, and Safari.\r\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\r\n * 1. Correct the inheritance and scaling of font size in all browsers.\r\n * 2. Correct the odd `em` font sizing in all browsers.\r\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\r\n * Add the correct font style in Android 4.3-.\r\n */\ndfn {\n  font-style: italic; }\n\n/**\r\n * Add the correct background and color in IE 9-.\r\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\r\n * Add the correct font size in all browsers.\r\n */\nsmall {\n  font-size: 80%; }\n\n/**\r\n * Prevent `sub` and `sup` elements from affecting the line height in\r\n * all browsers.\r\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 9-.\r\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\r\n * Add the correct display in iOS 4-7.\r\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\r\n * Remove the border on images inside links in IE 10-.\r\n */\nimg {\n  border-style: none; }\n\n/**\r\n * Hide the overflow in IE.\r\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\r\n   ========================================================================== */\n/**\r\n * 1. Change the font styles in all browsers (opinionated).\r\n * 2. Remove the margin in Firefox and Safari.\r\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\r\n * Show the overflow in IE.\r\n * 1. Show the overflow in Edge.\r\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\r\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\r\n * 1. Remove the inheritance of text transform in Firefox.\r\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\r\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\r\n *    controls in Android 4.\r\n * 2. Correct the inability to style clickable types in iOS and Safari.\r\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\r\n * Remove the inner border and padding in Firefox.\r\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\r\n * Restore the focus styles unset by the previous rule.\r\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\r\n * Correct the padding in Firefox.\r\n */\nfieldset {\n  padding: 0.35em 0.75em 0.625em; }\n\n/**\r\n * 1. Correct the text wrapping in Edge and IE.\r\n * 2. Correct the color inheritance from `fieldset` elements in IE.\r\n * 3. Remove the padding so developers are not caught out when they zero out\r\n *    `fieldset` elements in all browsers.\r\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\r\n * 1. Add the correct display in IE 9-.\r\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\r\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\r\n * Remove the default vertical scrollbar in IE.\r\n */\ntextarea {\n  overflow: auto; }\n\n/**\r\n * 1. Add the correct box sizing in IE 10-.\r\n * 2. Remove the padding in IE 10-.\r\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\r\n * Correct the cursor style of increment and decrement buttons in Chrome.\r\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\r\n * 1. Correct the odd appearance in Chrome and Safari.\r\n * 2. Correct the outline style in Safari.\r\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\r\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\r\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\r\n * 1. Correct the inability to style clickable types in iOS and Safari.\r\n * 2. Change font properties to `inherit` in Safari.\r\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\r\n   ========================================================================== */\n/*\r\n * Add the correct display in IE 9-.\r\n * 1. Add the correct display in Edge, IE, and Firefox.\r\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\r\n * Add the correct display in all browsers.\r\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 9-.\r\n */\ncanvas {\n  display: inline-block; }\n\n/**\r\n * Add the correct display in IE.\r\n */\ntemplate {\n  display: none; }\n\n/* Hidden\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 10-.\r\n */\n[hidden] {\n  display: none; }\n\n* {\n  box-sizing: border-box;\n  color: black;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n  padding: 0; }\n\nhtml, body {\n  font-size: 18px;\n  height: 100%;\n  margin: 0;\n  padding: 0;\n  width: 100%; }\n\na {\n  text-decoration: none; }\n\ntextarea {\n  resize: none; }\n\n.clearfix:after {\n  clear: both;\n  content: \"\";\n  display: table; }\n\n.centered {\n  margin: 0 auto; }\n\n.hidden, .Select.has-value ~ .CustomInput-error {\n  display: none; }\n\n.col-1 {\n  width: calc(100% / 12 * 1); }\n\n.col-2 {\n  width: calc(100% / 12 * 2); }\n\n.col-3 {\n  width: calc(100% / 12 * 3); }\n\n.col-4 {\n  width: calc(100% / 12 * 4); }\n\n.col-5, .Ingredients .CustomInput {\n  width: calc(100% / 12 * 5); }\n\n.col-6 {\n  width: calc(100% / 12 * 6); }\n\n.col-7 {\n  width: calc(100% / 12 * 7); }\n\n.col-8, .AddRecipeForm .Form-section, .LoginForm .Form-section, .SignUpForm .Form-section {\n  width: calc(100% / 12 * 8); }\n\n.col-9 {\n  width: calc(100% / 12 * 9); }\n\n.col-10 {\n  width: calc(100% / 12 * 10); }\n\n.col-11 {\n  width: calc(100% / 12 * 11); }\n\n.col-12 {\n  width: calc(100% / 12 * 12); }\n\n@media screen and (min-width: 576px) {\n  .col-xs-1 {\n    width: calc(100% / 12 * 1); }\n  .col-xs-2 {\n    width: calc(100% / 12 * 2); }\n  .col-xs-3 {\n    width: calc(100% / 12 * 3); }\n  .col-xs-4 {\n    width: calc(100% / 12 * 4); }\n  .col-xs-5 {\n    width: calc(100% / 12 * 5); }\n  .col-xs-6 {\n    width: calc(100% / 12 * 6); }\n  .col-xs-7 {\n    width: calc(100% / 12 * 7); }\n  .col-xs-8 {\n    width: calc(100% / 12 * 8); }\n  .col-xs-9 {\n    width: calc(100% / 12 * 9); }\n  .col-xs-10 {\n    width: calc(100% / 12 * 10); }\n  .col-xs-11 {\n    width: calc(100% / 12 * 11); }\n  .col-xs-12 {\n    width: calc(100% / 12 * 12); } }\n\n@media screen and (min-width: 768px) {\n  .col-sm-1 {\n    width: calc(100% / 12 * 1); }\n  .col-sm-2 {\n    width: calc(100% / 12 * 2); }\n  .col-sm-3 {\n    width: calc(100% / 12 * 3); }\n  .col-sm-4 {\n    width: calc(100% / 12 * 4); }\n  .col-sm-5 {\n    width: calc(100% / 12 * 5); }\n  .col-sm-6 {\n    width: calc(100% / 12 * 6); }\n  .col-sm-7 {\n    width: calc(100% / 12 * 7); }\n  .col-sm-8 {\n    width: calc(100% / 12 * 8); }\n  .col-sm-9 {\n    width: calc(100% / 12 * 9); }\n  .col-sm-10 {\n    width: calc(100% / 12 * 10); }\n  .col-sm-11 {\n    width: calc(100% / 12 * 11); }\n  .col-sm-12 {\n    width: calc(100% / 12 * 12); } }\n\n@media screen and (min-width: 992px) {\n  .col-md-1 {\n    width: calc(100% / 12 * 1); }\n  .col-md-2 {\n    width: calc(100% / 12 * 2); }\n  .col-md-3 {\n    width: calc(100% / 12 * 3); }\n  .col-md-4 {\n    width: calc(100% / 12 * 4); }\n  .col-md-5 {\n    width: calc(100% / 12 * 5); }\n  .col-md-6 {\n    width: calc(100% / 12 * 6); }\n  .col-md-7 {\n    width: calc(100% / 12 * 7); }\n  .col-md-8 {\n    width: calc(100% / 12 * 8); }\n  .col-md-9 {\n    width: calc(100% / 12 * 9); }\n  .col-md-10 {\n    width: calc(100% / 12 * 10); }\n  .col-md-11 {\n    width: calc(100% / 12 * 11); }\n  .col-md-12 {\n    width: calc(100% / 12 * 12); } }\n\n@media screen and (min-width: 1200px) {\n  .col-lg-1 {\n    width: calc(100% / 12 * 1); }\n  .col-lg-2 {\n    width: calc(100% / 12 * 2); }\n  .col-lg-3 {\n    width: calc(100% / 12 * 3); }\n  .col-lg-4 {\n    width: calc(100% / 12 * 4); }\n  .col-lg-5 {\n    width: calc(100% / 12 * 5); }\n  .col-lg-6 {\n    width: calc(100% / 12 * 6); }\n  .col-lg-7 {\n    width: calc(100% / 12 * 7); }\n  .col-lg-8 {\n    width: calc(100% / 12 * 8); }\n  .col-lg-9 {\n    width: calc(100% / 12 * 9); }\n  .col-lg-10 {\n    width: calc(100% / 12 * 10); }\n  .col-lg-11 {\n    width: calc(100% / 12 * 11); }\n  .col-lg-12 {\n    width: calc(100% / 12 * 12); } }\n\n@media screen and (min-width: 1500px) {\n  .col-xl-1 {\n    width: calc(100% / 12 * 1); }\n  .col-xl-2 {\n    width: calc(100% / 12 * 2); }\n  .col-xl-3 {\n    width: calc(100% / 12 * 3); }\n  .col-xl-4 {\n    width: calc(100% / 12 * 4); }\n  .col-xl-5 {\n    width: calc(100% / 12 * 5); }\n  .col-xl-6 {\n    width: calc(100% / 12 * 6); }\n  .col-xl-7 {\n    width: calc(100% / 12 * 7); }\n  .col-xl-8 {\n    width: calc(100% / 12 * 8); }\n  .col-xl-9 {\n    width: calc(100% / 12 * 9); }\n  .col-xl-10 {\n    width: calc(100% / 12 * 10); }\n  .col-xl-11 {\n    width: calc(100% / 12 * 11); }\n  .col-xl-12 {\n    width: calc(100% / 12 * 12); } }\n\nh1 {\n  font-size: calc(1rem + (1rem / 1));\n  margin: 0;\n  padding: .5em 0; }\n\nh2 {\n  font-size: calc(1rem + (1rem / 2));\n  margin: 0;\n  padding: .5em 0; }\n\nh3 {\n  font-size: calc(1rem + (1rem / 3));\n  margin: 0;\n  padding: .5em 0; }\n\nh4 {\n  font-size: calc(1rem + (1rem / 4));\n  margin: 0;\n  padding: .5em 0; }\n\nh5 {\n  font-size: calc(1rem + (1rem / 5));\n  margin: 0;\n  padding: .5em 0; }\n\nh6 {\n  font-size: calc(1rem + (1rem / 6));\n  margin: 0;\n  padding: .5em 0; }\n\n.logo {\n  color: black;\n  font-family: \"Krona One\", sans-serif;\n  font-size: normal;\n  letter-spacing: 1px;\n  text-transform: uppercase; }\n\n.header {\n  position: relative; }\n  .header_nav_list {\n    display: flex;\n    height: 100%;\n    list-style-type: none;\n    justify-content: center; }\n    .header_nav_list_item_link {\n      color: black;\n      font-family: \"Roboto\", sans-sefif;\n      font-size: 1.25rem;\n      letter-spacing: 0.5px;\n      display: block;\n      margin: 1rem 0;\n      padding: 0 .75rem; }\n      .header_nav_list_item_link--active {\n        text-decoration: underline; }\n\n.main-content {\n  padding: 0 .5rem; }\n\n@media screen and (min-width: 576px) {\n  .main-content {\n    padding: 0 1rem; } }\n\n@media screen and (min-width: 1200px) {\n  .main-content {\n    padding: 0; } }\n\n.HeaderLogin {\n  position: absolute;\n  right: 1rem;\n  top: 1rem; }\n  .HeaderLogin-item {\n    color: black;\n    font-family: \"Roboto\", sans-sefif;\n    font-size: 1rem;\n    letter-spacing: 0.5px;\n    display: inline-block;\n    font-weight: 400;\n    padding: 0 .5rem;\n    text-transform: uppercase; }\n\n.page-header {\n  text-transform: uppercase; }\n\n.AddRecipeForm .Form-section {\n  padding: 1.5rem 0 2rem; }\n  .AddRecipeForm .Form-section .CustomInput--textarea .CustomInput-field {\n    min-height: 8rem; }\n  .AddRecipeForm .Form-section .CustomInput--textarea .CustomInput-error {\n    display: block; }\n\n.AddRecipeForm-submitButton {\n  background-color: #759eB8;\n  border: 0;\n  border-radius: 50%;\n  bottom: 6rem;\n  box-shadow: 2px 2px 20px lightslategrey;\n  cursor: pointer;\n  height: 7rem;\n  position: fixed;\n  right: 8rem;\n  text-transform: uppercase;\n  width: 7rem;\n  z-index: 2; }\n\n.Directions-inputContainer {\n  padding-bottom: 1rem; }\n  .Directions-inputContainer:after {\n    clear: both;\n    content: \"\";\n    display: table; }\n\n.Directions-stepLabel {\n  display: block;\n  padding: .5rem 0; }\n\n.Directions-stepInput {\n  display: block;\n  float: left;\n  margin-right: .5rem; }\n\n.Directions-stepRemove {\n  color: black;\n  cursor: pointer;\n  float: left;\n  font-size: 1.25rem; }\n\n.Ingredients .CustomInput {\n  display: inline-block;\n  vertical-align: top; }\n  .Ingredients .CustomInput:first-child {\n    margin-right: 1.5rem; }\n\n.Ingredients-inputContainer {\n  padding-bottom: .5rem; }\n\n.Ingredients-removeIngredient {\n  cursor: pointer;\n  font-size: 1.25rem;\n  left: .5rem;\n  position: relative;\n  top: .25rem; }\n\n.Select.is-focused:not(.is-open) {\n  box-shadow: 0;\n  outline: -webkit-focus-ring-color auto 5px; }\n\n.Select .Select-control {\n  border: 1px solid gray;\n  border-radius: 0;\n  height: auto; }\n  .Select .Select-control .Select-multi-value-wrapper {\n    display: flex; }\n    .Select .Select-control .Select-multi-value-wrapper .Select-value {\n      align-items: center;\n      display: flex;\n      margin: .3rem .3rem; }\n      .Select .Select-control .Select-multi-value-wrapper .Select-value .Select-value-icon {\n        border-right: 0;\n        order: 2;\n        padding: 0 5px 0 3px; }\n      .Select .Select-control .Select-multi-value-wrapper .Select-value .Select-value-label {\n        order: 1; }\n\n.LoginForm .Form-section {\n  padding-bottom: 1rem; }\n\n.SignUpForm .Form-section {\n  padding-bottom: 1rem; }\n\n.Modal {\n  background-color: rgba(0, 0, 0, 0.5);\n  bottom: 0;\n  height: 100%;\n  left: 0;\n  overflow: hidden;\n  position: fixed;\n  right: 0;\n  top: 0;\n  width: 100%;\n  z-index: 2; }\n  .Modal-body {\n    background-color: whitesmoke;\n    border: 2px solid gray;\n    border-radius: 22px;\n    height: 15rem;\n    margin: 4rem auto 0 auto;\n    padding: 2rem;\n    width: 30rem; }\n  .Modal-head {\n    font-style: italic; }\n    .Modal-head--negative {\n      color: #C76D7E; }\n    .Modal-head--positive {\n      color: #77ba99; }\n\n.RecipeCard {\n  margin-bottom: 1rem;\n  min-width: 15rem; }\n  .RecipeCard-link {\n    display: block;\n    height: 100%;\n    width: 100%; }\n  .RecipeCard-inner {\n    border: 1px solid gray;\n    border-radius: 5px;\n    box-shadow: 2px 2px black;\n    cursor: pointer;\n    height: 15rem;\n    padding: 1rem;\n    transition: all 1s ease; }\n    .RecipeCard-inner:hover {\n      background-color: black; }\n      .RecipeCard-inner:hover .RecipeCard-title,\n      .RecipeCard-inner:hover .RecipeCard-description {\n        color: white; }\n  .RecipeCard-title {\n    color: black;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap; }\n  .RecipeCard-description {\n    color: black; }\n\n@media screen and (min-width: 992px) {\n  .RecipeCard {\n    float: left;\n    margin-bottom: .4rem;\n    padding-right: .4rem; } }\n\n@media screen and (min-width: 992px) {\n  :after {\n    clear: both;\n    content: \"\";\n    display: table; } }\n\n.Form {\n  padding-bottom: 5rem; }\n  .Form-sectionLabel {\n    display: block;\n    font-size: 1.1rem;\n    font-weight: 400;\n    margin: .5rem 0;\n    text-transform: uppercase; }\n  .Form-greenBtn {\n    background-color: #77ba99;\n    border-radius: 5px;\n    box-shadow: 1px 4px 4px gray;\n    color: white;\n    cursor: pointer;\n    display: block;\n    line-height: 2rem;\n    margin: .5rem 0;\n    text-align: center;\n    transition: all .5s linear;\n    width: 6rem; }\n    .Form-greenBtn:hover {\n      background-color: #6daa8c; }\n\n.field--invalid, .Select.invalid .Select-multi-value-wrapper, .CustomInput.invalid .CustomInput-field {\n  background-color: #f9f1f3;\n  border-color: #C76D7E;\n  outline-color: #C76D7E; }\n\n.field--default, .CustomInput-field {\n  background-color: white;\n  border: 1px solid gray;\n  padding: .4rem;\n  width: 100%; }\n\n.CustomInput-error {\n  color: #C76D7E;\n  font-size: .75rem;\n  font-weight: 500;\n  text-transform: uppercase; }\n", ""]);
 
 // exports
 

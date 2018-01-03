@@ -21,6 +21,8 @@ class AddOneRecipeForm extends React.Component{
         name: '',
         amount: ''
       }],
+      recipeImage: '',
+      imagePreviewUrl: '',
       directions: [''],
       titleValid: false,
       titleError: '',
@@ -38,6 +40,7 @@ class AddOneRecipeForm extends React.Component{
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.formatIngredients = this.formatIngredients.bind(this);
     this.formatDirections = this.formatDirections.bind(this);
+    this.handlePhotoUpload = this.handlePhotoUpload.bind(this);
 
   }
 
@@ -76,7 +79,7 @@ class AddOneRecipeForm extends React.Component{
         ingredientsArr.splice(index, 1);
       }
     });
-
+    console.log(ingredientsArr)
     return ingredientsArr;
   };
 
@@ -110,6 +113,22 @@ class AddOneRecipeForm extends React.Component{
     })
   }
 
+  handlePhotoUpload(e) {
+    e.preventDefault();
+    const reader = new FileReader;
+    const input = e.target;
+    const file = input.files[0];
+
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      this.setState({
+        recipeImage: file,
+        imagePreviewUrl: reader.result
+      })
+    }
+  }
+
   handleFormChange(e) {
     validateOneInput(e.target);
     this.validateForm();
@@ -125,14 +144,19 @@ class AddOneRecipeForm extends React.Component{
       return;
     }
 
-    const newRecipe = {};
-    newRecipe.title = this.state.title.trim();
-    newRecipe.description = this.state.description.trim();
-    newRecipe.category = this.state.category;
-    newRecipe.ingredients = this.formatIngredients();
-    newRecipe.directions = this.formatDirections();
+    console.log(this.props.userData);
 
-    addOneRecipe(newRecipe).then((response) => {
+    let formData = new FormData();
+    formData.append('title', this.state.title.trim().toLowerCase());
+    formData.append('author', this.props.userData.userId);
+    formData.append('description', this.state.description.trim());
+    formData.append('category', this.state.category);
+    formData.append('ingredients', JSON.stringify(this.formatIngredients()));
+    formData.append('directions',  this.formatDirections());
+    formData.append('image', this.state.recipeImage);
+
+
+    addOneRecipe(formData).then((response) => {
       if (response.status !== 200) {
         throw new Error('Something has gone horribly wrong . . . ');
       }
@@ -167,6 +191,8 @@ class AddOneRecipeForm extends React.Component{
         <CategorySelector initialCategories={ this.state.category } handleChange={ this.handleCategorySelectorChange } name="category" />
         <IngredientsComponent ingredients={ this.state.ingredients } handleChange={ this.updateIngredients } validation='isNotBlank' />
         <DirectionsComponent directions={ this.state.directions } onChange={ this.updateDirections }/>
+        <input type="file" onChange={this.handlePhotoUpload} name="picture" accept="image/*" id='image-input'/>
+        <img height='auto' width='auto' src={this.state.imagePreviewUrl}/>
         <button className="AddRecipeForm-submitButton" type="button" onClick={ this.handleFormSubmit }>Submit</button>
       </form>
     )
