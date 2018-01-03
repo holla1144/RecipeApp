@@ -1,6 +1,5 @@
 import React from 'react';
 import { getOneRecipe } from '../../../../services/services';
-import MainContainer from '../../../SharedComponents/MainContent/MainContainer';
 import RecipeTitleComponent from './RecipeTitleComponent/RecipeTitleComponent';
 import RecipeDescriptionComponent from './RecipeDescriptionComponent/RecipeDescriptionComponent';
 import RecipeIngredientsContainer from './RecipeIngredientsComponent/RecipeIngredientsContainer';
@@ -47,13 +46,13 @@ class ShowOneRecipe extends React.Component{
 
   render() {
     return (
-      <MainContainer>
+      <div>
         <RecipeTitleComponent title={ this.state.recipeData.title }/>
         <RecipeCategoryContainer category={ this.state.recipeData.category }/>
         <RecipeDescriptionComponent description={ this.state.recipeData.description }/>
         <RecipeIngredientsContainer ingredients={ this.state.recipeData.ingredients }/>
         <RecipeDirectionsContainer directions={ this.state.recipeData.directions } />
-      </MainContainer>
+      </div>
     )
   }
 };

@@ -12,6 +12,10 @@ $logo: 'Krona One', sans-serif;
 }
 
 .logo {
-  @include textStyle($logo, normal, black, 1px);
+  @include textStyle($logo, 2rem, black, 1px);
   text-transform: uppercase;
+}
+
+.align-center {
+  text-align: center;
 }

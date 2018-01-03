@@ -4,7 +4,6 @@ import { validateOneInput } from '../../../services/formValidation';
 import { validateAllInputs } from '../../../services/formValidation';
 import { validateForm } from '../../../services/formValidation';
 import { signupUser } from '../../../services/services';
-import { Redirect } from 'react-router-dom';
 
 class SignupForm extends React.Component {
   constructor(props) {

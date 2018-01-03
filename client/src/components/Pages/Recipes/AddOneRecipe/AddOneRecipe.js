@@ -9,7 +9,7 @@ import CategorySelector from "./CategorySelector/CategorySelector";
 import IngredientsComponent from "./IngredientsComponent/IngredientsComponent";
 import DirectionsComponent from "./DirectionsComponent/DirectionsComponent";
 
-class AddOneRecipeForm extends React.Component{
+class AddOneRecipe extends React.Component{
   constructor(props) {
     super(props);
 
@@ -144,8 +144,6 @@ class AddOneRecipeForm extends React.Component{
       return;
     }
 
-    console.log(this.props.userData);
-
     let formData = new FormData();
     formData.append('title', this.state.title.trim().toLowerCase());
     formData.append('author', this.props.userData.userId);
@@ -199,4 +197,4 @@ class AddOneRecipeForm extends React.Component{
   }
 };
 
-export default AddOneRecipeForm;
+export default AddOneRecipe;

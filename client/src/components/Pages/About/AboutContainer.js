@@ -1,5 +1,4 @@
 import React from 'react';
-import MainContainer from '../../SharedComponents/MainContent/MainContainer';
 
 class AboutPage extends React.Component{
   constructor(props) {
@@ -7,9 +6,7 @@ class AboutPage extends React.Component{
   }
 
   render() {
-    return (
-      <MainContainer pageName="About" />
-    )
+    return <div></div>
   }
 }
 

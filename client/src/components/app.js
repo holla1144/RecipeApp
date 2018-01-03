@@ -6,9 +6,10 @@ import AboutPage from './Pages/About/AboutContainer';
 import HomePage from './Pages/Home/HomeContainer';
 import Modal from './SharedComponents/ModalComponent/ModalContainer';
 import ShowOneRecipe from './Pages/Recipes/ShowOneRecipe/ShowOneRecipe';
-import AddOneRecipeContainer from './Pages/Recipes/AddOneRecipe/AddOneRecipeContainer';
-import LoginContainer from './Pages/Login/LoginContainer';
-import SignUpContainer from './Pages/Signup/SignupContainer';
+import AddOneRecipe from './Pages/Recipes/AddOneRecipe/AddOneRecipe';
+import LoginForm from './Pages/Login/LoginForm';
+import SignupForm from './Pages/Signup/SignupForm';
+import MainContentContainer from './SharedComponents/MainContentContainer/MainContentContainer'
 import { setToken, getToken, removeToken, verifyToken }  from '../services/services';
 
 import {
@@ -113,20 +114,22 @@ class App extends React.Component{
           <Router basename="/">
             <div>
               <Header userLoggedIn={this.state.userLoggedIn} handleUserLogout={this.handleUserLogout} />
-              <Switch>
-                <Route exact path="/" component={ HomePage }/>
-                <Route path="/login"  render={(routeProps) => {
-                  return this.state.userLoggedIn ? <Redirect to='/'/> : <LoginContainer {...routeProps} setToken={ this.handleUserLogin } modalOpen={this.handleModalOpen }/>}} />
-                <Route path="/signup" render={(routeProps) => {
-                  return this.state.userLoggedIn ? <Redirect to='/' /> : <SignUpContainer {...routeProps} setToken={ this.handleUserLogin } modalOpen={this.handleModalOpen }/>}} />
-                <Route path="/about" component={ AboutPage }/>
-                <Route exact path="/recipes" component={ RecipesPage } />
-                <Route path="/recipes/new" render={( routeProps ) => {
-                  return this.state.userData.userType !== 3 ? <Redirect to="/recipes" /> :  <AddOneRecipeContainer { ...routeProps } userData={ this.state.userData } modalOpen={ this.handleModalOpen } />}}/>
-                <Route path="/recipes/:recipeId" render={( routeProps ) => { return <ShowOneRecipe { ...routeProps } modalOpen={ this.props.handleModalOpen } />}}/>
-                <Route path="/categories" component={ CategoriesPage }/>
-                <Redirect to="/"/>
-              </Switch>
+              <MainContentContainer>
+                <Switch>
+                  <Route exact path="/" component={ HomePage }/>
+                  <Route path="/login"  render={(routeProps) => {
+                    return this.state.userLoggedIn ? <Redirect to='/'/> : <LoginForm {...routeProps} setToken={ this.handleUserLogin } modalOpen={this.handleModalOpen }/>}} />
+                  <Route path="/signup" render={(routeProps) => {
+                    return this.state.userLoggedIn ? <Redirect to='/' /> : <SignupForm {...routeProps} setToken={ this.handleUserLogin } modalOpen={this.handleModalOpen }/>}} />
+                  <Route path="/about" component={ AboutPage }/>
+                  <Route exact path="/recipes" component={ RecipesPage } />
+                  <Route path="/recipes/new" render={( routeProps ) => {
+                    return this.state.userData.userType !== 3 ? <Redirect to="/recipes" /> :  <AddOneRecipe { ...routeProps } userData={ this.state.userData } modalOpen={ this.handleModalOpen } />}}/>
+                  <Route path="/recipes/:recipeId" render={( routeProps ) => { return <ShowOneRecipe { ...routeProps } modalOpen={ this.props.handleModalOpen } />}}/>
+                  <Route path="/categories" component={ CategoriesPage }/>
+                  <Redirect to="/"/>
+                </Switch>
+              </MainContentContainer>
               <Modal modalMessage={ this.state.modalMessage } handleModalClose={ this.handleModalClose } modalStyle={ this.state.modalStyle } visible={ this.state.modalVisible } />
             </div>
           </Router>

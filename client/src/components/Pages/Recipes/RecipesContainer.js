@@ -1,5 +1,4 @@
 import React from 'react';
-import MainContainer from '../../SharedComponents/MainContent/MainContainer';
 import RecipeCardsContainer from '../../SharedComponents/RecipeCards/RecipeCardsContainer/RecipeCardsContainer';
 import { getManyRecipes } from '../../../services/services';
 
@@ -33,11 +32,7 @@ class RecipesPage extends React.Component{
   }
 
   render() {
-    return (
-      <MainContainer pageName="Recipes">
-        <RecipeCardsContainer data={ this.state.recipeData } classList={"RecipeCardsContainer--grid"} modalOpen={ this.props.handleModalOpen } />
-      </MainContainer>
-    )
+    return <RecipeCardsContainer data={ this.state.recipeData } classList={"RecipeCardsContainer--grid"} modalOpen={ this.props.handleModalOpen } />
   }
 }
 

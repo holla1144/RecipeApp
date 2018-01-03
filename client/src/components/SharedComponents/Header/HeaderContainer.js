@@ -11,7 +11,6 @@ class Header extends React.Component{
 
   }
 
-
   render() {
     const linksSet = this.links.map((linkInfo, index) => {
       return <HeaderLink text={ linkInfo.text } url = { linkInfo.url } key={ 'HeaderLinkItem' + index}/>
@@ -21,7 +20,7 @@ class Header extends React.Component{
       <header className="header col-12 col-lg-10 col-xl-8 centered">
         <HeaderLoginComponent handleUserLogout={this.props.handleUserLogout} userLoggedIn={ this.props.userLoggedIn }/>
         <Logo />
-        <nav>
+        <nav className="hidden">
           <ul className="col-8 centered header_nav_list">
             { linksSet }
           </ul>
