@@ -9,26 +9,27 @@
   }
 
   &-inner {
-    border: 1px solid gray;
-    border-radius: 5px;
-    box-shadow: 2px 2px black;
     cursor: pointer;
     height: 15rem;
     padding: 1rem;
     transition: all 1s ease;
+  }
 
-    &:hover {
-      background-color: black;
+  &-imageWrap {
+    height: 12rem;
+    outline: 1px solid white;
+    outline-offset: -.5rem;
+    overflow: hidden;
+  }
 
-      .RecipeCard-title,
-      .RecipeCard-description {
-        color: white;
-      }
-    }
+  &-image {
+    height: auto;
+    width: 100%;
   }
 
   &-title {
     color: black;
+    font-weight: lighter;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -36,6 +37,17 @@
 
   &-description {
     color: black;
+    font-weight: 300;
+    letter-spacing: .4px;
+    line-height: 1.2;
+    margin: .5rem 0;
+    min-height: 55px;
+  }
+
+  &-category {
+    color: #975aba;
+    font-weight: 300;
+    text-transform: uppercase;
   }
 }
 

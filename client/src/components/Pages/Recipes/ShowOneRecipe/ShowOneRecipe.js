@@ -5,6 +5,7 @@ import RecipeDescriptionComponent from './RecipeDescriptionComponent/RecipeDescr
 import RecipeIngredientsContainer from './RecipeIngredientsComponent/RecipeIngredientsContainer';
 import RecipeCategoryContainer from './RecipeCategoryComponent/RecipeCategoryContainer';
 import RecipeDirectionsContainer from './RecipeDirectionsComponent/RecipeDirectionsContainer';
+import LikeComponent from '../../../SharedComponents/LikeComponent/LikeComponent';
 
 class ShowOneRecipe extends React.Component{
   constructor(props) {
@@ -12,12 +13,14 @@ class ShowOneRecipe extends React.Component{
 
     this.state = {
       recipeId: '',
+      itemType: 1,
       recipeData: {
         title: '',
         description: '',
         category: [],
         ingredients: [],
-        directions: []
+        directions: [],
+        author: ''
       }
     }
   }
@@ -29,19 +32,19 @@ class ShowOneRecipe extends React.Component{
       if (response.status !== 200) {
         throw new Error('Something has gone terribly wrong');
       }
-
       return response.json();
 
     }).then((formattedResponse) => {
+
       const newRecipeData = formattedResponse.data.data;
+
       this.setState({
         recipeId: newRecipeId,
         recipeData: newRecipeData
-      }, () => { console.log(this.state.recipeData)})
+      })
     }).catch((err) => {
       this.props.modalOpen('negative', err.message);
     })
-
   };
 
   render() {
@@ -52,6 +55,7 @@ class ShowOneRecipe extends React.Component{
         <RecipeDescriptionComponent description={ this.state.recipeData.description }/>
         <RecipeIngredientsContainer ingredients={ this.state.recipeData.ingredients }/>
         <RecipeDirectionsContainer directions={ this.state.recipeData.directions } />
+        <LikeComponent userId={this.state.recipeData.author} itemId={this.state.recipeId} itemType={this.state.itemType}/>
       </div>
     )
   }

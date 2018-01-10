@@ -6,4 +6,5 @@ exports.addOneRecipe = require('./recipes/addOneRecipe');
 exports.deleteOneRecipe = require('./recipes/deleteOneRecipe');
 exports.addOneUser = require('./users/addOneUser');
 exports.loginUser = require('./users/loginUser');
-exports.likeRecipe = require('./recipes/likeRecipe');
+exports.likeOne = require('./recipes/likeOne');
+exports.unlikeOne = require('./recipes/unlikeOne');

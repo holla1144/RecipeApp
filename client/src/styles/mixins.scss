@@ -18,3 +18,9 @@
     @content;
   }
 }
+
+@mixin flex-item($flex-basis, $flex-grow, $flex-shrink) {
+  flex-basis: $flex-basis;
+  flex-grow: $flex-grow;
+  flex-shrink: $flex-shrink;
+}

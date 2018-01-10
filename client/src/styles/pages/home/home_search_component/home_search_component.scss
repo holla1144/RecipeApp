@@ -1,0 +1,42 @@
+.HomeSearch {
+  background-color: gray;
+  height: 30rem;
+
+  &-background {
+    background-image: url('/images/banner_images/banner-image-2.jpg');
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+  }
+
+  &-filter {
+    background-color: rgba(0, 0, 0, .35);
+    height: 100%;
+  }
+
+  &-formContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-right: 2rem;
+    padding-top: 6rem;
+  }
+
+  &-textInput {
+    @include flex-item(auto, 0, 0);
+    @include textStyle($default, 1.5rem, white, .5px);
+    background: rgba(0, 0, 0, .3);
+    border: 0;
+    font-weight: 200;
+    height: 3rem;
+    padding: 0 1rem;
+  }
+
+  &-headline {
+    @include textStyle($default, 2.25rem, white, .5px);
+    color: white;
+    font-weight: 200;
+    padding-bottom: 1rem;
+  }
+}

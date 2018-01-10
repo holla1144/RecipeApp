@@ -8,6 +8,8 @@
 @import 'shared_components/header/header';
 @import 'shared_components/header/header_login_component';
 @import '~react-select/dist/react-select.css';
+@import 'pages/home/home_search_component/home_search_component.scss';
+@import 'pages/recipes/recipes_page';
 @import 'pages/recipes/AddOneRecipeForm/general';
 @import 'pages/recipes/AddOneRecipeForm/DirectionsComponent';
 @import 'pages/recipes/AddOneRecipeForm/IngredientsComponent';
@@ -15,7 +17,9 @@
 @import 'pages/login/login';
 @import 'pages/signup/signup';
 @import 'shared_components/modal_component/modal_component';
+@import 'shared_components/page_header/page_header';
 @import 'shared_components/recipe_card/recipe_card';
 @import 'shared_components/recipe_card_container/recipe_card_container';
+@import 'shared_components/like_component/like_component';
 @import 'forms/general';
 @import 'forms/custom_input';
