@@ -6,5 +6,9 @@ module.exports = {
     admin: 1,
     user: 2,
     blogger: 3,
+  },
+  ITEM_TYPES: {
+    recipe: 1,
+    blog: 2
   }
 };

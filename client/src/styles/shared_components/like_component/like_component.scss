@@ -1,0 +1,11 @@
+.LikeButton {
+  font-size: 2rem;
+
+  &.inactive {
+    color: blue;
+  }
+
+  &.active {
+    color: red;
+  }
+}

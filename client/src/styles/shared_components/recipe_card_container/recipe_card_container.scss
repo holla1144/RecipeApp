@@ -1,7 +1,3 @@
-.RecipeCardsContainer {
-
-}
-
-@include media-query($md) {
+.RecipeCardContainer {
   @include clearfix;
 }

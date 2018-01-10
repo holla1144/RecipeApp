@@ -1,7 +1,8 @@
 .HeaderLogin {
   position: absolute;
-  right: 1rem;
-  top: 1rem;
+  right: 6rem;
+  top: 50%;
+  transform: translateY(-50%);
 
   &-item {
     @include textStyle($default, 1rem, black, .5px);

@@ -1,5 +1,6 @@
 import React from 'react';
 import RecipeCardsContainer from '../../SharedComponents/RecipeCards/RecipeCardsContainer/RecipeCardsContainer';
+import PageHeader from '../../SharedComponents/PageHeader/PageHeader';
 import { getManyRecipes } from '../../../services/services';
 
 class RecipesPage extends React.Component{
@@ -7,7 +8,8 @@ class RecipesPage extends React.Component{
     super(props);
 
     this.state = {
-      recipeData: []
+      recipeData: [],
+      filter: ''
     }
   }
 
@@ -21,6 +23,7 @@ class RecipesPage extends React.Component{
 
     }).then((jsonResponse) => {
       const responseData = jsonResponse.data.data;
+
       this.setState({
         recipeData: responseData
       })
@@ -32,7 +35,21 @@ class RecipesPage extends React.Component{
   }
 
   render() {
-    return <RecipeCardsContainer data={ this.state.recipeData } classList={"RecipeCardsContainer--grid"} modalOpen={ this.props.handleModalOpen } />
+    return (
+      <div className="RecipesPage">
+        <PageHeader>
+          <p className="RecipesPage-title float-left">Recipes</p>
+          <select className="float-right">
+            <option>All</option>
+            <option>Newest</option>
+            <option>Oldest</option>
+            <option>Popular</option>
+            <option>Liked by you</option>
+          </select>
+        </PageHeader>
+        <RecipeCardsContainer data={ this.state.recipeData } classList={"col-12 col-lg-8 col-xl-6 centered"} modalOpen={ this.props.handleModalOpen } />
+      </div>
+    )
   }
 }
 

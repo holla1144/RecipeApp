@@ -8,7 +8,7 @@ const RecipeCardsContainer = ( props ) => {
   });
 
   return (
-    <div className={ "RecipeCardContainer col-12" }>
+    <div className={`RecipeCardContainer ${props.classList}`} >
       { recipeCards }
     </div>
   )

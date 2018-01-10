@@ -21,10 +21,20 @@ const services = (() => {
     return fetch('http://localhost:3000/api/recipes/' + recipeId);
   };
 
-  const likeRecipe = (recipeId) => {
-    return fetch('http://localhost:3000/api/recipes/new', {
+  const likeOne = (data) => {
+    return fetch('http://localhost:3000/api/content/like', {
       method: 'POST',
-      body: JSON.stringify({recipeId: recipeId}),
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+  };
+
+  const unlikeOne = (data) => {
+    return fetch('http://localhost:3000/api/content/unlike', {
+      method: 'POST',
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json"
       }
@@ -80,7 +90,8 @@ const services = (() => {
     addOneRecipe: addOneRecipe,
     getManyRecipes: getManyRecipes,
     getOneRecipe: getOneRecipe,
-    likeRecipe: likeRecipe,
+    likeOne: likeOne,
+    unlikeOne: unlikeOne,
     loginUser: loginUser,
     signupUser: signupUser,
     getToken: getToken,

@@ -7,7 +7,8 @@
 }
 
 html, body {
-  font-size: 18px;
+  background-color: #fff;
+  font-size: 16px;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -22,6 +23,12 @@ textarea {
   resize: none;
 }
 
+img {
+  background-color: gray;
+  display: block;
+  max-width: 100%;
+}
+
 .clearfix {
   &:after {
     clear: both;
@@ -32,6 +39,18 @@ textarea {
 
 .centered {
   margin: 0 auto;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.right-align-block {
+  margin-left: auto;
 }
 
 .hidden {

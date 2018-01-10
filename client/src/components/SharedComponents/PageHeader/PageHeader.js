@@ -1,8 +1,10 @@
 import React from "react";
 
-const PageHeader = ({ pageName }) => {
+const PageHeader = (props) => {
   return (
-    <h2 className="page-header"> { pageName} </h2>
+    <div className="PageHeader col-lg-8 centered">
+      { props.children }
+    </div>
   )
 };
 
