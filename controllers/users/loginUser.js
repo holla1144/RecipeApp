@@ -50,7 +50,9 @@ const loginUser = (req, res) => {
           message: 'Sorry, something went wrong. Please try logging in again later'
         })
       } else if (isMatch) {
-        let token = generateJWT(doc);
+        const userData = {username: doc.username, userId: doc._id, userType: doc.userType};
+        const token = generateJWT(userData);
+
           sendResponse(res, 200, {
             message: 'Welcome back ' + doc.username,
             token: token

@@ -8,3 +8,4 @@ exports.addOneUser = require('./users/addOneUser');
 exports.loginUser = require('./users/loginUser');
 exports.likeOne = require('./recipes/likeOne');
 exports.unlikeOne = require('./recipes/unlikeOne');
+exports.getUserData = require('./users/getUserData');
