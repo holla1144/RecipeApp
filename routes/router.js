@@ -16,6 +16,7 @@ router.post('/api/content/unlike', controllers.unlikeOne);
 router.delete('/api/recipes/:num', controllers.deleteOneRecipe);
 router.post('/api/users/new', controllers.addOneUser);
 router.post('/api/users/login', controllers.loginUser);
+router.get('/api/users/getUserData/:userId', controllers.getUserData);
 
 router.get('/*', function(req, res) {
    res.sendFile(path.join(__dirname, '/../client/dist/index.html'));

@@ -27,7 +27,6 @@ class ShowOneRecipe extends React.Component{
 
   componentDidMount(){
     const newRecipeId = this.props.match.params.recipeId;
-
     getOneRecipe(newRecipeId).then((response) => {
       if (response.status !== 200) {
         throw new Error('Something has gone terribly wrong');
@@ -47,6 +46,10 @@ class ShowOneRecipe extends React.Component{
     })
   };
 
+  componentDidUpdate() {
+    console.log(this.state)
+  }
+
   render() {
     return (
       <div>
@@ -55,7 +58,7 @@ class ShowOneRecipe extends React.Component{
         <RecipeDescriptionComponent description={ this.state.recipeData.description }/>
         <RecipeIngredientsContainer ingredients={ this.state.recipeData.ingredients }/>
         <RecipeDirectionsContainer directions={ this.state.recipeData.directions } />
-        <LikeComponent userId={this.state.recipeData.author} itemId={this.state.recipeId} itemType={this.state.itemType}/>
+        <LikeComponent userId={this.props.userData.userId} itemId={ this.state.recipeId } itemType={this.state.itemType}/>
       </div>
     )
   }

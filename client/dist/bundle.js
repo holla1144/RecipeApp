@@ -3114,7 +3114,7 @@ var _app2 = _interopRequireDefault(_app);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-__webpack_require__(119);
+__webpack_require__(122);
 
 
 _reactDom2.default.render(_react2.default.createElement(_app2.default, null), document.getElementById('root'));
@@ -11650,35 +11650,35 @@ var _RecipesContainer = __webpack_require__(91);
 
 var _RecipesContainer2 = _interopRequireDefault(_RecipesContainer);
 
-var _AboutContainer = __webpack_require__(94);
+var _AboutContainer = __webpack_require__(95);
 
 var _AboutContainer2 = _interopRequireDefault(_AboutContainer);
 
-var _HomeContainer = __webpack_require__(95);
+var _HomeContainer = __webpack_require__(96);
 
 var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 
-var _ModalContainer = __webpack_require__(96);
+var _ModalContainer = __webpack_require__(97);
 
 var _ModalContainer2 = _interopRequireDefault(_ModalContainer);
 
-var _ShowOneRecipe = __webpack_require__(98);
+var _ShowOneRecipe = __webpack_require__(99);
 
 var _ShowOneRecipe2 = _interopRequireDefault(_ShowOneRecipe);
 
-var _AddOneRecipe = __webpack_require__(107);
+var _AddOneRecipe = __webpack_require__(110);
 
 var _AddOneRecipe2 = _interopRequireDefault(_AddOneRecipe);
 
-var _LoginForm = __webpack_require__(116);
+var _LoginForm = __webpack_require__(119);
 
 var _LoginForm2 = _interopRequireDefault(_LoginForm);
 
-var _SignupForm = __webpack_require__(117);
+var _SignupForm = __webpack_require__(120);
 
 var _SignupForm2 = _interopRequireDefault(_SignupForm);
 
-var _MainContentContainer = __webpack_require__(118);
+var _MainContentContainer = __webpack_require__(121);
 
 var _MainContentContainer2 = _interopRequireDefault(_MainContentContainer);
 
@@ -11709,8 +11709,6 @@ var App = function (_React$Component) {
       userLoggedIn: false,
       userData: {
         username: '',
-        userFavorites: [],
-        userRecipes: [],
         userId: '',
         userType: ''
       }
@@ -11779,8 +11777,6 @@ var App = function (_React$Component) {
   }, {
     key: 'extractTokenData',
     value: function extractTokenData(JWT) {
-      var _this2 = this;
-
       var payload = JWT.split('.')[1];
       var decodedPayload = atob(payload);
       var payloadData = JSON.parse(decodedPayload).data;
@@ -11788,20 +11784,16 @@ var App = function (_React$Component) {
       this.setState({
         userLoggedIn: true,
         userData: {
-          username: payloadData.username,
-          userFavorites: payloadData.favorites,
-          userRecipes: payloadData.recipes,
-          userId: payloadData._id,
-          userType: payloadData.userType
+          username: payloadData.data.username,
+          userId: payloadData.data.userId,
+          userType: payloadData.data.userType
         }
-      }, function () {
-        console.log(_this2.state);
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       return _react2.default.createElement(
         _reactRouterDom.HashRouter,
@@ -11818,18 +11810,18 @@ var App = function (_React$Component) {
               null,
               _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _HomeContainer2.default }),
               _react2.default.createElement(_reactRouterDom.Route, { path: '/login', render: function render(routeProps) {
-                  return _this3.state.userLoggedIn ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' }) : _react2.default.createElement(_LoginForm2.default, _extends({}, routeProps, { setToken: _this3.handleUserLogin, modalOpen: _this3.handleModalOpen }));
+                  return _this2.state.userLoggedIn ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' }) : _react2.default.createElement(_LoginForm2.default, _extends({}, routeProps, { setToken: _this2.handleUserLogin, modalOpen: _this2.handleModalOpen }));
                 } }),
               _react2.default.createElement(_reactRouterDom.Route, { path: '/signup', render: function render(routeProps) {
-                  return _this3.state.userLoggedIn ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' }) : _react2.default.createElement(_SignupForm2.default, _extends({}, routeProps, { setToken: _this3.handleUserLogin, modalOpen: _this3.handleModalOpen }));
+                  return _this2.state.userLoggedIn ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' }) : _react2.default.createElement(_SignupForm2.default, _extends({}, routeProps, { setToken: _this2.handleUserLogin, modalOpen: _this2.handleModalOpen }));
                 } }),
               _react2.default.createElement(_reactRouterDom.Route, { path: '/about', component: _AboutContainer2.default }),
               _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/recipes', component: _RecipesContainer2.default }),
               _react2.default.createElement(_reactRouterDom.Route, { path: '/recipes/new', render: function render(routeProps) {
-                  return _this3.state.userData.userType !== 3 ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/recipes' }) : _react2.default.createElement(_AddOneRecipe2.default, _extends({}, routeProps, { userData: _this3.state.userData, modalOpen: _this3.handleModalOpen }));
+                  return _this2.state.userData.userType !== 3 ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/recipes' }) : _react2.default.createElement(_AddOneRecipe2.default, _extends({}, routeProps, { userData: _this2.state.userData, modalOpen: _this2.handleModalOpen }));
                 } }),
               _react2.default.createElement(_reactRouterDom.Route, { path: '/recipes/:recipeId', render: function render(routeProps) {
-                  return _react2.default.createElement(_ShowOneRecipe2.default, _extends({}, routeProps, { modalOpen: _this3.props.handleModalOpen }));
+                  return _react2.default.createElement(_ShowOneRecipe2.default, _extends({}, routeProps, { modalOpen: _this2.props.handleModalOpen, userData: _this2.state.userData }));
                 } }),
               _react2.default.createElement(_reactRouterDom.Route, { path: '/categories', component: _CategoriesContainer2.default }),
               _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' })
@@ -15586,7 +15578,7 @@ var _RecipeCardsContainer = __webpack_require__(92);
 
 var _RecipeCardsContainer2 = _interopRequireDefault(_RecipeCardsContainer);
 
-var _PageHeader = __webpack_require__(124);
+var _PageHeader = __webpack_require__(94);
 
 var _PageHeader2 = _interopRequireDefault(_PageHeader);
 
@@ -15840,6 +15832,33 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PageHeader = function PageHeader(props) {
+  return _react2.default.createElement(
+    "div",
+    { className: "PageHeader col-lg-8 centered" },
+    props.children
+  );
+};
+
+exports.default = PageHeader;
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -15876,7 +15895,7 @@ var AboutPage = function (_React$Component) {
 exports.default = AboutPage;
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15948,7 +15967,7 @@ var HomePage = function (_React$Component) {
 exports.default = HomePage;
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15962,7 +15981,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _ModalBody = __webpack_require__(97);
+var _ModalBody = __webpack_require__(98);
 
 var _ModalBody2 = _interopRequireDefault(_ModalBody);
 
@@ -15987,7 +16006,7 @@ var Modal = function Modal(props) {
 exports.default = Modal;
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16030,7 +16049,7 @@ var ModalBody = function ModalBody(props) {
 exports.default = ModalBody;
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16048,27 +16067,27 @@ var _react2 = _interopRequireDefault(_react);
 
 var _services = __webpack_require__(7);
 
-var _RecipeTitleComponent = __webpack_require__(99);
+var _RecipeTitleComponent = __webpack_require__(100);
 
 var _RecipeTitleComponent2 = _interopRequireDefault(_RecipeTitleComponent);
 
-var _RecipeDescriptionComponent = __webpack_require__(100);
+var _RecipeDescriptionComponent = __webpack_require__(101);
 
 var _RecipeDescriptionComponent2 = _interopRequireDefault(_RecipeDescriptionComponent);
 
-var _RecipeIngredientsContainer = __webpack_require__(101);
+var _RecipeIngredientsContainer = __webpack_require__(102);
 
 var _RecipeIngredientsContainer2 = _interopRequireDefault(_RecipeIngredientsContainer);
 
-var _RecipeCategoryContainer = __webpack_require__(103);
+var _RecipeCategoryContainer = __webpack_require__(104);
 
 var _RecipeCategoryContainer2 = _interopRequireDefault(_RecipeCategoryContainer);
 
-var _RecipeDirectionsContainer = __webpack_require__(105);
+var _RecipeDirectionsContainer = __webpack_require__(106);
 
 var _RecipeDirectionsContainer2 = _interopRequireDefault(_RecipeDirectionsContainer);
 
-var _LikeComponent = __webpack_require__(125);
+var _LikeComponent = __webpack_require__(108);
 
 var _LikeComponent2 = _interopRequireDefault(_LikeComponent);
 
@@ -16109,7 +16128,6 @@ var ShowOneRecipe = function (_React$Component) {
       var _this2 = this;
 
       var newRecipeId = this.props.match.params.recipeId;
-
       (0, _services.getOneRecipe)(newRecipeId).then(function (response) {
         if (response.status !== 200) {
           throw new Error('Something has gone terribly wrong');
@@ -16128,6 +16146,11 @@ var ShowOneRecipe = function (_React$Component) {
       });
     }
   }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      console.log(this.state);
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -16138,7 +16161,7 @@ var ShowOneRecipe = function (_React$Component) {
         _react2.default.createElement(_RecipeDescriptionComponent2.default, { description: this.state.recipeData.description }),
         _react2.default.createElement(_RecipeIngredientsContainer2.default, { ingredients: this.state.recipeData.ingredients }),
         _react2.default.createElement(_RecipeDirectionsContainer2.default, { directions: this.state.recipeData.directions }),
-        _react2.default.createElement(_LikeComponent2.default, { userId: this.state.recipeData.author, itemId: this.state.recipeId, itemType: this.state.itemType })
+        _react2.default.createElement(_LikeComponent2.default, { userId: this.props.userData.userId, itemId: this.state.recipeId, itemType: this.state.itemType })
       );
     }
   }]);
@@ -16151,7 +16174,7 @@ var ShowOneRecipe = function (_React$Component) {
 exports.default = ShowOneRecipe;
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16183,7 +16206,7 @@ var RecipeTitleComponent = function RecipeTitleComponent(props) {
 exports.default = RecipeTitleComponent;
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16216,7 +16239,7 @@ var RecipeDescriptionComponent = function RecipeDescriptionComponent(props) {
 exports.default = RecipeDescriptionComponent;
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16230,7 +16253,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _RecipeIngredientItem = __webpack_require__(102);
+var _RecipeIngredientItem = __webpack_require__(103);
 
 var _RecipeIngredientItem2 = _interopRequireDefault(_RecipeIngredientItem);
 
@@ -16255,7 +16278,7 @@ var RecipeIngredientsContainer = function RecipeIngredientsContainer(props) {
 exports.default = RecipeIngredientsContainer;
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16305,7 +16328,7 @@ var RecipeIngredientItem = function RecipeIngredientItem(props) {
 exports.default = RecipeIngredientItem;
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16319,7 +16342,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _RecipeCategoryItem = __webpack_require__(104);
+var _RecipeCategoryItem = __webpack_require__(105);
 
 var _RecipeCategoryItem2 = _interopRequireDefault(_RecipeCategoryItem);
 
@@ -16339,7 +16362,7 @@ var RecipeCategoryContainer = function RecipeCategoryContainer(props) {
 exports.default = RecipeCategoryContainer;
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16369,7 +16392,7 @@ var RecipeCategoryItem = function RecipeCategoryItem(props) {
 exports.default = RecipeCategoryItem;
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16383,7 +16406,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _RecipeDirectionItem = __webpack_require__(106);
+var _RecipeDirectionItem = __webpack_require__(107);
 
 var _RecipeDirectionItem2 = _interopRequireDefault(_RecipeDirectionItem);
 
@@ -16409,7 +16432,7 @@ var RecipeDirectionsContainer = function RecipeDirectionsContainer(props) {
 exports.default = RecipeDirectionsContainer;
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16448,7 +16471,167 @@ var RecipeDirectionItem = function RecipeDirectionItem(props) {
 exports.default = RecipeDirectionItem;
 
 /***/ }),
-/* 107 */
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _LikeButton = __webpack_require__(109);
+
+var _LikeButton2 = _interopRequireDefault(_LikeButton);
+
+var _services = __webpack_require__(7);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LikeContainer = function (_React$Component) {
+  _inherits(LikeContainer, _React$Component);
+
+  function LikeContainer(props) {
+    _classCallCheck(this, LikeContainer);
+
+    var _this = _possibleConstructorReturn(this, (LikeContainer.__proto__ || Object.getPrototypeOf(LikeContainer)).call(this, props));
+
+    _this.state = {
+      isActive: false
+    };
+
+    _this.handleButtonClick = _this.handleButtonClick.bind(_this);
+    _this.toggleLike = _this.toggleLike.bind(_this);
+    _this.updateDocuments = _this.updateDocuments.bind(_this);
+    _this.like = _this.like.bind(_this);
+    _this.unlike = _this.unlike.bind(_this);
+    return _this;
+  }
+
+  _createClass(LikeContainer, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      console.log('like component ' + JSON.stringify(this.props));
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      console.log('like component ' + JSON.stringify(this.props));
+    }
+  }, {
+    key: 'handleButtonClick',
+    value: function handleButtonClick() {
+      if (!this.props.userId) {
+        alert('Sign in to like ' + this.props.itemType);
+        return;
+      }
+
+      this.toggleLike();
+    }
+  }, {
+    key: 'toggleLike',
+    value: function toggleLike() {
+      var _this2 = this;
+
+      var newState = Object.assign({}, this.state, { isActive: !this.state.isActive });
+      this.setState(newState, function () {
+        _this2.updateDocuments();
+      });
+    }
+  }, {
+    key: 'updateDocuments',
+    value: function updateDocuments() {
+      console.log(this.state);
+      var data = {};
+      data.userId = this.props.userId;
+      data.itemId = this.props.itemId;
+
+      if (this.state.isActive) {
+        return this.like(data);
+      } else {
+        return this.unlike(data);
+      }
+    }
+  }, {
+    key: 'like',
+    value: function like(data) {
+      (0, _services.likeOne)(data).then(function (response) {
+        if (response.status !== 200) {
+          throw new Error('Something has gone horribly wrong!');
+        }
+      }).catch(function (err) {
+        alert('Something went wrong ' + err);
+      });
+    }
+  }, {
+    key: 'unlike',
+    value: function unlike(data) {
+      (0, _services.unlikeOne)(data).then(function (response) {
+        if (response.status !== 200) {
+          throw new Error('Something has gone horribly wrong!');
+        }
+      }).catch(function (err) {
+        alert('Something went wrong ' + err);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_LikeButton2.default, { handleClick: this.handleButtonClick, active: this.state.isActive })
+      );
+    }
+  }]);
+
+  return LikeContainer;
+}(_react2.default.Component);
+
+exports.default = LikeContainer;
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var LikeButton = function LikeButton(props) {
+  return _react2.default.createElement(
+    'div',
+    { className: 'LikeButton ' + (props.active ? 'active' : 'inactive'), onClick: props.handleClick },
+    props.active ? 'Unlike' : 'Like'
+  );
+};
+
+exports.default = LikeButton;
+
+/***/ }),
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16476,15 +16659,15 @@ var _Textarea = __webpack_require__(41);
 
 var _Textarea2 = _interopRequireDefault(_Textarea);
 
-var _CategorySelector = __webpack_require__(108);
+var _CategorySelector = __webpack_require__(111);
 
 var _CategorySelector2 = _interopRequireDefault(_CategorySelector);
 
-var _IngredientsComponent = __webpack_require__(112);
+var _IngredientsComponent = __webpack_require__(115);
 
 var _IngredientsComponent2 = _interopRequireDefault(_IngredientsComponent);
 
-var _DirectionsComponent = __webpack_require__(114);
+var _DirectionsComponent = __webpack_require__(117);
 
 var _DirectionsComponent2 = _interopRequireDefault(_DirectionsComponent);
 
@@ -16727,7 +16910,7 @@ var AddOneRecipe = function (_React$Component) {
 exports.default = AddOneRecipe;
 
 /***/ }),
-/* 108 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16743,7 +16926,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactSelect = __webpack_require__(109);
+var _reactSelect = __webpack_require__(112);
 
 var _reactSelect2 = _interopRequireDefault(_reactSelect);
 
@@ -16837,7 +17020,7 @@ var CategorySelector = function (_React$Component) {
 exports.default = CategorySelector;
 
 /***/ }),
-/* 109 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16860,11 +17043,11 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__(26);
 
-var _reactInputAutosize = __webpack_require__(110);
+var _reactInputAutosize = __webpack_require__(113);
 
 var _reactInputAutosize2 = _interopRequireDefault(_reactInputAutosize);
 
-var _classnames = __webpack_require__(111);
+var _classnames = __webpack_require__(114);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -19286,7 +19469,7 @@ exports.defaultFilterOptions = filterOptions;
 exports.default = Select$1;
 
 /***/ }),
-/* 110 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19582,7 +19765,7 @@ AutosizeInput.defaultProps = {
 exports.default = AutosizeInput;
 
 /***/ }),
-/* 111 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19641,7 +19824,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 })();
 
 /***/ }),
-/* 112 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19657,7 +19840,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _IngredientsInput = __webpack_require__(113);
+var _IngredientsInput = __webpack_require__(116);
 
 var _IngredientsInput2 = _interopRequireDefault(_IngredientsInput);
 
@@ -19803,7 +19986,7 @@ var IngredientsComponent = function (_React$Component) {
 exports.default = IngredientsComponent;
 
 /***/ }),
-/* 113 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19842,7 +20025,7 @@ var IngredientsInput = function IngredientsInput(props) {
 exports.default = IngredientsInput;
 
 /***/ }),
-/* 114 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19858,7 +20041,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _DirectionItem = __webpack_require__(115);
+var _DirectionItem = __webpack_require__(118);
 
 var _DirectionItem2 = _interopRequireDefault(_DirectionItem);
 
@@ -19994,7 +20177,7 @@ var DirectionsComponent = function (_React$Component) {
 exports.default = DirectionsComponent;
 
 /***/ }),
-/* 115 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20032,7 +20215,7 @@ var DirectionItem = function DirectionItem(props) {
 exports.default = DirectionItem;
 
 /***/ }),
-/* 116 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20195,7 +20378,7 @@ var LoginForm = function (_React$Component) {
 exports.default = LoginForm;
 
 /***/ }),
-/* 117 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20356,7 +20539,7 @@ var SignupForm = function (_React$Component) {
 exports.default = SignupForm;
 
 /***/ }),
-/* 118 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20406,13 +20589,13 @@ var MainContentContainer = function (_React$Component) {
 exports.default = MainContentContainer;
 
 /***/ }),
-/* 119 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(120);
+var content = __webpack_require__(123);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -20420,7 +20603,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(122)(content, options);
+var update = __webpack_require__(125)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -20437,14 +20620,14 @@ if(false) {
 }
 
 /***/ }),
-/* 120 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(43)(undefined);
 // imports
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i);", ""]);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Krona+One);", ""]);
-exports.i(__webpack_require__(121), "");
+exports.i(__webpack_require__(124), "");
 
 // module
 exports.push([module.i, "/*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */\n/* Document\r\n   ========================================================================== */\n/**\r\n * 1. Correct the line height in all browsers.\r\n * 2. Prevent adjustments of font size after orientation changes in\r\n *    IE on Windows Phone and in iOS.\r\n */\nhtml {\n  line-height: 1.15;\n  /* 1 */\n  -ms-text-size-adjust: 100%;\n  /* 2 */\n  -webkit-text-size-adjust: 100%;\n  /* 2 */ }\n\n/* Sections\r\n   ========================================================================== */\n/**\r\n * Remove the margin in all browsers (opinionated).\r\n */\nbody {\n  margin: 0; }\n\n/**\r\n * Add the correct display in IE 9-.\r\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\r\n * Correct the font size and margin on `h1` elements within `section` and\r\n * `article` contexts in Chrome, Firefox, and Safari.\r\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 9-.\r\n * 1. Add the correct display in IE.\r\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\r\n * Add the correct margin in IE 8.\r\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\r\n * 1. Add the correct box sizing in Firefox.\r\n * 2. Show the overflow in Edge and IE.\r\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\r\n * 1. Correct the inheritance and scaling of font size in all browsers.\r\n * 2. Correct the odd `em` font sizing in all browsers.\r\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\r\n   ========================================================================== */\n/**\r\n * 1. Remove the gray background on active links in IE 10.\r\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\r\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\r\n * 1. Remove the bottom border in Chrome 57- and Firefox 39-.\r\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\r\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\r\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\r\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\r\n * Add the correct font weight in Chrome, Edge, and Safari.\r\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\r\n * 1. Correct the inheritance and scaling of font size in all browsers.\r\n * 2. Correct the odd `em` font sizing in all browsers.\r\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\r\n * Add the correct font style in Android 4.3-.\r\n */\ndfn {\n  font-style: italic; }\n\n/**\r\n * Add the correct background and color in IE 9-.\r\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\r\n * Add the correct font size in all browsers.\r\n */\nsmall {\n  font-size: 80%; }\n\n/**\r\n * Prevent `sub` and `sup` elements from affecting the line height in\r\n * all browsers.\r\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 9-.\r\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\r\n * Add the correct display in iOS 4-7.\r\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\r\n * Remove the border on images inside links in IE 10-.\r\n */\nimg {\n  border-style: none; }\n\n/**\r\n * Hide the overflow in IE.\r\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\r\n   ========================================================================== */\n/**\r\n * 1. Change the font styles in all browsers (opinionated).\r\n * 2. Remove the margin in Firefox and Safari.\r\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\r\n * Show the overflow in IE.\r\n * 1. Show the overflow in Edge.\r\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\r\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\r\n * 1. Remove the inheritance of text transform in Firefox.\r\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\r\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\r\n *    controls in Android 4.\r\n * 2. Correct the inability to style clickable types in iOS and Safari.\r\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\r\n * Remove the inner border and padding in Firefox.\r\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\r\n * Restore the focus styles unset by the previous rule.\r\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\r\n * Correct the padding in Firefox.\r\n */\nfieldset {\n  padding: 0.35em 0.75em 0.625em; }\n\n/**\r\n * 1. Correct the text wrapping in Edge and IE.\r\n * 2. Correct the color inheritance from `fieldset` elements in IE.\r\n * 3. Remove the padding so developers are not caught out when they zero out\r\n *    `fieldset` elements in all browsers.\r\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\r\n * 1. Add the correct display in IE 9-.\r\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\r\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\r\n * Remove the default vertical scrollbar in IE.\r\n */\ntextarea {\n  overflow: auto; }\n\n/**\r\n * 1. Add the correct box sizing in IE 10-.\r\n * 2. Remove the padding in IE 10-.\r\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\r\n * Correct the cursor style of increment and decrement buttons in Chrome.\r\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\r\n * 1. Correct the odd appearance in Chrome and Safari.\r\n * 2. Correct the outline style in Safari.\r\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\r\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\r\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\r\n * 1. Correct the inability to style clickable types in iOS and Safari.\r\n * 2. Change font properties to `inherit` in Safari.\r\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\r\n   ========================================================================== */\n/*\r\n * Add the correct display in IE 9-.\r\n * 1. Add the correct display in Edge, IE, and Firefox.\r\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\r\n * Add the correct display in all browsers.\r\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 9-.\r\n */\ncanvas {\n  display: inline-block; }\n\n/**\r\n * Add the correct display in IE.\r\n */\ntemplate {\n  display: none; }\n\n/* Hidden\r\n   ========================================================================== */\n/**\r\n * Add the correct display in IE 10-.\r\n */\n[hidden] {\n  display: none; }\n\n* {\n  box-sizing: border-box;\n  color: black;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n  padding: 0; }\n\nhtml, body {\n  background-color: #fff;\n  font-size: 16px;\n  height: 100%;\n  margin: 0;\n  padding: 0;\n  width: 100%; }\n\na {\n  text-decoration: none; }\n\ntextarea {\n  resize: none; }\n\nimg {\n  background-color: gray;\n  display: block;\n  max-width: 100%; }\n\n.clearfix:after {\n  clear: both;\n  content: \"\";\n  display: table; }\n\n.centered {\n  margin: 0 auto; }\n\n.float-left {\n  float: left; }\n\n.float-right {\n  float: right; }\n\n.right-align-block {\n  margin-left: auto; }\n\n.hidden, .Select.has-value ~ .CustomInput-error {\n  display: none; }\n\n.col-1 {\n  width: calc(100% / 12 * 1); }\n\n.col-2 {\n  width: calc(100% / 12 * 2); }\n\n.col-3 {\n  width: calc(100% / 12 * 3); }\n\n.col-4 {\n  width: calc(100% / 12 * 4); }\n\n.col-5, .Ingredients .CustomInput {\n  width: calc(100% / 12 * 5); }\n\n.col-6 {\n  width: calc(100% / 12 * 6); }\n\n.col-7 {\n  width: calc(100% / 12 * 7); }\n\n.col-8, .AddRecipeForm .Form-section, .LoginForm .Form-section, .SignUpForm .Form-section {\n  width: calc(100% / 12 * 8); }\n\n.col-9 {\n  width: calc(100% / 12 * 9); }\n\n.col-10 {\n  width: calc(100% / 12 * 10); }\n\n.col-11 {\n  width: calc(100% / 12 * 11); }\n\n.col-12 {\n  width: calc(100% / 12 * 12); }\n\n@media screen and (min-width: 576px) {\n  .col-xs-1 {\n    width: calc(100% / 12 * 1); }\n  .col-xs-2 {\n    width: calc(100% / 12 * 2); }\n  .col-xs-3 {\n    width: calc(100% / 12 * 3); }\n  .col-xs-4 {\n    width: calc(100% / 12 * 4); }\n  .col-xs-5 {\n    width: calc(100% / 12 * 5); }\n  .col-xs-6 {\n    width: calc(100% / 12 * 6); }\n  .col-xs-7 {\n    width: calc(100% / 12 * 7); }\n  .col-xs-8 {\n    width: calc(100% / 12 * 8); }\n  .col-xs-9 {\n    width: calc(100% / 12 * 9); }\n  .col-xs-10 {\n    width: calc(100% / 12 * 10); }\n  .col-xs-11 {\n    width: calc(100% / 12 * 11); }\n  .col-xs-12 {\n    width: calc(100% / 12 * 12); } }\n\n@media screen and (min-width: 768px) {\n  .col-sm-1 {\n    width: calc(100% / 12 * 1); }\n  .col-sm-2 {\n    width: calc(100% / 12 * 2); }\n  .col-sm-3 {\n    width: calc(100% / 12 * 3); }\n  .col-sm-4 {\n    width: calc(100% / 12 * 4); }\n  .col-sm-5 {\n    width: calc(100% / 12 * 5); }\n  .col-sm-6 {\n    width: calc(100% / 12 * 6); }\n  .col-sm-7 {\n    width: calc(100% / 12 * 7); }\n  .col-sm-8 {\n    width: calc(100% / 12 * 8); }\n  .col-sm-9 {\n    width: calc(100% / 12 * 9); }\n  .col-sm-10 {\n    width: calc(100% / 12 * 10); }\n  .col-sm-11 {\n    width: calc(100% / 12 * 11); }\n  .col-sm-12 {\n    width: calc(100% / 12 * 12); } }\n\n@media screen and (min-width: 992px) {\n  .col-md-1 {\n    width: calc(100% / 12 * 1); }\n  .col-md-2 {\n    width: calc(100% / 12 * 2); }\n  .col-md-3 {\n    width: calc(100% / 12 * 3); }\n  .col-md-4 {\n    width: calc(100% / 12 * 4); }\n  .col-md-5 {\n    width: calc(100% / 12 * 5); }\n  .col-md-6 {\n    width: calc(100% / 12 * 6); }\n  .col-md-7 {\n    width: calc(100% / 12 * 7); }\n  .col-md-8 {\n    width: calc(100% / 12 * 8); }\n  .col-md-9 {\n    width: calc(100% / 12 * 9); }\n  .col-md-10 {\n    width: calc(100% / 12 * 10); }\n  .col-md-11 {\n    width: calc(100% / 12 * 11); }\n  .col-md-12 {\n    width: calc(100% / 12 * 12); } }\n\n@media screen and (min-width: 1200px) {\n  .col-lg-1 {\n    width: calc(100% / 12 * 1); }\n  .col-lg-2 {\n    width: calc(100% / 12 * 2); }\n  .col-lg-3 {\n    width: calc(100% / 12 * 3); }\n  .col-lg-4 {\n    width: calc(100% / 12 * 4); }\n  .col-lg-5 {\n    width: calc(100% / 12 * 5); }\n  .col-lg-6 {\n    width: calc(100% / 12 * 6); }\n  .col-lg-7 {\n    width: calc(100% / 12 * 7); }\n  .col-lg-8 {\n    width: calc(100% / 12 * 8); }\n  .col-lg-9 {\n    width: calc(100% / 12 * 9); }\n  .col-lg-10 {\n    width: calc(100% / 12 * 10); }\n  .col-lg-11 {\n    width: calc(100% / 12 * 11); }\n  .col-lg-12 {\n    width: calc(100% / 12 * 12); } }\n\n@media screen and (min-width: 1500px) {\n  .col-xl-1 {\n    width: calc(100% / 12 * 1); }\n  .col-xl-2 {\n    width: calc(100% / 12 * 2); }\n  .col-xl-3 {\n    width: calc(100% / 12 * 3); }\n  .col-xl-4 {\n    width: calc(100% / 12 * 4); }\n  .col-xl-5 {\n    width: calc(100% / 12 * 5); }\n  .col-xl-6 {\n    width: calc(100% / 12 * 6); }\n  .col-xl-7 {\n    width: calc(100% / 12 * 7); }\n  .col-xl-8 {\n    width: calc(100% / 12 * 8); }\n  .col-xl-9 {\n    width: calc(100% / 12 * 9); }\n  .col-xl-10 {\n    width: calc(100% / 12 * 10); }\n  .col-xl-11 {\n    width: calc(100% / 12 * 11); }\n  .col-xl-12 {\n    width: calc(100% / 12 * 12); } }\n\nh1 {\n  font-size: calc(1rem + (1rem / 1));\n  margin: 0;\n  padding: .5em 0; }\n\nh2 {\n  font-size: calc(1rem + (1rem / 2));\n  margin: 0;\n  padding: .5em 0; }\n\nh3 {\n  font-size: calc(1rem + (1rem / 3));\n  margin: 0;\n  padding: .5em 0; }\n\nh4 {\n  font-size: calc(1rem + (1rem / 4));\n  margin: 0;\n  padding: .5em 0; }\n\nh5 {\n  font-size: calc(1rem + (1rem / 5));\n  margin: 0;\n  padding: .5em 0; }\n\nh6 {\n  font-size: calc(1rem + (1rem / 6));\n  margin: 0;\n  padding: .5em 0; }\n\n.logo {\n  color: black;\n  font-family: \"Krona One\", sans-serif;\n  font-size: 2.5rem;\n  letter-spacing: 1px;\n  text-transform: uppercase; }\n\n.text-left {\n  text-align: left; }\n\n.text-center {\n  text-align: center; }\n\n.text-right {\n  text-align: right; }\n\n.header {\n  position: relative; }\n  .header_nav_list {\n    display: flex;\n    height: 100%;\n    list-style-type: none;\n    justify-content: center; }\n    .header_nav_list_item_link {\n      color: black;\n      font-family: \"Roboto\", sans-sefif;\n      font-size: 1.25rem;\n      letter-spacing: 0.5px;\n      display: block;\n      margin: 1rem 0;\n      padding: 0 .75rem; }\n      .header_nav_list_item_link--active {\n        text-decoration: underline; }\n\n.HeaderLogin {\n  position: absolute;\n  right: 6rem;\n  top: 50%;\n  transform: translateY(-50%); }\n  .HeaderLogin-item {\n    color: black;\n    font-family: \"Roboto\", sans-sefif;\n    font-size: 1rem;\n    letter-spacing: 0.5px;\n    display: inline-block;\n    font-weight: 400;\n    padding: 0 .5rem;\n    text-transform: uppercase; }\n\n.HomeSearch {\n  background-color: gray;\n  height: 30rem; }\n  .HomeSearch-background {\n    background-image: url(\"/images/banner_images/banner-image-2.jpg\");\n    background-position: center;\n    background-size: cover;\n    height: 100%;\n    width: 100%; }\n  .HomeSearch-filter {\n    background-color: rgba(0, 0, 0, 0.35);\n    height: 100%; }\n  .HomeSearch-formContainer {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    margin-right: 2rem;\n    padding-top: 6rem; }\n  .HomeSearch-textInput {\n    flex-basis: auto;\n    flex-grow: 0;\n    flex-shrink: 0;\n    color: white;\n    font-family: \"Roboto\", sans-sefif;\n    font-size: 1.5rem;\n    letter-spacing: 0.5px;\n    background: rgba(0, 0, 0, 0.3);\n    border: 0;\n    font-weight: 200;\n    height: 3rem;\n    padding: 0 1rem; }\n  .HomeSearch-headline {\n    color: white;\n    font-family: \"Roboto\", sans-sefif;\n    font-size: 2.25rem;\n    letter-spacing: 0.5px;\n    color: white;\n    font-weight: 200;\n    padding-bottom: 1rem; }\n\n.RecipesPage-title {\n  color: #FF6542;\n  font-size: 2.5rem;\n  font-style: italic;\n  font-weight: bold;\n  text-transform: uppercase; }\n\n.AddRecipeForm .Form-section {\n  padding: 1.5rem 0 2rem; }\n  .AddRecipeForm .Form-section .CustomInput--textarea .CustomInput-field {\n    min-height: 8rem; }\n  .AddRecipeForm .Form-section .CustomInput--textarea .CustomInput-error {\n    display: block; }\n\n.AddRecipeForm-submitButton {\n  background-color: #759eB8;\n  border: 0;\n  border-radius: 50%;\n  bottom: 6rem;\n  box-shadow: 2px 2px 20px lightslategrey;\n  cursor: pointer;\n  height: 7rem;\n  position: fixed;\n  right: 8rem;\n  text-transform: uppercase;\n  width: 7rem;\n  z-index: 2; }\n\n.Directions-inputContainer {\n  padding-bottom: 1rem; }\n  .Directions-inputContainer:after {\n    clear: both;\n    content: \"\";\n    display: table; }\n\n.Directions-stepLabel {\n  display: block;\n  padding: .5rem 0; }\n\n.Directions-stepInput {\n  display: block;\n  float: left;\n  margin-right: .5rem; }\n\n.Directions-stepRemove {\n  color: black;\n  cursor: pointer;\n  float: left;\n  font-size: 1.25rem; }\n\n.Ingredients .CustomInput {\n  display: inline-block;\n  vertical-align: top; }\n  .Ingredients .CustomInput:first-child {\n    margin-right: 1.5rem; }\n\n.Ingredients-inputContainer {\n  padding-bottom: .5rem; }\n\n.Ingredients-removeIngredient {\n  cursor: pointer;\n  font-size: 1.25rem;\n  left: .5rem;\n  position: relative;\n  top: .25rem; }\n\n.Select.is-focused:not(.is-open) {\n  box-shadow: 0;\n  outline: -webkit-focus-ring-color auto 5px; }\n\n.Select .Select-control {\n  border: 1px solid gray;\n  border-radius: 0;\n  height: auto; }\n  .Select .Select-control .Select-multi-value-wrapper {\n    display: flex; }\n    .Select .Select-control .Select-multi-value-wrapper .Select-value {\n      align-items: center;\n      display: flex;\n      margin: .3rem .3rem; }\n      .Select .Select-control .Select-multi-value-wrapper .Select-value .Select-value-icon {\n        border-right: 0;\n        order: 2;\n        padding: 0 5px 0 3px; }\n      .Select .Select-control .Select-multi-value-wrapper .Select-value .Select-value-label {\n        order: 1; }\n\n.LoginForm .Form-section {\n  padding-bottom: 1rem; }\n\n.SignUpForm .Form-section {\n  padding-bottom: 1rem; }\n\n.Modal {\n  background-color: rgba(0, 0, 0, 0.5);\n  bottom: 0;\n  height: 100%;\n  left: 0;\n  overflow: hidden;\n  position: fixed;\n  right: 0;\n  top: 0;\n  width: 100%;\n  z-index: 2; }\n  .Modal-body {\n    background-color: whitesmoke;\n    border: 2px solid gray;\n    border-radius: 22px;\n    height: 15rem;\n    margin: 4rem auto 0 auto;\n    padding: 2rem;\n    width: 30rem; }\n  .Modal-head {\n    font-style: italic; }\n    .Modal-head--negative {\n      color: #C76D7E; }\n    .Modal-head--positive {\n      color: #77ba99; }\n\n.PageHeader {\n  padding: 6rem 0 2.5rem 0; }\n  .PageHeader:after {\n    clear: both;\n    content: \"\";\n    display: table; }\n\n.RecipeCard {\n  margin-bottom: 1rem;\n  min-width: 15rem; }\n  .RecipeCard-link {\n    display: block;\n    height: 100%;\n    width: 100%; }\n  .RecipeCard-inner {\n    cursor: pointer;\n    height: 15rem;\n    padding: 1rem;\n    transition: all 1s ease; }\n  .RecipeCard-imageWrap {\n    height: 12rem;\n    outline: 1px solid white;\n    outline-offset: -.5rem;\n    overflow: hidden; }\n  .RecipeCard-image {\n    height: auto;\n    width: 100%; }\n  .RecipeCard-title {\n    color: black;\n    font-weight: lighter;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap; }\n  .RecipeCard-description {\n    color: black;\n    font-weight: 300;\n    letter-spacing: .4px;\n    line-height: 1.2;\n    margin: .5rem 0;\n    min-height: 55px; }\n  .RecipeCard-category {\n    color: #975aba;\n    font-weight: 300;\n    text-transform: uppercase; }\n\n@media screen and (min-width: 992px) {\n  .RecipeCard {\n    float: left;\n    margin-bottom: .4rem;\n    padding-right: .4rem; } }\n\n.RecipeCardContainer:after {\n  clear: both;\n  content: \"\";\n  display: table; }\n\n.LikeButton {\n  font-size: 2rem; }\n  .LikeButton.inactive {\n    color: blue; }\n  .LikeButton.active {\n    color: red; }\n\n.Form {\n  padding-bottom: 5rem; }\n  .Form-sectionLabel {\n    display: block;\n    font-size: 1.1rem;\n    font-weight: 400;\n    margin: .5rem 0;\n    text-transform: uppercase; }\n  .Form-greenBtn {\n    background-color: #77ba99;\n    border-radius: 5px;\n    box-shadow: 1px 4px 4px gray;\n    color: white;\n    cursor: pointer;\n    display: block;\n    line-height: 2rem;\n    margin: .5rem 0;\n    text-align: center;\n    transition: all .5s linear;\n    width: 6rem; }\n    .Form-greenBtn:hover {\n      background-color: #6daa8c; }\n\n.field--invalid, .Select.invalid .Select-multi-value-wrapper, .CustomInput.invalid .CustomInput-field {\n  background-color: #f9f1f3;\n  border-color: #C76D7E;\n  outline-color: #C76D7E; }\n\n.field--default, .CustomInput-field {\n  background-color: white;\n  border: 1px solid gray;\n  padding: .4rem;\n  width: 100%; }\n\n.CustomInput-error {\n  color: #C76D7E;\n  font-size: .75rem;\n  font-weight: 500;\n  text-transform: uppercase; }\n", ""]);
@@ -20453,7 +20636,7 @@ exports.push([module.i, "/*! normalize.css v7.0.0 | MIT License | github.com/nec
 
 
 /***/ }),
-/* 121 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(43)(undefined);
@@ -20467,7 +20650,7 @@ exports.push([module.i, "/**\n * React Select\n * ============\n * Created by Je
 
 
 /***/ }),
-/* 122 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -20523,7 +20706,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(123);
+var	fixUrls = __webpack_require__(126);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -20839,7 +21022,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 123 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20932,190 +21115,6 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
-
-/***/ }),
-/* 124 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var PageHeader = function PageHeader(props) {
-  return _react2.default.createElement(
-    "div",
-    { className: "PageHeader col-lg-8 centered" },
-    props.children
-  );
-};
-
-exports.default = PageHeader;
-
-/***/ }),
-/* 125 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _LikeButton = __webpack_require__(126);
-
-var _LikeButton2 = _interopRequireDefault(_LikeButton);
-
-var _services = __webpack_require__(7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var LikeContainer = function (_React$Component) {
-  _inherits(LikeContainer, _React$Component);
-
-  function LikeContainer(props) {
-    _classCallCheck(this, LikeContainer);
-
-    var _this = _possibleConstructorReturn(this, (LikeContainer.__proto__ || Object.getPrototypeOf(LikeContainer)).call(this, props));
-
-    _this.state = {
-      isActive: false
-    };
-
-    _this.handleButtonClick = _this.handleButtonClick.bind(_this);
-    _this.toggleLike = _this.toggleLike.bind(_this);
-    _this.updateDocuments = _this.updateDocuments.bind(_this);
-    _this.doLike = _this.doLike.bind(_this);
-    _this.doUnlike = _this.doUnlike.bind(_this);
-    return _this;
-  }
-
-  _createClass(LikeContainer, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      console.log(this.props);
-    }
-  }, {
-    key: 'handleButtonClick',
-    value: function handleButtonClick() {
-      if (!this.props.userId) {
-        alert('Sign in to like ' + this.props.itemType);
-        return;
-      }
-
-      this.toggleLike();
-    }
-  }, {
-    key: 'toggleLike',
-    value: function toggleLike() {
-      var _this2 = this;
-
-      var newState = Object.assign({}, this.state, { isActive: !this.state.isActive });
-      this.setState(newState, function () {
-        _this2.updateDocuments();
-      });
-    }
-  }, {
-    key: 'updateDocuments',
-    value: function updateDocuments() {
-      var likeData = {};
-      likeData.userId = this.props.userId;
-      likeData.itemId = this.props.itemId;
-      likeData.itemType = this.props.itemType;
-
-      if (this.state.isActive) {
-        console.log('Do like called ' + JSON.stringify(likeData));
-        return this.doLike(likeData);
-      } else {
-        console.log('Do unlike called ' + JSON.stringify(likeData));
-        return this.doUnlike(likeData);
-      }
-    }
-  }, {
-    key: 'doLike',
-    value: function doLike(data) {
-      (0, _services.likeOne)(data).then(function (response) {
-        if (response.status !== 200) {
-          throw new Error('Something has gone horribly wrong!');
-        }
-      }).catch(function (err) {
-        alert('Something went wrong ' + err);
-      });
-    }
-  }, {
-    key: 'doUnlike',
-    value: function doUnlike() {
-      (0, _services.unlikeOne)(data).then(function (response) {
-        if (response.status !== 200) {
-          throw new Error('Something has gone horribly wrong!');
-        }
-      }).catch(function (err) {
-        alert('Something went wrong ' + err);
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(_LikeButton2.default, { handleClick: this.handleButtonClick, active: this.state.isActive })
-      );
-    }
-  }]);
-
-  return LikeContainer;
-}(_react2.default.Component);
-
-exports.default = LikeContainer;
-
-/***/ }),
-/* 126 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var LikeButton = function LikeButton(props) {
-  return _react2.default.createElement(
-    'div',
-    { className: 'LikeButton ' + (props.active ? 'active' : 'inactive'), onClick: props.handleClick },
-    'Like'
-  );
-};
-
-exports.default = LikeButton;
 
 /***/ })
 /******/ ]);

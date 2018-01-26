@@ -29,8 +29,6 @@ class App extends React.Component{
       userLoggedIn: false,
       userData: {
         username: '',
-        userFavorites: [],
-        userRecipes: [],
         userId: '',
         userType: ''
       }
@@ -98,14 +96,10 @@ class App extends React.Component{
     this.setState({
       userLoggedIn: true,
       userData: {
-        username: payloadData.username,
-        userFavorites: payloadData.favorites,
-        userRecipes: payloadData.recipes,
-        userId: payloadData._id,
-        userType: payloadData.userType
+        username: payloadData.data.username,
+        userId: payloadData.data.userId,
+        userType: payloadData.data.userType
       }
-    }, () => {
-      console.log(this.state);
     });
   }
 
@@ -125,7 +119,7 @@ class App extends React.Component{
                   <Route exact path="/recipes" component={ RecipesPage } />
                   <Route path="/recipes/new" render={( routeProps ) => {
                     return this.state.userData.userType !== 3 ? <Redirect to="/recipes" /> :  <AddOneRecipe { ...routeProps } userData={ this.state.userData } modalOpen={ this.handleModalOpen } />}}/>
-                  <Route path="/recipes/:recipeId" render={( routeProps ) => { return <ShowOneRecipe { ...routeProps } modalOpen={ this.props.handleModalOpen } />}}/>
+                  <Route path="/recipes/:recipeId" render={( routeProps ) => { return <ShowOneRecipe { ...routeProps } modalOpen={ this.props.handleModalOpen } userData={ this.state.userData } />}}/>
                   <Route path="/categories" component={ CategoriesPage }/>
                   <Redirect to="/"/>
                 </Switch>

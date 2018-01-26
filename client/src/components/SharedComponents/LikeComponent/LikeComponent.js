@@ -13,12 +13,17 @@ class LikeContainer extends React.Component {
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.toggleLike = this.toggleLike.bind(this);
     this.updateDocuments = this.updateDocuments.bind(this);
-    this.doLike = this.doLike.bind(this);
-    this.doUnlike = this.doUnlike.bind(this);
+    this.like = this.like.bind(this);
+    this.unlike = this.unlike.bind(this);
   }
 
   componentDidMount() {
-    console.log(this.props);
+    console.log('like component ' + JSON.stringify(this.props));
+  }
+
+  componentDidUpdate() {
+    console.log('like component ' + JSON.stringify(this.props));
+
   }
 
   handleButtonClick() {
@@ -28,7 +33,6 @@ class LikeContainer extends React.Component {
     }
 
     this.toggleLike();
-
   }
 
   toggleLike() {
@@ -39,21 +43,19 @@ class LikeContainer extends React.Component {
   }
 
   updateDocuments() {
-    const likeData = {};
-    likeData.userId = this.props.userId;
-    likeData.itemId = this.props.itemId;
-    likeData.itemType = this.props.itemType;
+    console.log(this.state)
+    const data = {};
+    data.userId = this.props.userId;
+    data.itemId = this.props.itemId;
 
     if (this.state.isActive) {
-      console.log('Do like called ' + JSON.stringify(likeData));
-      return this.doLike(likeData);
+      return this.like(data);
     } else {
-      console.log('Do unlike called ' + JSON.stringify(likeData));
-      return this.doUnlike(likeData);
+      return this.unlike(data);
     }
   }
 
-  doLike(data){
+  like(data){
     likeOne(data).then((response) => {
       if (response.status !== 200) {
         throw new Error('Something has gone horribly wrong!');
@@ -63,7 +65,7 @@ class LikeContainer extends React.Component {
     })
   }
 
-  doUnlike(){
+  unlike(data){
     unlikeOne(data).then((response) => {
       if (response.status !== 200) {
         throw new Error('Something has gone horribly wrong!');

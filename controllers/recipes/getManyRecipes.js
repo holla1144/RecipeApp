@@ -2,8 +2,6 @@ let sendResponse = require('../sendResponse');
 let Recipe = require('../../models/recipe_models/recipe');
 
 let getManyRecipes = function(req, res) {
-  console.log('get many called');
-
   const setRecipeCount = () => {
     return recipeCountParam === 'all' ? 0 : recipeCountParam;
   };
